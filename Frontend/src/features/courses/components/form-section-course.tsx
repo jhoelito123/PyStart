@@ -7,7 +7,6 @@ import { UploadVideo } from '../../../components/ui/upload-video';
 export default function FormSectionCourse() {
   const {
     register,
-    setValue,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: 'onChange' });
@@ -29,10 +28,10 @@ export default function FormSectionCourse() {
   ];
 
   return (
-    <div className="flex flex-col w-10/12 max-w-screen h-full mt-10">
-      <div className="w-full h-6 rounded-t-2xl bg-indigo-500">
+    <div className="flex flex-col w-10/12 max-w-screen h-full my-10">
+      <div className="w-full h-6 rounded-t-2xl bg-blue-500"/>
         <form
-          className="mx-5 mt-10 mb-32 p-4"
+          className="w-full h-full justify-center shadow-2xl rounded-2xl p-10 px-22 bg-white mx-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
           <h1 className="text-slate-900 headline-lg sm:text-xl md:text-2xl font-semibold mb-6">
@@ -94,7 +93,6 @@ export default function FormSectionCourse() {
             />
           </div>
         </form>
-      </div>
     </div>
   );
 }

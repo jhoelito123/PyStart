@@ -55,11 +55,11 @@ export default function FormEducationalInstitution() {
   };
 
   return (
-    <div className="flex flex-col w-10/12 max-w-screen h-full mt-10">
-      <div className="w-full h-6 rounded-t-2xl bg-indigo-500" />
+    <div className="flex flex-col w-10/12 max-w-screen h-full my-10">
+      <div className="w-full h-6 rounded-t-2xl bg-blue-500" />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full flex flex-row justify-center shadow-lg rounded-2xl p-10 mx-auto"
+        className="w-full justify-center shadow-2xl rounded-2xl p-10 bg-white mx-auto"
       >
         <div className="flex flex-row w-full max-w-11/12 mx-auto gap-32">
           <div className="flex flex-col gap-5 items-center justify-center w-full">

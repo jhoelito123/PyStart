@@ -58,8 +58,8 @@ export const Dropdown = <T extends FieldValues>({
           id={name}
           name={name}
           className={`
-            peer w-full h-[50px] subtitle-md text-slate-900
-            border-b-[1px] border-neutral-500 rounded pt-6 pb-1 px-2
+            peer w-full h-[50px] subtitle-sm text-slate-900
+            border-b-[2px] border-neutral-500 rounded pt-6 pb-1 px-2
             focus:outline-none focus:border-slate-900 bg-transparent
             ${fieldError ? 'border-red-400' : ''}
           `}
@@ -73,7 +73,7 @@ export const Dropdown = <T extends FieldValues>({
           <option
             value=""
             disabled
-            className="bg-neutral-neu1 text-primary-pri3"
+            className="bg-neutral-100 text-slate-500 subtitle-sm"
           >
             {placeholder}
           </option>
@@ -81,7 +81,7 @@ export const Dropdown = <T extends FieldValues>({
             <option
               key={index}
               value={option[valueKey]}
-              className="bg-neutral-neu2 text-primary-pri2 subtitle-md"
+              className="bg-neutral-neu2 text-primary-pri2 subtitle-sm"
             >
               {displayKey === 'minutos'
                 ? `${option[displayKey]} minutos`
