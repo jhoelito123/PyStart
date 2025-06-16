@@ -28,7 +28,7 @@ export const TextArea = <T extends FieldValues>({
       <div className={`w-full ${className}`}>
         <label
           htmlFor={name as string}
-          className={`block text-slate-900 mb-1 ${labelPadding}`}
+          className={`block text-slate-900 mb-1 px-2 ${labelPadding}`}
         >
           {label} {isRequired && <span className="text-red-400">*</span>}
         </label>

@@ -225,6 +225,7 @@ export default function FormCourse() {
                 label="Descripción"
                 name="desc"
                 className="w-full"
+                placeholder='Escribe una breve descripción del curso'
                 register={register}
                 validationRules={{
                   required: 'La descripción del curso es obligatoria',
