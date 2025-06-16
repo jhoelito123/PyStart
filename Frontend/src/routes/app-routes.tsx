@@ -6,7 +6,7 @@ import RegisterTeacherPage from '../features/teacher/pages/register-teacher';
 import { RegisterSectionCoursePage } from '../features/courses/pages/register-section-course';
 import CoursesPage from '../features/courses/pages/courses';
 import ShowCoursePage from '../features/courses/pages/show-course';
-import Ejecutor from '../TestExecute';
+import Ejecutor from '../features/courses/components/editor-code';
 import MainLayout from '../features/landing/pages/landing-page';
 import SigninPage from '../features/auth/components/sign-in';
 import SignupPage from '../features/auth/components/sign-up';

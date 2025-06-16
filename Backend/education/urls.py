@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # For Institucion
     path("departamentos/", views.DepartamentoList.as_view(), name="departamento-list"),
     path(
         "departamentos/<int:pk>/",
@@ -28,11 +29,13 @@ urlpatterns = [
         views.InstitucionCreateView.as_view(),
         name="institucion-list-create",
     ),
+    # For Courses
     path("modulos/", views.ModuloDetail.as_view(), name="modulos-list"),
     path("idiomas/", views.IdiomaDetail.as_view(), name="languages-list"),
     path("dificultad/", views.DificultadDetail.as_view(), name="dificults-list"),
     path("curso/", views.CursoDetail.as_view(), name="courses-list"),
     path("curso/create/", views.CursoCreateView.as_view(), name="course-create"),
-    # aqui haces de /curso/<id> para los detalles de curso por id
+    path("cursos/<int:pk>/", views.CursoDetailView.as_view(), name="curso-detail"),
+    # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
 ]

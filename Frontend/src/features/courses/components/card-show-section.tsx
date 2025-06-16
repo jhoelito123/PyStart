@@ -1,4 +1,4 @@
-import Ejecutor from '../../../TestExecute';
+import Ejecutor from './editor-code';
 type CardShowSectionProps = {
   title: string;
   video: string;

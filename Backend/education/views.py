@@ -31,6 +31,7 @@ from .serializers import (
     DificultadSerializer,
     CursoCreateSerializer,
     CursoSerializer,
+    CursoDetalleSerializer,
 )
 
 
@@ -95,6 +96,11 @@ class CursoCreateView(generics.CreateAPIView):
 class CursoDetail(generics.ListAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoSerializer
+
+
+class CursoDetailView(generics.RetrieveAPIView):
+    queryset = Curso.objects.all()
+    serializer_class = CursoDetalleSerializer
 
 
 class CodeExecutorAPIView(APIView):
