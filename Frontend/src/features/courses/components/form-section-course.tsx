@@ -70,7 +70,7 @@ export default function FormSectionCourse() {
             Registrar Sección de Curso
           </h1>
           <div className="flex flex-col space-x-9">
-            <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-9 mb-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 w-full lg:gap-9 mb-2">
               <Dropdown
                 name="section.course"
                 label="Curso"
@@ -96,7 +96,7 @@ export default function FormSectionCourse() {
                 errors={errors}
               />
             </div>
-            <div className='grid grid-cols-1'>
+            <div className='grid grid-cols-1 w-full'>
               <TextArea
                 label="Descripción"
                 name="section.description"
