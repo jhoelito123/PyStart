@@ -146,15 +146,6 @@ export default function FormSectionCourse() {
                   }}
                   errors={errors}
                 />
-                <Dropdown
-                  name="section.format"
-                  label="Formato de la explicación"
-                  options={formatos}
-                  displayKey="formato"
-                  valueKey="id"
-                  placeholder="Selecciona un formato"
-                  register={register}
-                />
                 <TextArea
                   label="Instrucción del ejecutor de código"
                   name="section.codeExecutorInstruction"
@@ -177,6 +168,15 @@ export default function FormSectionCourse() {
                       'La instrucción no puede estar vacía',
                   }}
                   errors={errors}
+                />
+                <Dropdown
+                  name="section.format"
+                  label="Formato de la explicación"
+                  options={formatos}
+                  displayKey="formato"
+                  valueKey="id"
+                  placeholder="Selecciona un formato"
+                  register={register}
                 />
               </div>
               <div className="grid grid-cols-1 lg:gap-9 mb-6">
