@@ -3,6 +3,8 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import viewsets
+
 import subprocess
 import tempfile
 import os
@@ -18,6 +20,9 @@ from .models import (
     Idioma,
     DificultadCurso,
     Curso,
+    TipoRecurso,
+    Seccion,
+    Recurso,
 )
 from .serializers import (
     CodeExecutionInputSerializer,
@@ -32,6 +37,9 @@ from .serializers import (
     CursoCreateSerializer,
     CursoSerializer,
     CursoDetalleSerializer,
+    TipoRecursoSerializer,
+    RecursoSerializer,
+    SeccionSerializer,
 )
 
 
@@ -82,6 +90,41 @@ class IdiomaDetail(generics.ListAPIView):
     queryset = Idioma.objects.all()
     serializer_class = IdiomaSerializer
 
+# GET de todos los TipoRecurso
+class TipoRecursoList(generics.ListAPIView):
+    queryset = TipoRecurso.objects.all()
+    serializer_class = TipoRecursoSerializer
+
+
+# POST de Seccion (con creación de recursos) y GET all secciones por curso
+class SeccionViewSet(viewsets.ModelViewSet):
+    queryset = Seccion.objects.all()
+    serializer_class = SeccionSerializer
+
+    # GET todas las secciones por ID curso
+    def list(self, request, *args, **kwargs):
+        curso_id = request.query_params.get('curso_id')
+        if curso_id:
+            queryset = Seccion.objects.filter(seccion_del_curso_id=curso_id)
+        else:
+            queryset = self.queryset.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+# GET de todos los recursos por ID sección
+class RecursosBySeccion(generics.ListAPIView):
+    serializer_class = RecursoSerializer
+
+    def get_queryset(self):
+        seccion_id = self.kwargs.get('seccion_id')
+        seccion = Seccion.objects.get(pk=seccion_id)
+        recursos_ids = filter(None, [
+            seccion.video_seccion_id,
+            seccion.contenido_seccion_id,
+            seccion.instruccion_ejecutor_seccion_id,
+        ])
+        return Recurso.objects.filter(id_recurso__in=recursos_ids)
 
 class DificultadDetail(generics.ListAPIView):
     queryset = DificultadCurso.objects.all()

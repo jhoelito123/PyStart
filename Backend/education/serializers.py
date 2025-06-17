@@ -9,6 +9,8 @@ from .models import (
     DificultadCurso,
     Curso,
     Seccion,
+    TipoRecurso,
+    Recurso,
 )
 
 
@@ -17,6 +19,68 @@ class DepartamentoSerializer(serializers.ModelSerializer):
         model = Departamento
         fields = "__all__"  # todos los atributos del modelo
 
+
+class TipoRecursoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoRecurso
+        fields = ['id_tipo_recurso', 'tipo_recurso']
+
+
+class RecursoSerializer(serializers.ModelSerializer):
+    tipo_recurso = serializers.PrimaryKeyRelatedField(queryset=TipoRecurso.objects.all())
+
+    class Meta:
+        model = Recurso
+        fields = [
+            'id_recurso',
+            'nombre_recurso',
+            'url_recurso',
+            'texto_recurso',
+            'tipo_recurso',
+        ]
+
+
+class SeccionSerializer(serializers.ModelSerializer):
+    # Para crear recursos anidados en POST
+    video_seccion = RecursoSerializer(required=False, allow_null=True)
+    contenido_seccion = RecursoSerializer(required=False, allow_null=True)
+    instruccion_ejecutor_seccion = RecursoSerializer(required=False, allow_null=True)
+    seccion_del_curso = serializers.PrimaryKeyRelatedField(queryset=Curso.objects.all())
+
+    class Meta:
+        model = Seccion
+        fields = [
+            'id_seccion',
+            'nombre_seccion',
+            'descripcion_seccion',
+            'seccion_del_curso',
+            'duracion_seccion',
+            'video_seccion',
+            'contenido_seccion',
+            'instruccion_ejecutor_seccion',
+        ]
+
+    def create(self, validated_data):
+        video_data = validated_data.pop('video_seccion', None)
+        contenido_data = validated_data.pop('contenido_seccion', None)
+        instruccion_data = validated_data.pop('instruccion_ejecutor_seccion', None)
+
+        seccion = Seccion.objects.create(**validated_data)
+
+        if video_data:
+            video = Recurso.objects.create(**video_data)
+            seccion.video_seccion = video
+
+        if contenido_data:
+            contenido = Recurso.objects.create(**contenido_data)
+            seccion.contenido_seccion = contenido
+
+        if instruccion_data:
+            instruccion = Recurso.objects.create(**instruccion_data)
+            seccion.instruccion_ejecutor_seccion = instruccion
+
+        seccion.save()
+        return seccion
 
 class ProvinciaSerializer(serializers.ModelSerializer):
     class Meta:

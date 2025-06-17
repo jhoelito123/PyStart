@@ -1,6 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import SeccionViewSet
 from . import views
 
+router = DefaultRouter()
+router.register(r'secciones', SeccionViewSet, basename='seccion')
 urlpatterns = [
     # For Institucion
     path("departamentos/", views.DepartamentoList.as_view(), name="departamento-list"),
@@ -18,6 +22,13 @@ urlpatterns = [
         views.ProvinciasPorDepartamento.as_view(),
         name="provincias-por-departamento",
     ),
+    path('tipos-recurso/', 
+        views.TipoRecursoList.as_view(), 
+        name='tipos-recurso-list'),
+    path('', include(router.urls)),
+    path('recursos/seccion/<int:seccion_id>/', 
+        views.RecursosBySeccion.as_view(), 
+        name='recursos-by-seccion'),
     path(
         "nivel-educativo/",
         views.NivelAcademicoList.as_view(),
