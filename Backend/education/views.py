@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import Http404
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -118,7 +119,10 @@ class RecursosBySeccion(generics.ListAPIView):
 
     def get_queryset(self):
         seccion_id = self.kwargs.get('seccion_id')
-        seccion = Seccion.objects.get(pk=seccion_id)
+        try:
+            seccion = Seccion.objects.get(pk=seccion_id)
+        except Seccion.DoesNotExist:
+            raise Http404("La sección no existe")
         recursos_ids = filter(None, [
             seccion.video_seccion_id,
             seccion.contenido_seccion_id,
