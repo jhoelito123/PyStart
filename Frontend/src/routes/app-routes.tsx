@@ -12,6 +12,7 @@ import SigninPage from '../features/auth/components/sign-in';
 import SignupPage from '../features/auth/components/sign-up';
 import ShowSectionPage from '../features/courses/pages/show-section';
 import RegisterQuizPage from '../features/quizzes/pages/register-quiz';
+import ShowQuiz from '../features/quizzes/pages/show-quiz';
 
 export default function AppRoutes() {
   return (
@@ -42,6 +43,7 @@ export default function AppRoutes() {
           <Route path="/show-section" element={<ShowSectionPage />} />
           <Route path="/code-editor" element={<Ejecutor />} />
           <Route path="/register-quiz" element={<RegisterQuizPage />} />
+          <Route path="/show-quiz" element={<ShowQuiz/>} />
         </Route>
       </Routes>
     </BrowserRouter>

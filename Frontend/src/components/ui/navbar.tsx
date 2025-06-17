@@ -45,6 +45,7 @@ export default function Navbar({
           { label: 'Registro Docente', path: '/register-teacher' },
           { label: 'Registro Curso', path: '/register-course' },
           { label: 'Registro Sección Curso', path: '/register-section-course' },
+          { label: 'Registro Quiz', path: '/register-quiz' },
         ]}
       />
       <IconBell />
