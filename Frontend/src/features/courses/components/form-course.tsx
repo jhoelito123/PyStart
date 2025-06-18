@@ -103,10 +103,10 @@ export default function FormCourse() {
   };
 
   return (
-    <div className="flex flex-col w-10/12 max-w-screen h-full mt-10">
-      <div className="w-full h-6 rounded-t-2xl bg-indigo-500">
+    <div className="flex flex-col w-10/12 max-w-screen h-full my-10">
+      <div className="w-full h-6 rounded-t-2xl bg-blue-500"/>
         <form
-          className="mx-5 mt-10 mb-32 p-4"
+          className="w-full h-full justify-center shadow-2xl rounded-2xl p-10 px-22 bg-white mx-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
           <h1 className="text-slate-900 headline-lg sm:text-xl md:text-2xl font-semibold mb-6">
@@ -225,6 +225,7 @@ export default function FormCourse() {
                 label="Descripción"
                 name="desc"
                 className="w-full"
+                placeholder='Escribe una breve descripción del curso'
                 register={register}
                 validationRules={{
                   required: 'La descripción del curso es obligatoria',
@@ -256,7 +257,7 @@ export default function FormCourse() {
             />
           </div>
 
-          <div className="flex flex-col-reverse md:flex-row md:justify-between md:space-x-5">
+          <div className="flex flex-col-reverse md:flex-row md:justify-between md:space-x-5 mt-5">
             <Button
               label="Cancelar"
               variantColor="variant2"
@@ -270,7 +271,6 @@ export default function FormCourse() {
             />
           </div>
         </form>
-      </div>
     </div>
   );
 }

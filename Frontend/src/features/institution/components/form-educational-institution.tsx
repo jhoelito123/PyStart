@@ -1,11 +1,12 @@
 import { useForm, useWatch } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { InputText } from '../../../components/ui/input';
 import { Button } from '../../../components';
 import { Dropdown } from '../../../components/ui/dropdown';
-import axios from 'axios';
-import { useFetchData } from '../../../hooks/use-fetch-data';
-import { API_URL } from '../../../config/api-config';
+import { useDepartamentos } from '../hooks/use-departamentos';
+import { useProvincias } from '../hooks/use-provincias';
+import { useNivelesEducativos } from '../hooks/use-niveles-educativos';
+import { useCreateInstitucion } from '../hooks/use-create-institucion';
 
 type SimpleFormData = {
   educationalInstitution: string;
@@ -27,69 +28,22 @@ export default function FormEducationalInstitution() {
     formState: { errors },
   } = useForm<SimpleFormData>({
     mode: 'onChange',
-    defaultValues: {
-      departamento: '',
-      provincia: '',
-      nivel: '',
-    },
+    defaultValues: { departamento: '', provincia: '', nivel: '' },
   });
 
-  const departamentoSeleccionado = useWatch({
-    control,
-    name: 'departamento',
-  });
-
-  const [provincias, setProvincias] = useState<{ id: string; nombre: string }[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const { data: rawDepartamentosData } = useFetchData<any[]>(`${API_URL}/education/departamentos`);
-
-  const departamentos =
-    rawDepartamentosData?.map((d) => ({
-      id: d.id_departamento.toString(),
-      nombre: d.nombre_departamento,
-    })) ?? [];
-
-  useEffect(() => {
-    const fetchProvincias = async () => {
-      if (departamentoSeleccionado) {
-        try {
-          const response = await axios.get(
-            `${API_URL}/education/departamentos/${departamentoSeleccionado}/provincias/`
-          );
-          const provinciasData = response.data.map((p: any) => ({
-            id: p.id_provincia.toString(),
-            nombre: p.nombre_provincia,
-          }));
-          setProvincias(provinciasData);
-        } catch (error) {
-          console.error('Error al cargar provincias', error);
-          setProvincias([]);
-        }
-      } else {
-        setProvincias([]);
-      }
-    };
-
-    fetchProvincias();
-  }, [departamentoSeleccionado]);
+  const departamentoSeleccionado = useWatch({ control, name: 'departamento' });
+  const departamentos = useDepartamentos();
+  const provincias = useProvincias(departamentoSeleccionado);
+  const niveles = useNivelesEducativos();
+  const { create, loading } = useCreateInstitucion();
 
   useEffect(() => {
     setValue('provincia', '');
   }, [departamentoSeleccionado, setValue]);
 
-  const { data: rawNivelesData } = useFetchData<any[]>(`${API_URL}/education/nivel-educativo/`);
-
-  const niveles =
-    rawNivelesData?.map((n) => ({
-      id: n.id_nivel_educativo.toString(),
-      nombre: n.nivel_educativo,
-    })) ?? [];
-
-  const onSubmit = async (data: SimpleFormData) => {
-    console.log('Formulario enviado con datos:', data);
+  const onSubmit = (data: SimpleFormData) => {
     const payload = {
-      admin_id: 1, // Ajusta según corresponda
+      admin_id: 1,
       nombre_institucion: data.educationalInstitution,
       codigo_institucion: data.cod,
       direccion: data.dirección,
@@ -97,26 +51,15 @@ export default function FormEducationalInstitution() {
       provincia: Number(data.provincia),
       nivel_institucion: Number(data.nivel),
     };
-
-    setLoading(true);
-    try {
-      await axios.post(`${API_URL}/education/instituciones/`, payload);
-      alert('Institución registrada con éxito');
-      reset();
-    } catch (error: any) {
-      console.error('Error al registrar la institución', error);
-      alert('Error al registrar la institución: ' + (error.response?.data?.message || error.message));
-    } finally {
-      setLoading(false);
-    }
+    create(payload, reset);
   };
 
   return (
-    <div className="flex flex-col w-10/12 max-w-screen h-full mt-10">
-      <div className="w-full h-6 rounded-t-2xl bg-indigo-500" />
+    <div className="flex flex-col w-10/12 max-w-screen h-full my-10">
+      <div className="w-full h-6 rounded-t-2xl bg-blue-500" />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full flex flex-row justify-center shadow-lg rounded-2xl p-10 mx-auto"
+        className="w-full justify-center shadow-2xl rounded-2xl p-10 bg-white mx-auto"
       >
         <div className="flex flex-row w-full max-w-11/12 mx-auto gap-32">
           <div className="flex flex-col gap-5 items-center justify-center w-full">

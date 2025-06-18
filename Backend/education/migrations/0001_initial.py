@@ -9,49 +9,83 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('users', '0001_initial'),
+        ("users", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Departamento',
+            name="Departamento",
             fields=[
-                ('id_departamento', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre_departamento', models.CharField(max_length=100)),
-                ('nombre_corto', models.CharField(max_length=10)),
+                (
+                    "id_departamento",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                ("nombre_departamento", models.CharField(max_length=100)),
+                ("nombre_corto", models.CharField(max_length=10)),
             ],
         ),
         migrations.CreateModel(
-            name='NivelEducativo',
+            name="NivelEducativo",
             fields=[
-                ('id_nivel_educativo', models.AutoField(primary_key=True, serialize=False)),
-                ('nivel_educativo', models.CharField(max_length=20)),
+                (
+                    "id_nivel_educativo",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                ("nivel_educativo", models.CharField(max_length=20)),
             ],
         ),
         migrations.CreateModel(
-            name='Provincia',
+            name="Provincia",
             fields=[
-                ('id_provincia', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre_provincia', models.CharField(max_length=150)),
-                ('departamento', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='education.departamento')),
+                ("id_provincia", models.AutoField(primary_key=True, serialize=False)),
+                ("nombre_provincia", models.CharField(max_length=150)),
+                (
+                    "departamento",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="education.departamento",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Institucion',
+            name="Institucion",
             fields=[
-                ('id_institucion', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre_institucion', models.CharField(max_length=30)),
-                ('codigo_institucion', models.CharField(max_length=10, unique=True)),
-                ('direccion', models.CharField(max_length=50)),
-                ('email_institucion', models.EmailField(help_text='Correo electrónico de la institucion', max_length=30)),
-                ('admin_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.admin')),
-                ('nivel_institucion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='education.niveleducativo')),
-                ('provincia', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='education.provincia')),
+                ("id_institucion", models.AutoField(primary_key=True, serialize=False)),
+                ("nombre_institucion", models.CharField(max_length=30)),
+                ("codigo_institucion", models.CharField(max_length=10, unique=True)),
+                ("direccion", models.CharField(max_length=50)),
+                (
+                    "email_institucion",
+                    models.EmailField(
+                        help_text="Correo electrónico de la institucion", max_length=30
+                    ),
+                ),
+                (
+                    "admin_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.admin"
+                    ),
+                ),
+                (
+                    "nivel_institucion",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="education.niveleducativo",
+                    ),
+                ),
+                (
+                    "provincia",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="education.provincia",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Institución',
-                'verbose_name_plural': 'Instituciones',
-                'ordering': ['nombre_institucion'],
+                "verbose_name": "Institución",
+                "verbose_name_plural": "Instituciones",
+                "ordering": ["nombre_institucion"],
             },
         ),
     ]

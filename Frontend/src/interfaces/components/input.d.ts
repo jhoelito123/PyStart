@@ -13,5 +13,5 @@ interface InputProps<T extends FieldValues> {
   value?: string | number;
   validationRules?: Record<string, unknown>;
   isRequired?: boolean;
-  onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onInput?: React.FormEventHandler<HTMLElement>;
 }

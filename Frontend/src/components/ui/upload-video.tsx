@@ -1,8 +1,8 @@
 import { useRef, useState, useCallback } from 'react';
-import { UseFormRegister, FieldValues, FieldError } from 'react-hook-form';
+import { UseFormRegister, FieldValues, FieldError, Path } from 'react-hook-form';
 
 interface UploadVideoProps<T extends FieldValues> {
-  name: keyof T;
+  name: Path<T>;
   register: UseFormRegister<T>;
   error?: FieldError;
 }

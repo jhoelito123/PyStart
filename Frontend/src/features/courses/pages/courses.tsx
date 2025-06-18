@@ -58,22 +58,24 @@ export default function CoursesPage() {
           No se encontraron cursos.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {cursosFiltrados?.map((curso) => (
-            <CardCourse
-              key={curso.id_curso}
-              level={mapDificultad(curso.dificultad_curso)}
-              image={curso.portada_curso}
-              title={curso.nombre_curso}
-              college="Universidad Andina"
-              rating={curso.calificacion_curso}
-              votes={0}
-              sections={1}
-              practices={2}
-              quizzez={3}
-              link={`/show-course/${curso.id_curso}`}
-            />
-          ))}
+        <div className="flex justify-center mt-10">
+          <div className="inline-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20">
+            {cursosFiltrados?.map((curso) => (
+              <CardCourse
+                key={curso.id_curso}
+                level={mapDificultad(curso.dificultad_curso)}
+                image={curso.portada_curso}
+                title={curso.nombre_curso}
+                college="Universidad Andina"
+                rating={curso.calificacion_curso}
+                votes={0}
+                sections={1}
+                practices={2}
+                quizzez={3}
+                link={`/show-course/${curso.id_curso}`}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

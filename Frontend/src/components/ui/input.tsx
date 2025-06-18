@@ -43,7 +43,7 @@ export const InputText = <T extends FieldValues>({
           placeholder=" "
           className={`
             peer w-full h-[50px] subtitle-md text-slate-900 placeholder-transparent
-            border-b-[1px] border-neutral-500 rounded pt-6 pb-1 px-2
+            border-b-[2px] border-neutral-500 rounded pt-6 pb-1 px-2 
             focus:outline-none focus:border-slate-900
             ${fieldError ? 'border-red-400' : ''}
           `}
@@ -66,7 +66,7 @@ export const InputText = <T extends FieldValues>({
 
       <div className="min-h-[25px] text-start pl-2">
         {fieldError && (
-          <span className="text-red-400 subtitle-sm text-wrap text-center">
+          <span className="text-red-400 body-sm text-wrap text-center leading-none">
             {String((fieldError as Record<string, unknown>)?.message)}
           </span>
         )}

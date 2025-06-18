@@ -28,7 +28,7 @@ jobs:
       - name: Ejecutar pruebas Django
         run: |
           cd Backend
-          python manage.py test
+          python manage.py test --noinput --keepdb
       - name: Run migrations
         run: |
           cd Backend

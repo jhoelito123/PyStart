@@ -8,60 +8,167 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Usuario',
+            name="Usuario",
             fields=[
-                ('user_id', models.AutoField(help_text='Identificador de usuario', primary_key=True, serialize=False)),
-                ('username_user', models.CharField(help_text='Nombre de usuario', max_length=30)),
-                ('password_user', models.CharField(help_text='Contraseña del usuario', max_length=130)),
-                ('email_user', models.EmailField(help_text='Correo electrónico del usuario.', max_length=30, unique=True)),
-                ('is_active', models.BooleanField(default=True, help_text='Indica si la cuenta del usuario está activa')),
-                ('date_joined', models.DateTimeField(auto_now_add=True, help_text='Fecha y hora de registro del usuario')),
-                ('last_login', models.DateTimeField(blank=True, help_text='Fecha y hora del último inicio de sesión', null=True)),
+                (
+                    "user_id",
+                    models.AutoField(
+                        help_text="Identificador de usuario",
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "username_user",
+                    models.CharField(help_text="Nombre de usuario", max_length=30),
+                ),
+                (
+                    "password_user",
+                    models.CharField(
+                        help_text="Contraseña del usuario", max_length=130
+                    ),
+                ),
+                (
+                    "email_user",
+                    models.EmailField(
+                        help_text="Correo electrónico del usuario.",
+                        max_length=30,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Indica si la cuenta del usuario está activa",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        auto_now_add=True,
+                        help_text="Fecha y hora de registro del usuario",
+                    ),
+                ),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True,
+                        help_text="Fecha y hora del último inicio de sesión",
+                        null=True,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Estudiante',
+            name="Estudiante",
             fields=[
-                ('id_estudiante', models.AutoField(help_text='Identificador único del estudiante.', primary_key=True, serialize=False)),
-                ('nombre_estudiante', models.CharField(help_text='Nombre del estudiante.', max_length=30)),
-                ('apellidos_estudiante', models.CharField(help_text='Apellidos del estudiante.', max_length=30)),
-                ('ci_estudiante', models.CharField(help_text='Número de cédula de identidad único del estudiante.', max_length=9, unique=True)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.usuario')),
+                (
+                    "id_estudiante",
+                    models.AutoField(
+                        help_text="Identificador único del estudiante.",
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "nombre_estudiante",
+                    models.CharField(help_text="Nombre del estudiante.", max_length=30),
+                ),
+                (
+                    "apellidos_estudiante",
+                    models.CharField(
+                        help_text="Apellidos del estudiante.", max_length=30
+                    ),
+                ),
+                (
+                    "ci_estudiante",
+                    models.CharField(
+                        help_text="Número de cédula de identidad único del estudiante.",
+                        max_length=9,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.usuario"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Estudiante',
-                'verbose_name_plural': 'Estudiantes',
+                "verbose_name": "Estudiante",
+                "verbose_name_plural": "Estudiantes",
             },
         ),
         migrations.CreateModel(
-            name='Docente',
+            name="Docente",
             fields=[
-                ('id_docente', models.AutoField(help_text='Identificador único del docente.', primary_key=True, serialize=False)),
-                ('nombre_docente', models.CharField(help_text='Nombre del docente.', max_length=30)),
-                ('apellidos_docente', models.CharField(help_text='Apellidos del docente.', max_length=30)),
-                ('ci_docente', models.CharField(help_text='Número de cédula de identidad único del docente.', max_length=9, unique=True)),
-                ('telefono_docente', models.IntegerField(help_text='Número de elular del docente')),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.usuario')),
+                (
+                    "id_docente",
+                    models.AutoField(
+                        help_text="Identificador único del docente.",
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "nombre_docente",
+                    models.CharField(help_text="Nombre del docente.", max_length=30),
+                ),
+                (
+                    "apellidos_docente",
+                    models.CharField(help_text="Apellidos del docente.", max_length=30),
+                ),
+                (
+                    "ci_docente",
+                    models.CharField(
+                        help_text="Número de cédula de identidad único del docente.",
+                        max_length=9,
+                        unique=True,
+                    ),
+                ),
+                (
+                    "telefono_docente",
+                    models.IntegerField(help_text="Número de elular del docente"),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.usuario"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Docente',
-                'verbose_name_plural': 'Docentes',
+                "verbose_name": "Docente",
+                "verbose_name_plural": "Docentes",
             },
         ),
         migrations.CreateModel(
-            name='Admin',
+            name="Admin",
             fields=[
-                ('admin_id', models.AutoField(help_text='Identificador único del administrador.', primary_key=True, serialize=False)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.usuario')),
+                (
+                    "admin_id",
+                    models.AutoField(
+                        help_text="Identificador único del administrador.",
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.usuario"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Administrador',
-                'verbose_name_plural': 'Administradores',
+                "verbose_name": "Administrador",
+                "verbose_name_plural": "Administradores",
             },
         ),
     ]

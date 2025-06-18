@@ -7,26 +7,41 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('education', '0006_alter_curso_nombre_curso_alter_curso_portada_curso_and_more'),
+        (
+            "education",
+            "0006_alter_curso_nombre_curso_alter_curso_portada_curso_and_more",
+        ),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TipoRecurso',
+            name="TipoRecurso",
             fields=[
-                ('id_tipo_recurso', models.AutoField(primary_key=True, serialize=False)),
-                ('tipo_recurso', models.CharField(max_length=30)),
+                (
+                    "id_tipo_recurso",
+                    models.AutoField(primary_key=True, serialize=False),
+                ),
+                ("tipo_recurso", models.CharField(max_length=30)),
             ],
         ),
         migrations.CreateModel(
-            name='Recurso',
+            name="Recurso",
             fields=[
-                ('id_recurso', models.AutoField(primary_key=True, serialize=False)),
-                ('nombre_recurso', models.CharField(max_length=30)),
-                ('url_recurso', models.CharField(max_length=1000)),
-                ('archivo_recurso', models.FileField(blank=True, null=True, upload_to='recursos/')),
-                ('texto_recurso', models.TextField(blank=True, null=True)),
-                ('tipo_recurso', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='education.tiporecurso')),
+                ("id_recurso", models.AutoField(primary_key=True, serialize=False)),
+                ("nombre_recurso", models.CharField(max_length=30)),
+                ("url_recurso", models.CharField(max_length=1000)),
+                (
+                    "archivo_recurso",
+                    models.FileField(blank=True, null=True, upload_to="recursos/"),
+                ),
+                ("texto_recurso", models.TextField(blank=True, null=True)),
+                (
+                    "tipo_recurso",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="education.tiporecurso",
+                    ),
+                ),
             ],
         ),
     ]

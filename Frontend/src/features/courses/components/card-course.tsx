@@ -37,7 +37,11 @@ export default function CardCourse({
   return (
     <div
       onClick={handleClick}
-      className="bg-white rounded-2xl shadow-md overflow-hidden w-[360px] h-[340px] cursor-pointer"
+      className="
+        bg-white rounded-2xl shadow-xl overflow-hidden w-[360px] h-[340px] cursor-pointer
+        hover:-translate-y-1
+        transition-transform duration-300
+      "
     >
       <div className="relative">
         <img src={image} alt={title} className="h-40 w-full object-cover" />
