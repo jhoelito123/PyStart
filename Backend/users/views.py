@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from .models import Admin, Docente, Estudiante
-from .serializers import AdminCreateSerializer, DocenteCreateSerializer, DocenteDetailSerializer, EstudianteCreateSerializer
+from .serializers import AdminCreateSerializer, DocenteCreateSerializer, DocenteDetailSerializer, EstudianteCreateSerializer, EstudianteDetailSerializer
 
 class AdminCreateView(generics.CreateAPIView):
     queryset = Admin.objects.all()
@@ -23,5 +23,10 @@ class EstudianteRegistroView(generics.CreateAPIView):
     queryset = Estudiante.objects.all()
     serializer_class = EstudianteCreateSerializer
     lookup_field = 'user_id'
+
+class EstudianteDetailView(generics.RetrieveAPIView):
+    queryset = Estudiante.objects.all()
+    serializer_class = EstudianteDetailSerializer
+    lookup_field = 'id_estudiante'
 
 
