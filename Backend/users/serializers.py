@@ -86,3 +86,13 @@ class EstudianteCreateSerializer(serializers.ModelSerializer):
         user = Usuario.objects.create(**user_data)
         estudiante = Estudiante.objects.create(user_id=user, **validated_data)
         return estudiante
+
+    
+    
+class EstudianteDetailSerializer(serializers.ModelSerializer):
+    user = UsuarioSerializer(read_only=True, source='user_id')
+
+    class Meta:
+        model = Estudiante
+        fields = ['user', 'nombre_estudiante', 'apellidos_estudiante', 'ci_estudiante']
+
