@@ -22,13 +22,7 @@ urlpatterns = [
         views.ProvinciasPorDepartamento.as_view(),
         name="provincias-por-departamento",
     ),
-    path('tipos-recurso/', 
-        views.TipoRecursoList.as_view(), 
-        name='tipos-recurso-list'),
-    path('', include(router.urls)),
-    path('recursos/seccion/<int:seccion_id>/', 
-        views.RecursosBySeccion.as_view(), 
-        name='recursos-by-seccion'),
+    
     path(
         "nivel-educativo/",
         views.NivelAcademicoList.as_view(),
@@ -49,6 +43,13 @@ urlpatterns = [
     path("cursos/<int:pk>/", views.CursoDetailView.as_view(), name="curso-detail"),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
+    path('tipos-recurso/', 
+        views.TipoRecursoList.as_view(), 
+        name='tipos-recurso-list'),
+    path('', include(router.urls)),
+    path('recursos/seccion/<int:seccion_id>/', 
+        views.RecursosBySeccion.as_view(), 
+        name='recursos-by-seccion'),
     # For Quizzes
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
