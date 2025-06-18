@@ -49,4 +49,8 @@ urlpatterns = [
     path("cursos/<int:pk>/", views.CursoDetailView.as_view(), name="curso-detail"),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
+    # For Quizzes
+    path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
+    path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
+    path("preguntas/", views.PreguntaList.as_view(), name="pregunta-list"),
 ]

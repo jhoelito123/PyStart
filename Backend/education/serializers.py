@@ -11,6 +11,8 @@ from .models import (
     Seccion,
     TipoRecurso,
     Recurso,
+    Quiz, 
+    PreguntaQuiz
 )
 
 
@@ -187,7 +189,15 @@ class CursoDetalleSerializer(serializers.ModelSerializer):
             "profesor",
             "secciones",
         ]
+class QuizSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quiz
+        fields = '__all__'
 
+class PreguntaQuizSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PreguntaQuiz
+        fields = '__all__'
 
 class CodeExecutionInputSerializer(serializers.Serializer):
     code = serializers.CharField(
