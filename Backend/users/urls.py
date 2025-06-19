@@ -9,4 +9,3 @@ urlpatterns = [
     path('estudiante/register',views.EstudianteRegistroView.as_view(), name='create-estudiante'),
     path('estudiante/<int:id_estudiante>/', views.EstudianteDetailView.as_view(), name="get-estudiante"),
 ]
-
