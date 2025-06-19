@@ -1,17 +1,23 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from .models import Usuario, Admin, Docente, Estudiante
+from .models import Usuario, Admin, Docente, Estudiante, TipoUsuario
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    tipo_de_user = serializers.PrimaryKeyRelatedField(
+        queryset=TipoUsuario.objects.all(),
+        write_only=True
+    )
+    tipo_de_user_display = serializers.CharField(source='tipo_de_user.tipo_usuario', read_only=True)
+
+
     class Meta:
         model = Usuario
-        fields = ["username_user", "password_user", "email_user"]
-        extra_kwargs = {"password_user": {"write_only": True, "required": True}}
-
-    def create(self, data):
-        data["password_user"] = make_password(data["password_user"])
-        return super().create(data)
+        fields = ["username_user", "password_user", "email_user", "tipo_de_user", "tipo_de_user_display"]
+        extra_kwargs = {
+            "password_user": {"write_only": True, "required": True},
+            "tipo_de_user": {"required": True}
+        }
 
 
 class AdminCreateSerializer(serializers.ModelSerializer):
@@ -86,8 +92,6 @@ class EstudianteCreateSerializer(serializers.ModelSerializer):
         user = Usuario.objects.create(**user_data)
         estudiante = Estudiante.objects.create(user_id=user, **validated_data)
         return estudiante
-
-    
     
 class EstudianteDetailSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer(read_only=True, source='user_id')
