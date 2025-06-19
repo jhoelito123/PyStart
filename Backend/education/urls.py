@@ -28,7 +28,6 @@ urlpatterns = [
         views.NivelAcademicoList.as_view(),
         name="nivel-academico-list",
     ),
-    # Josue aqui haces uno de /instituciones que sea para la lista
     path(
         "instituciones/create",
         views.InstitucionCreateView.as_view(),

@@ -2,14 +2,11 @@ from django.test import TransactionTestCase, TestCase
 from django.urls import reverse
 from django.db import IntegrityError
 from education.models import (
-    Departamento,
-    Provincia,
     NivelEducativo,
     Modulo,
     Idioma,
     DificultadCurso,
     TipoRecurso,
-    Institucion,
 )
 from users.models import Usuario, Admin, Docente
 

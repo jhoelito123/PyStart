@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.db.models import Sum
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from users.models import Admin, Docente
+from users.models import Admin, Docente, Estudiante
 
 
 class Departamento(models.Model):
@@ -178,6 +178,16 @@ class PreguntaQuiz(models.Model):
     def __str__(self):
         return self.pregunta
 
+class FeedbackSeccion(models.Model):
+    id_feedback = models.AutoField(primary_key=True)
+    from_seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE)
+    contenido_feedback = models.TextField()
+    fecha_feedback = models.DateTimeField()
+    autor_feedback = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.contenido_feedback
+    
 @receiver(post_save, sender=Seccion)
 def update_curso_duration_on_seccion_save(sender, instance, **kwargs):
     if instance.seccion_del_curso:
