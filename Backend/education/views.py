@@ -25,7 +25,8 @@ from .models import (
     Seccion,
     Recurso,
     Quiz,
-    PreguntaQuiz
+    PreguntaQuiz,
+    FeedbackSeccion,
 )
 from .serializers import (
     CodeExecutionInputSerializer,
@@ -44,7 +45,8 @@ from .serializers import (
     RecursoSerializer,
     SeccionSerializer,
     PreguntaQuizSerializer,
-    QuizSerializer
+    QuizSerializer,
+    FeedbackSerializer,
 )
 
 
@@ -171,6 +173,12 @@ class PreguntaList(generics.ListAPIView):
         if quiz_id:
             return PreguntaQuiz.objects.filter(quiz_id=quiz_id)
         return PreguntaQuiz.objects.all()
+
+class FeedbackCreateView(generics.CreateAPIView):
+    queryset = FeedbackSeccion.objects.all()
+    serializer_class = FeedbackSerializer
+
+
 
 class CodeExecutorAPIView(APIView):
     def post(self, request, *args, **kwargs):

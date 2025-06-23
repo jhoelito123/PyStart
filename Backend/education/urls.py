@@ -49,6 +49,7 @@ urlpatterns = [
     path('recursos/seccion/<int:seccion_id>/', 
         views.RecursosBySeccion.as_view(), 
         name='recursos-by-seccion'),
+    path('feedback/create/', views.FeedbackCreateView.as_view(), name="feedback-create"),
     # For Quizzes
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),

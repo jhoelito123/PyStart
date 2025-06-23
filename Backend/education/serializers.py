@@ -12,7 +12,8 @@ from .models import (
     TipoRecurso,
     Recurso,
     Quiz, 
-    PreguntaQuiz
+    PreguntaQuiz,
+    FeedbackSeccion
 )
 
 
@@ -197,6 +198,11 @@ class QuizSerializer(serializers.ModelSerializer):
 class PreguntaQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreguntaQuiz
+        fields = '__all__'
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeedbackSeccion
         fields = '__all__'
 
 class CodeExecutionInputSerializer(serializers.Serializer):

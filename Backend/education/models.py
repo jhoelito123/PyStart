@@ -182,7 +182,7 @@ class FeedbackSeccion(models.Model):
     id_feedback = models.AutoField(primary_key=True)
     from_seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE)
     contenido_feedback = models.TextField()
-    fecha_feedback = models.DateTimeField()
+    fecha_feedback = models.DateTimeField(auto_now_add=True)
     autor_feedback = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
 
     def __str__(self):
