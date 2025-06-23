@@ -19,15 +19,9 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route element={<NavbarLayout />}>
-          <Route index element={<MainLayout/>} />
-          <Route 
-            path='/signin'
-            element={<SigninPage />}
-          />
-          <Route 
-            path='/signup'
-            element={<SignupPage/>}
-          />
+          <Route index element={<MainLayout />} />
+          <Route path="/signin" element={<SigninPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route
             path="/register-inst-educational"
             element={<RegisterInstPage />}
@@ -40,10 +34,10 @@ export default function AppRoutes() {
           />
           <Route path="/course" element={<CoursesPage />} />
           <Route path="/show-course/:id" element={<ShowCoursePage />} />
-          <Route path="/show-section" element={<ShowSectionPage />} />
+          <Route path="/show-section/:id" element={<ShowSectionPage />} />
           <Route path="/code-editor" element={<Ejecutor />} />
           <Route path="/register-quiz" element={<RegisterQuizPage />} />
-          <Route path="/show-quiz" element={<ShowQuiz/>} />
+          <Route path="/show-quiz" element={<ShowQuiz />} />
         </Route>
       </Routes>
     </BrowserRouter>
