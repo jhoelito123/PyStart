@@ -34,6 +34,12 @@ class RecursoSerializer(serializers.ModelSerializer):
     tipo_recurso = serializers.PrimaryKeyRelatedField(
         queryset=TipoRecurso.objects.all()
     )
+    url_recurso = serializers.URLField(
+        max_length=1000,
+        required=False,
+        allow_blank=True,
+        allow_null=True
+    )
 
     class Meta:
         model = Recurso
