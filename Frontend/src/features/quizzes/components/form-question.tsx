@@ -62,7 +62,7 @@ export default function FormQuestion({
               type="button"
               label="Eliminar opción"
               variantColor="variant2"
-              className='w-48'
+              className="w-48"
               onClick={() => removeOption(optIndex)}
             />
           </div>
@@ -73,14 +73,14 @@ export default function FormQuestion({
             type="button"
             label="Eliminar pregunta"
             variantColor="variant2"
-            className='w-40'
+            className="w-40"
             onClick={() => remove(qIndex)}
           />
           <Button
             type="button"
             label="Añadir opción"
             variantColor="variant1"
-            className='w-40'
+            className="w-40"
             onClick={() => appendOption({ value: '' })}
           />
         </div>

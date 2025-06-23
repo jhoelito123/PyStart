@@ -1,4 +1,4 @@
-import { Button } from "../../../components";
+import { Button } from '../../../components';
 
 const Hero = () => {
   return (
@@ -19,13 +19,18 @@ const Hero = () => {
                 </h1>
                 <p className="mb-12 text-base !leading-relaxed text-body-color sm:text-lg md:text-xl">
                   Un increíble sitio donde podrás aprender Python de manera
-                  didáctica y divertida, adaptable a diferentes idiomas, dificultades y
-                  complejidad para todo tipo de estudiantes
+                  didáctica y divertida, adaptable a diferentes idiomas,
+                  dificultades y complejidad para todo tipo de estudiantes
                 </p>
                 <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
                   <Button
                     label="Estamos en GitHub"
-                    onClick={() => window.open("https://github.com/jhoelito123/PyStart", "_blank")}
+                    onClick={() =>
+                      window.open(
+                        'https://github.com/jhoelito123/PyStart',
+                        '_blank',
+                      )
+                    }
                   />
                 </div>
               </div>

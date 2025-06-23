@@ -32,8 +32,7 @@ export const TextArea = <T extends FieldValues>({
         >
           {label} {isRequired && <span className="text-red-400">*</span>}
         </label>
-        <div className='p-0 m-0 leading-none'>
-        
+        <div className="p-0 m-0 leading-none">
           <textarea
             id={name as string}
             placeholder={placeholder}

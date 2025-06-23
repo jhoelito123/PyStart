@@ -6,9 +6,9 @@ export default function RegisterInstPage() {
 
   return (
     <FormProvider {...methods}>
-        <div className='h-full w-full flex flex-col items-center justify-center'>
-            <FormEducationalInstitution />
-        </div>
+      <div className="h-full w-full flex flex-col items-center justify-center">
+        <FormEducationalInstitution />
+      </div>
     </FormProvider>
   );
 }

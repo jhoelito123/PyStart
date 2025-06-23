@@ -1,9 +1,9 @@
 const SectionTitle = ({
   title,
   paragraph,
-  width = "570px",
+  width = '570px',
   center,
-  mb = "50px",
+  mb = '50px',
 }: {
   title: string;
   paragraph: string;
@@ -14,7 +14,7 @@ const SectionTitle = ({
   return (
     <>
       <div
-        className={`wow fadeInUp w-full ${center ? "mx-auto text-center" : ""}`}
+        className={`wow fadeInUp w-full ${center ? 'mx-auto text-center' : ''}`}
         data-wow-delay=".1s"
         style={{ maxWidth: width, marginBottom: mb }}
       >

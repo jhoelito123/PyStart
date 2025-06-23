@@ -1,5 +1,5 @@
-import SectionTitle from "../SectionTitle";
-import SingleTestimonial from "./SingleTestimonial";
+import SectionTitle from '../SectionTitle';
+import SingleTestimonial from './SingleTestimonial';
 
 type Testimonial = {
   id: number;
@@ -10,33 +10,29 @@ type Testimonial = {
   star: number;
 };
 
-
 const testimonialData: Testimonial[] = [
   {
     id: 1,
-    name: "Ing Richard Montoya",
-    designation: "From Universidad Mayor de San Simón",
-    content:
-      "Opinión del backend",
-    image: "/images/testimonials/auth-01.png",
+    name: 'Ing Richard Montoya',
+    designation: 'From Universidad Mayor de San Simón',
+    content: 'Opinión del backend',
+    image: '/images/testimonials/auth-01.png',
     star: 5,
   },
   {
     id: 2,
-    name: "Inge Montecinos",
-    designation: "From Universidad mayor de San Simón",
-    content:
-      "Opinión del backend",
-    image: "/images/testimonials/auth-02.png",
+    name: 'Inge Montecinos',
+    designation: 'From Universidad mayor de San Simón',
+    content: 'Opinión del backend',
+    image: '/images/testimonials/auth-02.png',
     star: 5,
   },
   {
     id: 3,
-    name: "Lic Gualberto León",
-    designation: "From Universidad mayor de San Simón",
-    content:
-      "Opinión del backend",
-    image: "/images/testimonials/auth-03.png",
+    name: 'Lic Gualberto León',
+    designation: 'From Universidad mayor de San Simón',
+    content: 'Opinión del backend',
+    image: '/images/testimonials/auth-03.png',
     star: 5,
   },
 ];

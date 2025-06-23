@@ -24,9 +24,10 @@ export const Button = ({
     variantDesactivate: 'bg-blue-500 text-white opacity-40',
   };
 
-  const currentVariantColorClasses = loading || disabled
-    ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-    : varCol[variantColor];
+  const currentVariantColorClasses =
+    loading || disabled
+      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+      : varCol[variantColor];
 
   return (
     <button
