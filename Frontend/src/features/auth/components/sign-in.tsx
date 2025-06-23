@@ -1,11 +1,11 @@
-import { Link } from "react-router";
-import { InputText } from "../../../components/ui/input";
-import { Button } from "../../../components";
+import { Link } from 'react-router';
+import { InputText } from '../../../components/ui/input';
+import { Button } from '../../../components';
 
 const SigninPage = () => {
   return (
     <>
-        <section className="relative z-10 overflow-hidden pb-16 pt-15 md:pb-20 lg:pb-28 ">
+      <section className="relative z-10 overflow-hidden pb-16 pt-15 md:pb-20 lg:pb-28 ">
         <div className="">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
@@ -61,40 +61,42 @@ const SigninPage = () => {
                 </div>
                 <form>
                   <div className="mb-8">
-                    <InputText 
+                    <InputText
                       label="Ingrese su correo electrónico"
                       name="correo"
                       register={NaN} //pending
                       className="w-full"
                       validationRules={{
-                      required: 'El correo es obligatorio',
-                      minLength: {
-                        value: 2,
-                        message: 'Debe tener al menos 2 caracteres',
-                      },
-                      maxLength: {
-                        value: 50,
-                        message: 'No puede tener más de 100 caracteres',
-                      },
-                    }}/>
+                        required: 'El correo es obligatorio',
+                        minLength: {
+                          value: 2,
+                          message: 'Debe tener al menos 2 caracteres',
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'No puede tener más de 100 caracteres',
+                        },
+                      }}
+                    />
                   </div>
                   <div className="mb-8">
-                    <InputText 
+                    <InputText
                       label="Ingrese su contraseña"
                       name="password"
                       register={NaN} //pending
                       className="w-full"
                       validationRules={{
-                      required: 'La contraseña es obligatoria',
-                      minLength: {
-                        value: 2,
-                        message: 'Debe tener al menos 2 caracteres',
-                      },
-                      maxLength: {
-                        value: 50,
-                        message: 'No puede tener más de 100 caracteres',
-                      },
-                    }}/>
+                        required: 'La contraseña es obligatoria',
+                        minLength: {
+                          value: 2,
+                          message: 'Debe tener al menos 2 caracteres',
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'No puede tener más de 100 caracteres',
+                        },
+                      }}
+                    />
                   </div>
                   <div className="mb-8 flex flex-col justify-between sm:flex-row sm:items-center">
                     <div>
@@ -107,7 +109,10 @@ const SigninPage = () => {
                     </div>
                   </div>
                   <div className="mb-6">
-                    <Button label="Iniciar sesión" className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm"/>
+                    <Button
+                      label="Iniciar sesión"
+                      className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm"
+                    />
                   </div>
                 </form>
                 <p className="text-center text-base font-medium text-body-color">
@@ -131,7 +136,7 @@ const SigninPage = () => {
           >
             <mask
               id="mask0_95:1005"
-              style={{ maskType: "alpha" }}
+              style={{ maskType: 'alpha' }}
               maskUnits="userSpaceOnUse"
               x="0"
               y="0"

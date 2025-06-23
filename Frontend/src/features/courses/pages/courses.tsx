@@ -31,19 +31,20 @@ export default function CoursesPage() {
     curso.nombre_curso.toLowerCase().includes(query.toLowerCase()),
   );
 
-    if (loading)
-      return (
-        <div className="flex flex-col items-center justify-center py-10">
-          <div className="flex-col gap-4 w-full flex items-center justify-center">
-            <div className="w-20 h-20 border-4 border-transparent text-blue-500 text-4xl animate-spin flex items-center justify-center border-t-blue-500 rounded-full">
-              <div className="w-16 h-16 border-4 border-transparent text-emerald-600 text-2xl animate-spin flex items-center justify-center border-t-emerald-600 rounded-full"></div>
-            </div>
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center py-10">
+        <div className="flex-col gap-4 w-full flex items-center justify-center">
+          <div className="w-20 h-20 border-4 border-transparent text-blue-500 text-4xl animate-spin flex items-center justify-center border-t-blue-500 rounded-full">
+            <div className="w-16 h-16 border-4 border-transparent text-emerald-600 text-2xl animate-spin flex items-center justify-center border-t-emerald-600 rounded-full"></div>
           </div>
-
-          <p className="mt-4 text-lg text-gray-600">Cargando cursos...</p>
         </div>
-      );
-    if (error) return <p className="p-4 text-red-500">Error al cargar cursos</p>;  if (error) return <p className="p-4 text-red-500">Error al cargar cursos</p>;
+
+        <p className="mt-4 text-lg text-gray-600">Cargando cursos...</p>
+      </div>
+    );
+  if (error) return <p className="p-4 text-red-500">Error al cargar cursos</p>;
+  if (error) return <p className="p-4 text-red-500">Error al cargar cursos</p>;
 
   return (
     <div className="p-8">

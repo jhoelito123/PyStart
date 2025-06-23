@@ -29,7 +29,8 @@ export const useCreateInstitucion = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: err.response?.data?.message || 'Error al registrar la institución.',
+        text:
+          err.response?.data?.message || 'Error al registrar la institución.',
         confirmButtonColor: '#d33',
       });
     } finally {

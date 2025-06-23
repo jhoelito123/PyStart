@@ -1,6 +1,6 @@
-import { Link } from "react-router";
-import { InputText } from "../../../components/ui/input";
-import { Button } from "../../../components";
+import { Link } from 'react-router';
+import { InputText } from '../../../components/ui/input';
+import { Button } from '../../../components';
 const SignupPage = () => {
   return (
     <>
@@ -60,60 +60,63 @@ const SignupPage = () => {
                 </div>
                 <form>
                   <div className="mb-8">
-                    <InputText 
+                    <InputText
                       label="Ingrese su nombre de usuario"
                       name="username"
                       register={NaN} //pending
                       className="w-full"
                       validationRules={{
-                      required: 'El nombre de usuario es obligatorio',
-                      minLength: {
-                        value: 2,
-                        message: 'Debe tener al menos 2 caracteres',
-                      },
-                      maxLength: {
-                        value: 15,
-                        message: 'No puede tener más de 15 caracteres',
-                      },
-                    }}/>
+                        required: 'El nombre de usuario es obligatorio',
+                        minLength: {
+                          value: 2,
+                          message: 'Debe tener al menos 2 caracteres',
+                        },
+                        maxLength: {
+                          value: 15,
+                          message: 'No puede tener más de 15 caracteres',
+                        },
+                      }}
+                    />
                   </div>
                   <div className="mb-8">
-                    <InputText 
+                    <InputText
                       label="Ingrese su correo electrónico"
                       name="correo"
                       register={NaN} //pending
                       className="w-full"
                       validationRules={{
-                      required: 'El correo es obligatorio',
-                      minLength: {
-                        value: 2,
-                        message: 'Debe tener al menos 2 caracteres',
-                      },
-                      maxLength: {
-                        value: 50,
-                        message: 'No puede tener más de 50 caracteres',
-                      },
-                    }}/>
+                        required: 'El correo es obligatorio',
+                        minLength: {
+                          value: 2,
+                          message: 'Debe tener al menos 2 caracteres',
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'No puede tener más de 50 caracteres',
+                        },
+                      }}
+                    />
                   </div>
                   <div className="mb-8">
-                    <InputText 
+                    <InputText
                       label="Ingrese su contraseña"
                       name="password"
                       register={NaN} //pending
                       className="w-full"
                       validationRules={{
-                      required: 'La contraseña es obligatoria',
-                      minLength: {
-                        value: 2,
-                        message: 'Debe tener al menos 2 caracteres',
-                      },
-                      maxLength: {
-                        value: 50,
-                        message: 'No puede tener más de 50 caracteres',
-                      },
-                    }}/>
+                        required: 'La contraseña es obligatoria',
+                        minLength: {
+                          value: 2,
+                          message: 'Debe tener al menos 2 caracteres',
+                        },
+                        maxLength: {
+                          value: 50,
+                          message: 'No puede tener más de 50 caracteres',
+                        },
+                      }}
+                    />
                   </div>
-                  
+
                   <div className="mb-8 flex">
                     <label
                       htmlFor="checkboxLabel"
@@ -125,17 +128,19 @@ const SignupPage = () => {
                           id="checkboxLabel"
                           className="sr-only"
                         />
-                        <div className="box mr-4 mt-1 flex h-5 w-5 items-center justify-center rounded border border-body-color border-opacity-20 dark:border-white dark:border-opacity-10">
-                          
-                        </div>
+                        <div className="box mr-4 mt-1 flex h-5 w-5 items-center justify-center rounded border border-body-color border-opacity-20 dark:border-white dark:border-opacity-10"></div>
                       </div>
                       <span>
-                        Al crear la cuenta, usted acepta los términos y condiciones de la página
+                        Al crear la cuenta, usted acepta los términos y
+                        condiciones de la página
                       </span>
                     </label>
                   </div>
                   <div className="mb-6">
-                    <Button label="Iniciar sesión" className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm bg-indigo-500"/>
+                    <Button
+                      label="Iniciar sesión"
+                      className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm bg-indigo-500"
+                    />
                   </div>
                 </form>
                 <p className="text-center text-base font-medium text-body-color">
@@ -158,7 +163,7 @@ const SignupPage = () => {
           >
             <mask
               id="mask0_95:1005"
-              style={{ maskType: "alpha" }}
+              style={{ maskType: 'alpha' }}
               maskUnits="userSpaceOnUse"
               x="0"
               y="0"

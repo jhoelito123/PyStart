@@ -70,7 +70,9 @@ export default function FormQuiz() {
         className="w-full h-full justify-center shadow-2xl rounded-2xl p-10 px-22 bg-white mx-auto"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-slate-900 headline-lg sm:text-xl md:text-2xl mb-6">Registro de Quiz en un Curso</h1>
+        <h1 className="text-slate-900 headline-lg sm:text-xl md:text-2xl mb-6">
+          Registro de Quiz en un Curso
+        </h1>
 
         <div className="flex flex-col md:flex-row gap-6 mb-6">
           <Dropdown
@@ -129,7 +131,11 @@ export default function FormQuiz() {
             type="button"
             label="Añadir nueva pregunta"
             onClick={() =>
-              appendQuestion({ question: '', correctAnswer: 0, options: [{ value: '' }] })
+              appendQuestion({
+                question: '',
+                correctAnswer: 0,
+                options: [{ value: '' }],
+              })
             }
           />
         </div>

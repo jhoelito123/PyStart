@@ -66,8 +66,8 @@ export const Dropdown = <T extends FieldValues>({
           {...registered}
           value={value}
           onChange={(e) => {
-            registered?.onChange(e); 
-            onChange?.(e); 
+            registered?.onChange(e);
+            onChange?.(e);
           }}
         >
           <option

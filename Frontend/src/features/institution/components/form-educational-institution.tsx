@@ -195,7 +195,7 @@ export default function FormEducationalInstitution() {
               />
               <Button
                 type="submit"
-                label='Registrar'
+                label="Registrar"
                 variantColor="variant1"
                 disabled={loading}
                 loading={loading}

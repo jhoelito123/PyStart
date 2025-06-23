@@ -1,6 +1,5 @@
-import { API_URL } from "../../../config/api-config";
-import { useFetchData } from "../../../hooks/use-fetch-data";
-
+import { API_URL } from '../../../config/api-config';
+import { useFetchData } from '../../../hooks/use-fetch-data';
 
 export const useNivelesEducativos = () => {
   const { data } = useFetchData<any[]>(`${API_URL}/education/nivel-educativo/`);

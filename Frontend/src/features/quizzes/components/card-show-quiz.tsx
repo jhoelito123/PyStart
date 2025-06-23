@@ -53,15 +53,18 @@ export default function CardShowQuiz() {
 
   return (
     <div className="w-full mx-auto p-6">
-    <div className="rounded-xl shadow-md overflow-hidden border border-gray-100 mb-6">
-      <div className="h-3 bg-blue-500" /> {/* Borde superior azul */}
-
-      <div className="bg-white p-6">
-        <h2 className="headline-lg text-slate-900 mb-2">{mockQuiz.title}</h2>
-        <p className="subtitle-sm text-slate-900 mb-1">Curso: {mockQuiz.course}</p>
-        <p className="subtitle-sm text-slate-900">Puntaje total: {mockQuiz.score}</p>
+      <div className="rounded-xl shadow-md overflow-hidden border border-gray-100 mb-6">
+        <div className="h-3 bg-blue-500" /> {/* Borde superior azul */}
+        <div className="bg-white p-6">
+          <h2 className="headline-lg text-slate-900 mb-2">{mockQuiz.title}</h2>
+          <p className="subtitle-sm text-slate-900 mb-1">
+            Curso: {mockQuiz.course}
+          </p>
+          <p className="subtitle-sm text-slate-900">
+            Puntaje total: {mockQuiz.score}
+          </p>
+        </div>
       </div>
-    </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {mockQuiz.questions.map((q, index) => (

@@ -1,9 +1,9 @@
-import SectionTitle from "./SectionTitle";
+import SectionTitle from './SectionTitle';
 
 const EducationLevelButtons = () => {
   const levels = [
     {
-      name: "Primario",
+      name: 'Primario',
       svg: (
         <svg
           className="w-10 h-10 text-white group-hover:rotate-[8deg] transition-transform duration-300"
@@ -16,7 +16,7 @@ const EducationLevelButtons = () => {
       ),
     },
     {
-      name: "Secundario",
+      name: 'Secundario',
       svg: (
         <svg
           className="w-10 h-10 text-green-400 group-hover:-rotate-[8deg] transition-transform duration-300"
@@ -28,7 +28,7 @@ const EducationLevelButtons = () => {
       ),
     },
     {
-      name: "Bachillerato",
+      name: 'Bachillerato',
       svg: (
         <svg
           className="w-10 h-10 text-indigo-400 group-hover:rotate-[6deg] transition-transform duration-300"
@@ -41,7 +41,7 @@ const EducationLevelButtons = () => {
       ),
     },
     {
-      name: "Superior",
+      name: 'Superior',
       svg: (
         <svg
           className="w-10 h-10 text-red-400 group-hover:-rotate-[6deg] transition-transform duration-300"
@@ -57,30 +57,29 @@ const EducationLevelButtons = () => {
 
   return (
     <div>
-       <SectionTitle 
+      <SectionTitle
         title="Para todo tipo de nivel académico"
-          paragraph="Varias instituciones utilizan nuestra página para compartir sus clases con los demás"
-          center
-        /> 
-    <div className="flex gap-50 mx-auto text-center">
-      {levels.map((level, index) => (
-        <div>
-          <div
-          key={index}
-           className="w-24 h-24 mb-5 flex items-center justify-center rounded-full border border-blue-300 bg-gradient-to-tr from-sky-200 via-sky-100 to-white shadow-lg 
+        paragraph="Varias instituciones utilizan nuestra página para compartir sus clases con los demás"
+        center
+      />
+      <div className="flex gap-50 mx-auto text-center">
+        {levels.map((level, index) => (
+          <div>
+            <div
+              key={index}
+              className="w-24 h-24 mb-5 flex items-center justify-center rounded-full border border-blue-300 bg-gradient-to-tr from-sky-200 via-sky-100 to-white shadow-lg 
             hover:shadow-2xl hover:shadow-white/20 hover:scale-110 hover:rotate-3 active:scale-95 active:rotate-0 
             transition-all duration-300 ease-out cursor-pointer hover:border-white/30 group overflow-hidden"
             >
-          {level.svg}
-          
-        </div>
-        <span className="text-sm text-black mt-2 text-center font-medium">{level.name}</span>
-        </div>
-        
-      ))}
+              {level.svg}
+            </div>
+            <span className="text-sm text-black mt-2 text-center font-medium">
+              {level.name}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
-    </div>
-    
   );
 };
 

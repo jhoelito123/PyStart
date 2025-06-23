@@ -38,11 +38,7 @@ export default function NavbarLayout() {
       <nav className="sticky top-0 bg-slate-900 h-[80px] flex items-center px-3 z-50">
         <div className="flex justify-between items-center w-full h-full">
           <Link to="/" className="flex items-center">
-            <img
-              src="/icons/pystart.png"
-              alt="Logo"
-              className="h-10 "
-            />
+            <img src="/icons/pystart.png" alt="Logo" className="h-10 " />
           </Link>
           <Navbar
             isAdminMenuOpen={isAdminMenuOpen}

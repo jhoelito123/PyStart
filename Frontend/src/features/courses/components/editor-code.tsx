@@ -17,51 +17,53 @@ export default function Ejecutor({
   };
 
   const handleExecuteCode = async () => {
-  setLoading(true);
-  setOutput(''); // Limpia la salida al iniciar la ejecución
+    setLoading(true);
+    setOutput(''); // Limpia la salida al iniciar la ejecución
 
-  try {
-    const response = await axios.post(`${API_URL}/education/execute-code/`, {
-      code,
-      language: 'python',
-    });
-    const data = response.data;
+    try {
+      const response = await axios.post(`${API_URL}/education/execute-code/`, {
+        code,
+        language: 'python',
+      });
+      const data = response.data;
 
-    if (data.status === 'success') {
-      setOutput(data.output);
-    } else {
-      setOutput(`Estado: ${data.status.toUpperCase()}\n${data.output}`);
-    }
-
-  } catch (error) {
-    console.error('Error al ejecutar código:', error);
-
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        setOutput(
-          `Error del servidor (${error.response.status}):\n${JSON.stringify(
-            error.response.data,
-            null,
-            2
-          )}`
-        );
-      } else if (error.request) {
-        setOutput('Error de conexión: No se recibió respuesta del servidor. Verifica tu conexión o la URL del backend.');
+      if (data.status === 'success') {
+        setOutput(data.output);
       } else {
-        setOutput(`Error inesperado al preparar la petición: ${error.message}`);
+        setOutput(`Estado: ${data.status.toUpperCase()}\n${data.output}`);
       }
-    } else {
-      setOutput(
-        `Error inesperado: ${
-          error instanceof Error ? error.message : String(error)
-        }.`
-      );
-    }
+    } catch (error) {
+      console.error('Error al ejecutar código:', error);
 
-  } finally {
-    setLoading(false);
-  }
-};
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          setOutput(
+            `Error del servidor (${error.response.status}):\n${JSON.stringify(
+              error.response.data,
+              null,
+              2,
+            )}`,
+          );
+        } else if (error.request) {
+          setOutput(
+            'Error de conexión: No se recibió respuesta del servidor. Verifica tu conexión o la URL del backend.',
+          );
+        } else {
+          setOutput(
+            `Error inesperado al preparar la petición: ${error.message}`,
+          );
+        }
+      } else {
+        setOutput(
+          `Error inesperado: ${
+            error instanceof Error ? error.message : String(error)
+          }.`,
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import {Link} from "react-router";
+import { Link } from 'react-router';
 
 type PrevioCurso = {
   id_curso: number;
@@ -16,7 +16,13 @@ type PrevioCurso = {
 };
 
 const SingleBlog = ({ blog }: { blog: PrevioCurso }) => {
-  const { nombre_curso, portada_curso, descripcion_curso, fecha_inicio_curso, fecha_cierre_curso } = blog;
+  const {
+    nombre_curso,
+    portada_curso,
+    descripcion_curso,
+    fecha_inicio_curso,
+    fecha_cierre_curso,
+  } = blog;
   return (
     <>
       <div
@@ -50,11 +56,15 @@ const SingleBlog = ({ blog }: { blog: PrevioCurso }) => {
 
           <div className="flex justify-between items-center gap-4">
             <div className="flex flex-col items-center text-center border-r border-body-color border-opacity-10 pr-4 w-[45%]">
-              <h4 className="mb-1 text-sm font-medium text-dark">Inicio de curso:</h4>
+              <h4 className="mb-1 text-sm font-medium text-dark">
+                Inicio de curso:
+              </h4>
               <p className="text-xs text-body-color">{fecha_inicio_curso}</p>
             </div>
             <div className="flex flex-col items-center text-center  pr-4 w-[45%]">
-              <h4 className="mb-1 text-sm font-medium text-dark">Fin del curso:</h4>
+              <h4 className="mb-1 text-sm font-medium text-dark">
+                Fin del curso:
+              </h4>
               <p className="text-xs text-body-color">{fecha_cierre_curso}</p>
             </div>
           </div>

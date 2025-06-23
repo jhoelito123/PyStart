@@ -45,7 +45,9 @@ export function CardShowQuestion({
           ))}
         </div>
         {errors?.answers?.[index] && (
-          <p className="text-red-400 text-sm mt-2">{errors.answers[index].message}</p>
+          <p className="text-red-400 text-sm mt-2">
+            {errors.answers[index].message}
+          </p>
         )}
       </div>
     </div>

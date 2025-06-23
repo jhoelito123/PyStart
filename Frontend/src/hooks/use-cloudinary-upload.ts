@@ -5,8 +5,8 @@ export function useCloudinaryUpload() {
   const [error, setError] = useState<string | null>(null);
 
   const uploadFile = async (file: File): Promise<string | null> => {
-    const cloudName = "detfpihbr"; // También puedes usar import.meta.env
-    const uploadPreset = "pystart_cloudinary";
+    const cloudName = 'detfpihbr'; // También puedes usar import.meta.env
+    const uploadPreset = 'pystart_cloudinary';
 
     const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
     const formData = new FormData();
