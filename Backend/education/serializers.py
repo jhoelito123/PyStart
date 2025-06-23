@@ -15,6 +15,7 @@ from .models import (
     PreguntaQuiz,
     FeedbackSeccion
 )
+from users.models import Estudiante
 
 
 class DepartamentoSerializer(serializers.ModelSerializer):
@@ -201,9 +202,26 @@ class PreguntaQuizSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FeedbackSerializer(serializers.ModelSerializer):
+    from_seccion = serializers.PrimaryKeyRelatedField(queryset=Seccion.objects.all())
+    autor_feedback = serializers.PrimaryKeyRelatedField(queryset=Estudiante.objects.all())
+
+    # NUEVO: Campo de lectura para mostrar el nombre de la sección
+    nombre_seccion = serializers.CharField(source='from_seccion.nombre_seccion', read_only=True)
+
+    autor_nombre = serializers.CharField(source='autor_feedback.user_id.username_user', read_only=True)
+
     class Meta:
         model = FeedbackSeccion
-        fields = '__all__'
+        fields = [
+            'id_feedback',
+            'from_seccion',      
+            'nombre_seccion',
+            'contenido_feedback',
+            'fecha_feedback',
+            'autor_feedback', 
+            'autor_nombre'
+        ]
+        read_only_fields = ['id_feedback', 'nombre_seccion', 'autor_nombre']
 
 class CodeExecutionInputSerializer(serializers.Serializer):
     code = serializers.CharField(

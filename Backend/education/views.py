@@ -178,7 +178,12 @@ class FeedbackCreateView(generics.CreateAPIView):
     queryset = FeedbackSeccion.objects.all()
     serializer_class = FeedbackSerializer
 
+class FeedbackListSeccionView(generics.ListAPIView):
+    serializer_class = FeedbackSerializer
 
+    def get_queryset(self):
+        seccion_id = self.kwargs['seccion_id']
+        return FeedbackSeccion.objects.filter(from_seccion__id_seccion=seccion_id).order_by('-fecha_feedback')
 
 class CodeExecutorAPIView(APIView):
     def post(self, request, *args, **kwargs):
