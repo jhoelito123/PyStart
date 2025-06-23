@@ -21,7 +21,7 @@ export const CourseSectionsList = ({ sections }: CourseSectionsListProps) => {
           <div
             key={index}
             className="bg-white rounded-lg shadow p-4 border border-neutral-200 cursor-pointer"
-            onClick={() => navigate(`/show-section`)}
+            onClick={() => navigate(`/show-section/${section.id_seccion}`)}
           >
             <h4 className="font-bold text-slate-800">
               {section.nombre_seccion}
