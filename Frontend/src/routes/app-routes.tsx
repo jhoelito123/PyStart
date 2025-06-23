@@ -13,6 +13,7 @@ import SignupPage from '../features/auth/components/sign-up';
 import ShowSectionPage from '../features/courses/pages/show-section';
 import RegisterQuizPage from '../features/quizzes/pages/register-quiz';
 import ShowQuiz from '../features/quizzes/pages/show-quiz';
+import RegisterStudentPage from '../features/student/pages/register-student';
 
 export default function AppRoutes() {
   return (
@@ -27,6 +28,7 @@ export default function AppRoutes() {
             element={<RegisterInstPage />}
           />
           <Route path="/register-teacher" element={<RegisterTeacherPage />} />
+          <Route path="/register-student" element={<RegisterStudentPage />} />
           <Route path="/register-course" element={<RegisterCoursePage />} />
           <Route
             path="/register-section-course"
