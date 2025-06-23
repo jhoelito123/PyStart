@@ -3,7 +3,7 @@ from datetime import timedelta
 from django.db.models import Sum
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from users.models import Admin, Docente
+from users.models import Admin, Docente, Estudiante
 
 
 class Departamento(models.Model):
@@ -158,6 +158,7 @@ class Seccion(models.Model):
     def __str__(self):
         return self.nombre_seccion
 
+
 class Quiz(models.Model):
     id_quiz = models.AutoField(primary_key=True)
     nombre_quiz = models.CharField(max_length=100)
@@ -172,11 +173,25 @@ class PreguntaQuiz(models.Model):
     id_pregunta_quiz = models.AutoField(primary_key=True)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name="preguntas")
     pregunta = models.CharField(max_length=150)
-    opciones = models.JSONField()  # Requiere Django 3.1+ y PostgreSQL, si no usa TextField
+    opciones = (
+        models.JSONField()
+    )  # Requiere Django 3.1+ y PostgreSQL, si no usa TextField
     opcion_correcta = models.IntegerField(help_text="Índice de la opción correcta")
 
     def __str__(self):
         return self.pregunta
+
+
+class FeedbackSeccion(models.Model):
+    id_feedback = models.AutoField(primary_key=True)
+    from_seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE)
+    contenido_feedback = models.TextField()
+    fecha_feedback = models.DateTimeField(auto_now_add=True)
+    autor_feedback = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.contenido_feedback
+
 
 @receiver(post_save, sender=Seccion)
 def update_curso_duration_on_seccion_save(sender, instance, **kwargs):

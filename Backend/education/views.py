@@ -25,7 +25,8 @@ from .models import (
     Seccion,
     Recurso,
     Quiz,
-    PreguntaQuiz
+    PreguntaQuiz,
+    FeedbackSeccion,
 )
 from .serializers import (
     CodeExecutionInputSerializer,
@@ -44,7 +45,8 @@ from .serializers import (
     RecursoSerializer,
     SeccionSerializer,
     PreguntaQuizSerializer,
-    QuizSerializer
+    QuizSerializer,
+    FeedbackSerializer,
 )
 
 
@@ -95,6 +97,7 @@ class IdiomaDetail(generics.ListAPIView):
     queryset = Idioma.objects.all()
     serializer_class = IdiomaSerializer
 
+
 # GET de todos los TipoRecurso
 class TipoRecursoList(generics.ListAPIView):
     queryset = TipoRecurso.objects.all()
@@ -108,7 +111,7 @@ class SeccionViewSet(viewsets.ModelViewSet):
 
     # GET todas las secciones por ID curso
     def list(self, request, *args, **kwargs):
-        curso_id = request.query_params.get('curso_id')
+        curso_id = request.query_params.get("curso_id")
         if curso_id:
             queryset = Seccion.objects.filter(seccion_del_curso_id=curso_id)
         else:
@@ -122,17 +125,21 @@ class RecursosBySeccion(generics.ListAPIView):
     serializer_class = RecursoSerializer
 
     def get_queryset(self):
-        seccion_id = self.kwargs.get('seccion_id')
+        seccion_id = self.kwargs.get("seccion_id")
         try:
             seccion = Seccion.objects.get(pk=seccion_id)
         except Seccion.DoesNotExist:
             raise Http404("La sección no existe")
-        recursos_ids = filter(None, [
-            seccion.video_seccion_id,
-            seccion.contenido_seccion_id,
-            seccion.instruccion_ejecutor_seccion_id,
-        ])
+        recursos_ids = filter(
+            None,
+            [
+                seccion.video_seccion_id,
+                seccion.contenido_seccion_id,
+                seccion.instruccion_ejecutor_seccion_id,
+            ],
+        )
         return Recurso.objects.filter(id_recurso__in=recursos_ids)
+
 
 class DificultadDetail(generics.ListAPIView):
     queryset = DificultadCurso.objects.all()
@@ -153,6 +160,7 @@ class CursoDetailView(generics.RetrieveAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoDetalleSerializer
 
+
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
@@ -167,10 +175,26 @@ class PreguntaList(generics.ListAPIView):
     serializer_class = PreguntaQuizSerializer
 
     def get_queryset(self):
-        quiz_id = self.request.query_params.get('quiz')
+        quiz_id = self.request.query_params.get("quiz")
         if quiz_id:
             return PreguntaQuiz.objects.filter(quiz_id=quiz_id)
         return PreguntaQuiz.objects.all()
+
+
+class FeedbackCreateView(generics.CreateAPIView):
+    queryset = FeedbackSeccion.objects.all()
+    serializer_class = FeedbackSerializer
+
+
+class FeedbackListSeccionView(generics.ListAPIView):
+    serializer_class = FeedbackSerializer
+
+    def get_queryset(self):
+        seccion_id = self.kwargs["seccion_id"]
+        return FeedbackSeccion.objects.filter(
+            from_seccion__id_seccion=seccion_id
+        ).order_by("-fecha_feedback")
+
 
 class CodeExecutorAPIView(APIView):
     def post(self, request, *args, **kwargs):

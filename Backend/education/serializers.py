@@ -11,9 +11,11 @@ from .models import (
     Seccion,
     TipoRecurso,
     Recurso,
-    Quiz, 
-    PreguntaQuiz
+    Quiz,
+    PreguntaQuiz,
+    FeedbackSeccion,
 )
+from users.models import Estudiante
 
 
 class DepartamentoSerializer(serializers.ModelSerializer):
@@ -25,20 +27,22 @@ class DepartamentoSerializer(serializers.ModelSerializer):
 class TipoRecursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoRecurso
-        fields = ['id_tipo_recurso', 'tipo_recurso']
+        fields = ["id_tipo_recurso", "tipo_recurso"]
 
 
 class RecursoSerializer(serializers.ModelSerializer):
-    tipo_recurso = serializers.PrimaryKeyRelatedField(queryset=TipoRecurso.objects.all())
+    tipo_recurso = serializers.PrimaryKeyRelatedField(
+        queryset=TipoRecurso.objects.all()
+    )
 
     class Meta:
         model = Recurso
         fields = [
-            'id_recurso',
-            'nombre_recurso',
-            'url_recurso',
-            'texto_recurso',
-            'tipo_recurso',
+            "id_recurso",
+            "nombre_recurso",
+            "url_recurso",
+            "texto_recurso",
+            "tipo_recurso",
         ]
 
 
@@ -52,20 +56,20 @@ class SeccionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seccion
         fields = [
-            'id_seccion',
-            'nombre_seccion',
-            'descripcion_seccion',
-            'seccion_del_curso',
-            'duracion_seccion',
-            'video_seccion',
-            'contenido_seccion',
-            'instruccion_ejecutor_seccion',
+            "id_seccion",
+            "nombre_seccion",
+            "descripcion_seccion",
+            "seccion_del_curso",
+            "duracion_seccion",
+            "video_seccion",
+            "contenido_seccion",
+            "instruccion_ejecutor_seccion",
         ]
 
     def create(self, validated_data):
-        video_data = validated_data.pop('video_seccion', None)
-        contenido_data = validated_data.pop('contenido_seccion', None)
-        instruccion_data = validated_data.pop('instruccion_ejecutor_seccion', None)
+        video_data = validated_data.pop("video_seccion", None)
+        contenido_data = validated_data.pop("contenido_seccion", None)
+        instruccion_data = validated_data.pop("instruccion_ejecutor_seccion", None)
 
         seccion = Seccion.objects.create(**validated_data)
 
@@ -83,6 +87,7 @@ class SeccionSerializer(serializers.ModelSerializer):
 
         seccion.save()
         return seccion
+
 
 class ProvinciaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -189,15 +194,48 @@ class CursoDetalleSerializer(serializers.ModelSerializer):
             "profesor",
             "secciones",
         ]
+
+
 class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        fields = '__all__'
+        fields = "__all__"
+
 
 class PreguntaQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreguntaQuiz
-        fields = '__all__'
+        fields = "__all__"
+
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    from_seccion = serializers.PrimaryKeyRelatedField(queryset=Seccion.objects.all())
+    autor_feedback = serializers.PrimaryKeyRelatedField(
+        queryset=Estudiante.objects.all()
+    )
+
+    # NUEVO: Campo de lectura para mostrar el nombre de la sección
+    nombre_seccion = serializers.CharField(
+        source="from_seccion.nombre_seccion", read_only=True
+    )
+
+    autor_nombre = serializers.CharField(
+        source="autor_feedback.user_id.username_user", read_only=True
+    )
+
+    class Meta:
+        model = FeedbackSeccion
+        fields = [
+            "id_feedback",
+            "from_seccion",
+            "nombre_seccion",
+            "contenido_feedback",
+            "fecha_feedback",
+            "autor_feedback",
+            "autor_nombre",
+        ]
+        read_only_fields = ["id_feedback", "nombre_seccion", "autor_nombre"]
+
 
 class CodeExecutionInputSerializer(serializers.Serializer):
     code = serializers.CharField(
