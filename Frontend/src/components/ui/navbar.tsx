@@ -43,6 +43,7 @@ export default function Navbar({
             path: '/register-inst-educational',
           },
           { label: 'Registro Docente', path: '/register-teacher' },
+          { label: 'Registro Estudiante', path: '/register-student' },
           { label: 'Registro Curso', path: '/register-course' },
           { label: 'Registro Sección Curso', path: '/register-section-course' },
           { label: 'Registro Quiz', path: '/register-quiz' },
