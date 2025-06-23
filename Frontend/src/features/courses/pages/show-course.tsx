@@ -16,7 +16,11 @@ type Curso = {
   idioma: number;
   dificultad: string;
   profesor: string;
-  //secciones: Array
+  secciones: {
+    id_seccion: number;
+    nombre_seccion: string;
+    descripcion_seccion: string;
+  }[];
 };
 
 export default function ShowCoursePage() {
@@ -43,10 +47,9 @@ export default function ShowCoursePage() {
         duration={convertirDuracionAHoras(curso.duracion_curso).toFixed(1)}
         practices={2}
         quizzes={3}
-        syllabus={['Sección 1', 'Sección 2', 'Sección 3']}
         tabs={{
           general: curso.descripcion_curso,
-          syllabus: '',
+          syllabus: curso.secciones,
           requirements: 'Requiere conocimientos básicos de computación',
         }}
       />

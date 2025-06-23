@@ -1,20 +1,47 @@
+import { useParams } from 'react-router';
+import { useFetchData } from '../../../hooks/use-fetch-data';
+import { API_URL } from '../../../config/api-config';
 import CardShowSection from '../components/card-show-section';
 
-const ShowSectionPage = () => {
+type Recurso = {
+  nombre_recurso: string;
+  url_recurso: string;
+  texto_recurso: string;
+  tipo_recurso: number;
+};
+
+type Seccion = {
+  id_seccion: number;
+  nombre_seccion: string;
+  descripcion_seccion: string;
+  duracion_seccion: string;
+  video_seccion: Recurso;
+  contenido_seccion: Recurso;
+  instruccion_ejecutor_seccion: Recurso;
+};
+
+export default function ShowSectionPage() {
+  const { id } = useParams();
+  const {
+    data: seccion,
+    loading,
+    error,
+  } = useFetchData<Seccion>(`${API_URL}/education/secciones/${id}`);
+
+  if (loading) return <p className="p-4">Cargando sección...</p>;
+  if (error || !seccion)
+    return <p className="p-4 text-red-500">Sección no encontrada</p>;
+
   return (
     <div className="min-h-screen px-10">
       <CardShowSection
-        title="Variables en Python"
-        video="https://www.youtube.com/embed/kqtD5dpn9C8"
-        text={`Las variables en Python son espacios nombrados en la memoria que se utilizan para almacenar datos que pueden cambiar durante la ejecución de un programa. Una variable actúa como una etiqueta que apunta a un valor específico, permitiendo al programador manipular ese valor fácilmente a lo largo del código. En Python, no es necesario declarar el tipo de variable de forma explícita, ya que el lenguaje es dinámicamente tipado, lo que significa que el tipo se determina automáticamente según el valor asignado.
-          Para crear una variable, simplemente se elige un nombre válido (que debe comenzar con una letra o guion bajo y no puede contener espacios ni comenzar con números), y se le asigna un valor mediante el operador =.`}
-        code={`# Declarar variables
-nombre = "Ana"
-edad = 25
-print(f"Hola, soy {nombre} y tengo {edad} años.")`}
+        title={seccion.nombre_seccion}
+        video={seccion.video_seccion.url_recurso}
+        text={
+          seccion.contenido_seccion.texto_recurso || seccion.descripcion_seccion
+        }
+        code={seccion.instruccion_ejecutor_seccion.texto_recurso || ''}
       />
     </div>
   );
-};
-
-export default ShowSectionPage;
+}

@@ -16,10 +16,14 @@ type Props = {
   duration: string;
   practices: number;
   quizzes: number;
-  syllabus: string[];
+
   tabs: {
     general: string;
-    syllabus: string;
+    syllabus: {
+      id_seccion: number;
+      nombre_seccion: string;
+      descripcion_seccion: string;
+    }[];
     requirements: string;
   };
 };
@@ -34,7 +38,7 @@ export const CardShowCourse: React.FC<Props> = ({
   duration,
   practices,
   quizzes,
-  syllabus,
+
   tabs,
 }) => {
   const [activeTab, setActiveTab] = useState<
@@ -69,7 +73,7 @@ export const CardShowCourse: React.FC<Props> = ({
             <div className="grid gap-4 border-b mb-4 border-neutral-300 grid-cols-3">
               <button
                 onClick={() => setActiveTab('general')}
-                className={`pb-2 font-semibold text-slate-900 ${
+                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${
                   activeTab === 'general'
                     ? 'border-b-2 border-emerald-500 '
                     : ''
@@ -79,30 +83,30 @@ export const CardShowCourse: React.FC<Props> = ({
               </button>
               <button
                 onClick={() => setActiveTab('syllabus')}
-                className={`pb-2 font-semibold text-slate-900 ${
+                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${
                   activeTab === 'syllabus'
                     ? 'border-b-2 border-emerald-500'
                     : ''
                 }`}
               >
-                Plan de estudios
+                Secciones
               </button>
               <button
                 onClick={() => setActiveTab('requirements')}
-                className={`pb-2 font-semibold text-slate-900 ${
+                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${
                   activeTab === 'requirements'
                     ? 'border-b-2 border-emerald-500 '
                     : ''
                 }`}
               >
-                Requisitos
+                Quizzez
               </button>
             </div>
 
             <div className="text-sm text-slate-900 whitespace-pre-line">
               {activeTab === 'general' && tabs.general}
               {activeTab === 'syllabus' && (
-                <CourseSectionsList syllabus={syllabus} />
+                <CourseSectionsList sections={tabs.syllabus} />
               )}
               {activeTab === 'requirements' && tabs.requirements}
             </div>

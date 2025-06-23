@@ -121,7 +121,7 @@ class TipoRecurso(models.Model):
 class Recurso(models.Model):
     id_recurso = models.AutoField(primary_key=True)
     nombre_recurso = models.CharField(max_length=100)
-    url_recurso = models.URLField(max_length=1000)
+    url_recurso = models.URLField(null=True, max_length=1000)
     texto_recurso = models.TextField(null=True, blank=True)
     tipo_recurso = models.ForeignKey(TipoRecurso, on_delete=models.PROTECT)
 
