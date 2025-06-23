@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from .models import Usuario, Admin, Docente, Estudiante, TipoUsuario
 
 
@@ -19,7 +19,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "tipo_de_user": {"required": True}
         }
 
-
 class AdminCreateSerializer(serializers.ModelSerializer):
     # Aquí anidamos el UsuarioSerializer y le decimos que su fuente es el campo 'user_id' del modelo Admin
     user = UsuarioSerializer(source="user_id")
@@ -36,7 +35,6 @@ class AdminCreateSerializer(serializers.ModelSerializer):
 
         admin = Admin.objects.create(user_id=user, **validated_data)
         return admin
-
 
 class DocenteCreateSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer(source="user_id")  # <--- IMPORTANTE: Usamos 'source'
@@ -61,7 +59,6 @@ class DocenteCreateSerializer(serializers.ModelSerializer):
         docente = Docente.objects.create(user_id=user, **validated_data)
         return docente
 
-
 class DocenteDetailSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer(
         read_only=True, source="user_id"
@@ -76,7 +73,6 @@ class DocenteDetailSerializer(serializers.ModelSerializer):
             "ci_docente",
             "telefono_docente",
         ]
-
 
 class EstudianteCreateSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer(source="user_id")  # <--- IMPORTANTE: Usamos 'source'
@@ -100,3 +96,36 @@ class EstudianteDetailSerializer(serializers.ModelSerializer):
         model = Estudiante
         fields = ['user', 'nombre_estudiante', 'apellidos_estudiante', 'ci_estudiante']
 
+class LoginSerializer(serializers.Serializer):
+    email_user = serializers.EmailField(
+        label="Correo Electrónico",
+        write_only=True
+    )
+    password_user = serializers.CharField(
+        label="Contraseña",
+        style={'input_type': 'password'},
+        trim_whitespace=False,
+        write_only=True
+    )
+
+    def validate(self, data):
+        email = data.get('email_user')
+        password = data.get('password_user')
+
+        if email and password:
+            try:
+                user = Usuario.objects.get(email_user=email)
+            except Usuario.DoesNotExist:
+                raise serializers.ValidationError("Credenciales inválidas.", code='authorization')
+
+            if user.password_user != password:
+                raise serializers.ValidationError("Credenciales inválidas.", code='authorization')
+
+            if not user.is_active:
+                raise serializers.ValidationError("La cuenta de usuario está inactiva.", code='authorization')
+
+            data['user'] = user
+        else:
+            raise serializers.ValidationError("Debe incluir 'correo electrónico' y 'contraseña'.", code='authorization')
+
+        return data
