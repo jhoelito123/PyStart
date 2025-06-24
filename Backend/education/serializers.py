@@ -14,6 +14,7 @@ from .models import (
     Quiz,
     PreguntaQuiz,
     FeedbackSeccion,
+    Comentario
 )
 from users.models import Estudiante
 
@@ -267,3 +268,15 @@ class CodeExecutionOutputSerializer(serializers.Serializer):
         max_length=50,
         help_text="Tipo de error (e.g., 'SyntaxError', 'TimeoutError').",
     )
+
+
+class ComentarioCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comentario
+        fields = ['autor_comentario', 'contenido_comentario', 'curso']
+
+
+class ComentarioDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comentario
+        fields = '__all__'

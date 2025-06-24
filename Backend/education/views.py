@@ -27,6 +27,7 @@ from .models import (
     Quiz,
     PreguntaQuiz,
     FeedbackSeccion,
+    Comentario,
 )
 from .serializers import (
     CodeExecutionInputSerializer,
@@ -47,6 +48,8 @@ from .serializers import (
     PreguntaQuizSerializer,
     QuizSerializer,
     FeedbackSerializer,
+    ComentarioCreateSerializer,
+    ComentarioDetailSerializer,
 )
 
 
@@ -292,3 +295,15 @@ class CodeExecutorAPIView(APIView):
         output_serializer.is_valid(raise_exception=True)
 
         return Response(output_serializer.data, status=status.HTTP_200_OK)
+
+
+class ComentarioCreateView(generics.CreateAPIView):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioCreateSerializer
+
+class ComentarioDetailView(generics.ListAPIView):
+    serializer_class = ComentarioDetailSerializer
+
+    def get_queryset(self):
+        curso_id = self.kwargs["curso_id"]
+        return Comentario.objects.filter(curso_id=curso_id)
