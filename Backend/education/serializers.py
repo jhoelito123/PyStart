@@ -277,9 +277,26 @@ class CodeExecutionOutputSerializer(serializers.Serializer):
 
 
 class ComentarioCreateSerializer(serializers.ModelSerializer):
+    autor_comentario = serializers.PrimaryKeyRelatedField(queryset=Estudiante.objects.all())
+    curso = serializers.PrimaryKeyRelatedField(queryset=Curso.objects.all())
+
+    # Campos de lectura para mostrar el nombre del autor y del curso
+    autor_nombre = serializers.CharField(source='autor_comentario.user_id.username_user', read_only=True)
+    nombre_curso = serializers.CharField(source='curso.nombre_curso', read_only=True)
+
+
     class Meta:
         model = Comentario
-        fields = ['autor_comentario', 'contenido_comentario', 'curso']
+        fields = [
+            'id_comentario',
+            'autor_comentario', # Para enviar el ID al crear
+            'autor_nombre',     # Para mostrar en GET
+            'contenido_comentario',
+            'curso',            # Para enviar el ID al crear
+            'nombre_curso',     # Para mostrar en GET
+            'puntuacion_curso',
+            'fecha_creacion_comentario'
+        ]
 
 
 class ComentarioDetailSerializer(serializers.ModelSerializer):

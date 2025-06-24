@@ -195,12 +195,21 @@ class FeedbackSeccion(models.Model):
 
 class Comentario(models.Model):
     id_comentario = models.AutoField(primary_key=True)  
-    autor_comentario = models.CharField(max_length=150)  
+    autor_comentario = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     contenido_comentario = models.TextField()  
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE) 
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    puntuacion_curso = models.IntegerField(
+        choices=[(i, str(i)) for i in range(1, 6)],
+        help_text="Puntuación del curso (1 a 5 estrellas)."
+    )
+    fecha_creacion_comentario = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
         return f"{self.autor_comentario}: {self.contenido_comentario}"
+    
+    class Meta:
+        verbose_name = "Comentario de Curso"
+        verbose_name_plural = "Comentarios de Curso"
 
 
 @receiver(post_save, sender=Seccion)

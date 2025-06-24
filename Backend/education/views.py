@@ -298,12 +298,12 @@ class CodeExecutorAPIView(APIView):
 
 
 class ComentarioCreateView(generics.CreateAPIView):
-    queryset = Comentario.objects.all()
     serializer_class = ComentarioCreateSerializer
 
 class ComentarioDetailView(generics.ListAPIView):
     serializer_class = ComentarioDetailSerializer
-
+    queryset = Comentario.objects.all().order_by('-fecha_creacion_comentario')
+    
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
