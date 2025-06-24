@@ -14,6 +14,7 @@ from .models import (
     Quiz,
     PreguntaQuiz,
     FeedbackSeccion,
+    InscripcionCurso,
 )
 from users.models import Estudiante
 
@@ -167,6 +168,17 @@ class CursoSerializer(serializers.ModelSerializer):
         model = Curso
         fields = "__all__"
 
+class InscripcionCursoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InscripcionCurso
+        fields = '__all__'
+
+    def validate(self, data):
+        estudiante = data['estudiante']
+        curso = data['curso']
+        if InscripcionCurso.objects.filter(estudiante=estudiante, curso=curso).exists():
+            raise serializers.ValidationError("Ya estás inscrito en este curso.")
+        return data
 
 class SeccionesParaCursoSerializer(serializers.ModelSerializer):
     class Meta:

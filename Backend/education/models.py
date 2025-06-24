@@ -109,6 +109,16 @@ class Curso(models.Model):
             self.duracion_curso = total_duration
             self.save(update_fields=["duracion_curso"])
 
+class InscripcionCurso(models.Model):
+    id_inscripcion = models.AutoField(primary_key=True)
+    estudiante = models.ForeignKey('users.Estudiante', on_delete=models.CASCADE)
+    curso = models.ForeignKey('Curso', on_delete=models.CASCADE)
+    fecha_inscripcion = models.DateField(auto_now_add=True)
+    puntaje_inscripcion = models.IntegerField(default=0)
+    completado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.estudiante} en {self.curso}"
 
 class TipoRecurso(models.Model):
     id_tipo_recurso = models.AutoField(primary_key=True)
@@ -157,7 +167,6 @@ class Seccion(models.Model):
 
     def __str__(self):
         return self.nombre_seccion
-
 
 class Quiz(models.Model):
     id_quiz = models.AutoField(primary_key=True)
