@@ -1,10 +1,20 @@
 import { useState } from 'react';
 
+interface CloudinaryUploadResponse {
+  asset_id: string;
+  public_id: string;
+  secure_url: string;
+  url: string;
+  format: string;
+  duration?: number;
+  [key: string]: any;
+}
+
 export function useCloudinaryUpload() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const uploadFile = async (file: File): Promise<string | null> => {
+  const uploadFile = async (file: File): Promise<CloudinaryUploadResponse | null> => {
     const cloudName = 'detfpihbr'; // También puedes usar import.meta.env
     const uploadPreset = 'pystart_cloudinary';
 
@@ -26,7 +36,7 @@ export function useCloudinaryUpload() {
       const data = await response.json();
 
       if (response.ok) {
-        return data.secure_url;
+        return data;
       } else {
         setError(data.error?.message || 'Upload failed');
         return null;
