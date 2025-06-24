@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import timedelta
-from django.db.models import Sum
+from django.db.models import Sum, Avg
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from users.models import Admin, Docente, Estudiante
@@ -108,6 +108,15 @@ class Curso(models.Model):
         if self.duracion_curso != total_duration:
             self.duracion_curso = total_duration
             self.save(update_fields=["duracion_curso"])
+    
+    def actualizar_calificacion_curso(self):
+        # Calcula el promedio de las puntuaciones de todos los comentarios de ese curso
+        promedio = self.comentarios_curso.aggregate(Avg('puntuacion_curso'))['puntuacion_curso__avg']
+
+        nueva_calificacion = round(promedio, 2) if promedio is not None else 0.0
+        if self.calificacion_curso != nueva_calificacion:
+            self.calificacion_curso = nueva_calificacion
+            self.save(update_fields=['calificacion_curso'])
 
 
 class TipoRecurso(models.Model):
@@ -197,7 +206,7 @@ class Comentario(models.Model):
     id_comentario = models.AutoField(primary_key=True)  
     autor_comentario = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     contenido_comentario = models.TextField()  
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name="comentarios_curso")
     puntuacion_curso = models.IntegerField(
         choices=[(i, str(i)) for i in range(1, 6)],
         help_text="Puntuación del curso (1 a 5 estrellas)."
@@ -211,14 +220,23 @@ class Comentario(models.Model):
         verbose_name = "Comentario de Curso"
         verbose_name_plural = "Comentarios de Curso"
 
-
+#SIGNALS for models
 @receiver(post_save, sender=Seccion)
 def update_curso_duration_on_seccion_save(sender, instance, **kwargs):
     if instance.seccion_del_curso:
         instance.seccion_del_curso.calcular_y_actualizar_duracion()
 
-
 @receiver(post_delete, sender=Seccion)
 def update_curso_duration_on_seccion_delete(sender, instance, **kwargs):
     if instance.seccion_del_curso:
         instance.seccion_del_curso.calcular_y_actualizar_duracion()
+
+@receiver(post_save, sender=Comentario)
+def comentario_creado_o_actualizado(sender, instance, created, **kwargs):
+    if instance.curso:
+        instance.curso.actualizar_calificacion_curso()
+
+@receiver(post_delete, sender=Comentario)
+def comentario_eliminado(sender, instance, **kwargs):
+    if instance.curso:
+        instance.curso.actualizar_calificacion_curso()
