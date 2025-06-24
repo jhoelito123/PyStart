@@ -23,7 +23,10 @@ export const useApiForm = (endpoint: string) => {
   return {
     submitForm,
     loading,
+    setLoading,
     error,
     success,
+    setSuccess,
+    setError,
   };
 };

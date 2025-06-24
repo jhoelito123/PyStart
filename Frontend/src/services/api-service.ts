@@ -15,10 +15,7 @@ export const postData = async (endpoint: string, data: object) => {
     return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    if (error.response) {
-      throw error.response;
-    }
-    throw error;
+    throw new Error(error.response?.data || error.message);
   }
 };
 
