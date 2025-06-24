@@ -4,6 +4,10 @@ import { Button } from '../../../components';
 import { Dropdown } from '../../../components/ui/dropdown';
 import { UploadVideo } from '../../../components/ui/upload-video';
 import { TextArea } from '../../../components/ui/textarea';
+import { useEffect, useState } from 'react';
+import { getData, postData } from '../../../services/api-service';
+import { useCloudinaryUpload } from '../../../hooks';
+import Swal from 'sweetalert2';
 
 interface FormData {
   section: {
@@ -17,11 +21,17 @@ interface FormData {
   };
 }
 
+interface Curso extends Record<string, string | number> {
+  id_curso: number;
+  nombre_curso: string;
+}
+
 export default function FormSectionCourse() {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    setValue,
   } = useForm<FormData>({
     mode: 'onChange',
     defaultValues: {
@@ -37,24 +47,131 @@ export default function FormSectionCourse() {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const { uploadFile } = useCloudinaryUpload();
+  const [cursos, setCursos] = useState<Curso[]>([]);
+  const getVideoDuration = (file: File): Promise<number> => {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(video.src);
+        resolve(video.duration);
+      };
+
+      video.onerror = () => {
+        reject('No se pudo obtener la duración del video');
+      };
+
+      video.src = URL.createObjectURL(file);
+    });
   };
-  const cursos = [
-    { id: 1, curso: 'Python para Principiantes' },
-    { id: 2, curso: 'Fundamentos de Programación con Python' },
-    { id: 3, curso: 'Python Intermedio: Funciones, Módulos y Paquetes' },
-    { id: 4, curso: 'Manipulación de Datos con Python y Pandas' },
-    { id: 5, curso: 'Automatización de Tareas con Python' },
-    { id: 6, curso: 'Desarrollo Web con Flask y Python' },
-    { id: 7, curso: 'Desarrollo Web con Django' },
-    { id: 8, curso: 'Análisis de Datos con Python' },
-    { id: 9, curso: 'Machine Learning con Python y Scikit-learn' },
-    { id: 10, curso: 'Python para Ciencia de Datos' },
-  ];
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      if (!data.section.video || data.section.video.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Video requerido',
+          text: 'Por favor selecciona un video antes de continuar.',
+        });
+        return;
+      }
+
+      const file = data.section.video[0];
+
+      Swal.fire({
+        title: 'Registrando sección...',
+        text: 'Por favor espera mientras se sube el video y se guarda la información.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const duracionSegundos = await getVideoDuration(file);
+      const duracionFormato = new Date(duracionSegundos * 1000)
+        .toISOString()
+        .substr(11, 8);
+
+      const videoData = await uploadFile(file);
+
+      if (!videoData || !videoData.secure_url) {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al subir el video',
+          text: 'No se pudo obtener la URL del video. Intenta nuevamente.',
+        });
+        return;
+      }
+
+      const payload = {
+        nombre_seccion: data.section.title,
+        descripcion_seccion: data.section.description,
+        seccion_del_curso: parseInt(data.section.course),
+        duracion_seccion: duracionFormato,
+        video_seccion: {
+          nombre_recurso: 'Video de Sección',
+          url_recurso: videoData.secure_url,
+          texto_recurso: '',
+          tipo_recurso: 1,
+        },
+        contenido_seccion: {
+          nombre_recurso:
+            formatos.find((f) => f.id === parseInt(data.section.format))?.formato ||
+            'Texto plano',
+          url_recurso: null,
+          texto_recurso: data.section.explanation,
+          tipo_recurso: 2,
+        },
+        instruccion_ejecutor_seccion: {
+          nombre_recurso: 'Instrucción código',
+          url_recurso: null,
+          texto_recurso: data.section.codeExecutorInstruction,
+          tipo_recurso: 3,
+        },
+      };
+
+      await postData('/education/secciones/', payload);
+
+      Swal.close();
+
+      Swal.fire({
+        icon: 'success',
+        title: '¡Sección registrada!',
+        text: 'La sección del curso fue registrada correctamente.',
+      }).then(() => {
+        window.location.reload();
+      });
+
+    } catch (err) {
+      console.error('Error al registrar la sección:', err);
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error inesperado',
+        text: 'Ocurrió un error al registrar la sección. Intenta nuevamente.',
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchCursos = async () => {
+      try {
+        const response = await getData('/education/curso/');
+        setCursos(response);
+      } catch (error) {
+        console.error('Error al obtener los cursos:', error);
+      }
+    };
+
+    fetchCursos();
+  }, []);
 
   const formatos = [
-    { id: 1, formato: 'Texto' },
+    { id: 1, formato: 'Texto plano' },
     { id: 2, formato: 'Html' },
   ];
 
@@ -74,8 +191,8 @@ export default function FormSectionCourse() {
               name="section.course"
               label="Curso"
               options={cursos}
-              displayKey="curso"
-              valueKey="id"
+              displayKey="nombre_curso"
+              valueKey="id_curso"
               placeholder="Selecciona un curso"
               register={register}
             />
@@ -123,7 +240,7 @@ export default function FormSectionCourse() {
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-9 mb-2">
             <div className="grid grid-cols-1">
               <TextArea
-                label="Explicación de la sección del curso (Puede ser texto o html"
+                label="Explicación de la sección del curso (Puede ser texto o html)"
                 name="section.explanation"
                 className="w-full"
                 placeholder="Escribe la explicación de la sección del curso"
@@ -160,9 +277,9 @@ export default function FormSectionCourse() {
                     message: 'La instrucción debe tener al menos 10 caracteres',
                   },
                   maxLength: {
-                    value: 500,
+                    value: 1000,
                     message:
-                      'La instrucción no puede exceder los 500 caracteres',
+                      'La instrucción no puede exceder los 1000 caracteres',
                   },
                   validate: (value: string) =>
                     value.trim().length > 0 ||
@@ -181,7 +298,11 @@ export default function FormSectionCourse() {
               />
             </div>
             <div className="grid grid-cols-1 lg:gap-9 mb-6">
-              <UploadVideo name="section.video" register={register} />
+              <UploadVideo 
+                name="section.video" 
+                register={register}
+                setValue={setValue}
+                error={errors.section?.video}/>
             </div>
             <div></div>
           </div>

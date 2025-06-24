@@ -193,6 +193,16 @@ class FeedbackSeccion(models.Model):
         return self.contenido_feedback
 
 
+class Comentario(models.Model):
+    id_comentario = models.AutoField(primary_key=True)  
+    autor_comentario = models.CharField(max_length=150)  
+    contenido_comentario = models.TextField()  
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE) 
+
+    def __str__(self):
+        return f"{self.autor_comentario}: {self.contenido_comentario}"
+
+
 @receiver(post_save, sender=Seccion)
 def update_curso_duration_on_seccion_save(sender, instance, **kwargs):
     if instance.seccion_del_curso:

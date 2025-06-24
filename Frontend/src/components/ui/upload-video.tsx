@@ -4,17 +4,20 @@ import {
   FieldValues,
   FieldError,
   Path,
+  UseFormSetValue,
 } from 'react-hook-form';
 
 interface UploadVideoProps<T extends FieldValues> {
   name: Path<T>;
   register: UseFormRegister<T>;
+  setValue: UseFormSetValue<T>;
   error?: FieldError;
 }
 
 export const UploadVideo = <T extends FieldValues>({
   name,
   register,
+  setValue,
   error,
 }: UploadVideoProps<T>) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -27,12 +30,14 @@ export const UploadVideo = <T extends FieldValues>({
     if (!file.type.startsWith('video/')) {
       setFileError('Solo se permiten archivos de video (MP4, WebM, OGG, etc.)');
       setVideoUrl(null);
+      setValue(name, null as any, { shouldValidate: true });
       return;
     }
 
     setFileError(null);
     const url = URL.createObjectURL(file);
     setVideoUrl(url);
+    setValue(name, [file] as any, { shouldValidate: true });
   };
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {

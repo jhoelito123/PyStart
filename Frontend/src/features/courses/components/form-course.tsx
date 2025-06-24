@@ -82,7 +82,7 @@ export default function FormCourse() {
       const payload = {
         nombre_curso: data.name,
         descripcion_curso: data.desc,
-        portada_curso: imageResult,
+        portada_curso: imageResult.secure_url,
         fecha_inicio_curso: data.dateini,
         fecha_cierre_curso: data.dateend,
         modulo_curso: parseInt(data.module),
