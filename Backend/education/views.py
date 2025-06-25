@@ -21,6 +21,7 @@ from .models import (
     Idioma,
     DificultadCurso,
     Curso,
+    InscripcionCurso,
     TipoRecurso,
     Seccion,
     Recurso,
@@ -41,6 +42,7 @@ from .serializers import (
     DificultadSerializer,
     CursoCreateSerializer,
     CursoSerializer,
+    InscripcionCursoSerializer,
     CursoDetalleSerializer,
     TipoRecursoSerializer,
     RecursoSerializer,
@@ -163,6 +165,9 @@ class CursoDetailView(generics.RetrieveAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoDetalleSerializer
 
+class InscripcionCursoCreateView(generics.CreateAPIView):
+    queryset = InscripcionCurso.objects.all()
+    serializer_class = InscripcionCursoSerializer
 
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
