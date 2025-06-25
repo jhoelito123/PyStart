@@ -118,6 +118,17 @@ class Curso(models.Model):
             self.calificacion_curso = nueva_calificacion
             self.save(update_fields=['calificacion_curso'])
 
+class EstudianteInstitucion(models.Model):
+    id_estudiante_institucion = models.AutoField(primary_key=True)
+    institucion_id = models.ForeignKey(Institucion, on_delete=models.PROTECT)
+    estudiante_id = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('institucion_id', 'estudiante_id') 
+
+    def __str__(self):
+        return f"Estudiante {self.estudiante_id.user_id.username_user} en Institución {self.institucion_id.nombre_institucion}"
+
 class InscripcionCurso(models.Model):
     id_inscripcion = models.AutoField(primary_key=True)
     estudiante_inscripcion = models.ForeignKey('users.Estudiante', on_delete=models.CASCADE)
