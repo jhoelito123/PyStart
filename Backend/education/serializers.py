@@ -175,9 +175,9 @@ class InscripcionCursoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def validate(self, data):
-        estudiante = data['estudiante']
-        curso = data['curso']
-        if InscripcionCurso.objects.filter(estudiante=estudiante, curso=curso).exists():
+        estudiante = data['estudiante_inscripcion']
+        curso = data['curso_inscripcion']
+        if InscripcionCurso.objects.filter(estudiante_inscripcion=estudiante, curso_inscripcion=curso).exists():
             raise serializers.ValidationError("Ya estás inscrito en este curso.")
         return data
 

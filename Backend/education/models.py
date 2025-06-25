@@ -120,10 +120,9 @@ class Curso(models.Model):
 
 class InscripcionCurso(models.Model):
     id_inscripcion = models.AutoField(primary_key=True)
-    estudiante = models.ForeignKey('users.Estudiante', on_delete=models.CASCADE)
-    curso = models.ForeignKey('Curso', on_delete=models.CASCADE)
+    estudiante_inscripcion = models.ForeignKey('users.Estudiante', on_delete=models.CASCADE)
+    curso_inscripcion = models.ForeignKey('Curso', on_delete=models.CASCADE)
     fecha_inscripcion = models.DateField(auto_now_add=True)
-    puntaje_inscripcion = models.IntegerField(default=0)
     completado = models.BooleanField(default=False)
 
     def __str__(self):
