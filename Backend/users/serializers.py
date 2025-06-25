@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Usuario, Admin, Docente, Estudiante, TipoUsuario
+from education.models import Institucion, EstudianteInstitucion
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -85,18 +86,38 @@ class DocenteDetailSerializer(serializers.ModelSerializer):
 
 
 class EstudianteCreateSerializer(serializers.ModelSerializer):
-    user = UsuarioSerializer(source="user_id")  # <--- IMPORTANTE: Usamos 'source'
+    user = UsuarioSerializer(source="user_id")
+    institucion_id = serializers.PrimaryKeyRelatedField(
+        queryset=Institucion.objects.all(),
+        write_only=True,
+        required=True,
+        help_text="ID de la institución a la que el estudiante se va a registrar."
+    )
 
     class Meta:
         model = Estudiante
-        fields = ["user", "nombre_estudiante", "apellidos_estudiante", "ci_estudiante"]
+        fields = [
+            "user", 
+            "nombre_estudiante", 
+            "apellidos_estudiante", 
+            "ci_estudiante", 
+            "institucion_id"
+        ]
 
     def create(self, validated_data):
-        user_data = validated_data.pop(
-            "user_id"
-        )  # <--- Ahora es 'user_id' por el 'source'
+        user_data = validated_data.pop("user_id")
+        institucion = validated_data.pop("institucion_id")
+
         user = Usuario.objects.create(**user_data)
+
         estudiante = Estudiante.objects.create(user_id=user, **validated_data)
+
+        # Relación EstudianteInstitucion
+        EstudianteInstitucion.objects.create(
+            estudiante_id=estudiante,
+            institucion_id=institucion
+        )
+        
         return estudiante
 
 
