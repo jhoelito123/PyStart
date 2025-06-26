@@ -6,7 +6,6 @@ import RegisterTeacherPage from '../features/teacher/pages/register-teacher';
 import { RegisterSectionCoursePage } from '../features/courses/pages/register-section-course';
 import CoursesPage from '../features/courses/pages/courses';
 import ShowCoursePage from '../features/courses/pages/show-course';
-import Ejecutor from '../features/courses/components/editor-code';
 import MainLayout from '../features/landing/pages/landing-page';
 import SigninPage from '../features/auth/components/sign-in';
 import SignupPage from '../features/auth/components/sign-up';
@@ -23,23 +22,36 @@ export default function AppRoutes() {
           <Route index element={<MainLayout />} />
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route
-            path="/register-inst-educational"
-            element={<RegisterInstPage />}
-          />
-          <Route path="/register-teacher" element={<RegisterTeacherPage />} />
-          <Route path="/register-student" element={<RegisterStudentPage />} />
-          <Route path="/register-course" element={<RegisterCoursePage />} />
-          <Route
-            path="/register-section-course"
-            element={<RegisterSectionCoursePage />}
-          />
-          <Route path="/course" element={<CoursesPage />} />
-          <Route path="/show-course/:id" element={<ShowCoursePage />} />
-          <Route path="/show-section/:id" element={<ShowSectionPage />} />
-          <Route path="/code-editor" element={<Ejecutor />} />
-          <Route path="/register-quiz" element={<RegisterQuizPage />} />
-          <Route path="/show-quiz" element={<ShowQuiz />} />
+          {/* Rutas para administrador */}
+          <Route path="/administrator">
+            <Route index element={<MainLayout />} />
+            <Route
+              path="register-inst-educational"
+              element={<RegisterInstPage />}
+            />
+            <Route path="register-teacher" element={<RegisterTeacherPage />} />
+            <Route path="register-student" element={<RegisterStudentPage />} />
+          </Route>
+
+          {/* Rutas para docente */}
+          <Route path="/teacher">
+            <Route index element={<MainLayout />} />
+            <Route path="register-course" element={<RegisterCoursePage />} />
+            <Route
+              path="register-section-course"
+              element={<RegisterSectionCoursePage />}
+            />
+            <Route path="register-quiz" element={<RegisterQuizPage />} />
+          </Route>
+
+          {/* Rutas para estudiante */}
+          <Route path="/student">
+            <Route index element={<MainLayout />} />
+            <Route path="course" element={<CoursesPage />} />
+            <Route path="show-course/:id" element={<ShowCoursePage />} />
+            <Route path="show-section/:id" element={<ShowSectionPage />} />
+            <Route path="show-quiz" element={<ShowQuiz />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
