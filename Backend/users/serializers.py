@@ -44,6 +44,17 @@ class AdminCreateSerializer(serializers.ModelSerializer):
         admin = Admin.objects.create(user_id=user, **validated_data)
         return admin
 
+class AdminDetailSerializer(serializers.ModelSerializer):
+    # Anida el UsuarioSerializer para mostrar los datos del usuario asociado al Admin
+    # Usamos read_only=True porque no vamos a modificar el usuario a través del serializer del Admin
+    user = UsuarioSerializer(read_only=True, source="user_id")
+
+    class Meta:
+        model = Admin
+        fields = [
+            "admin_id", # ID específico del administrador
+            "user",     
+        ]
 
 class DocenteCreateSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer(source="user_id")  # <--- IMPORTANTE: Usamos 'source'
@@ -147,24 +158,54 @@ class LoginSerializer(serializers.Serializer):
                 user = Usuario.objects.get(email_user=email)
             except Usuario.DoesNotExist:
                 raise serializers.ValidationError(
-                    "Credenciales inválidas.", code="authorization"
+                    "Credenciales inválidas.", code="authentication"
                 )
 
             if user.password_user != password:
                 raise serializers.ValidationError(
-                    "Credenciales inválidas.", code="authorization"
+                    "Credenciales inválidas.", code="authentication"
                 )
 
             if not user.is_active:
                 raise serializers.ValidationError(
-                    "La cuenta de usuario está inactiva.", code="authorization"
+                    "La cuenta de usuario está inactiva.", code="account_inactive"
                 )
 
             data["user"] = user
+
+            user_profile_data = {}
+            user_type_display = user.tipo_de_user.tipo_usuario 
+
+            if user_type_display == "ESTUDIANTE":
+                try:
+                    profile_instance = Estudiante.objects.get(user_id=user)
+                    user_profile_data = EstudianteDetailSerializer(profile_instance).data
+                except Estudiante.DoesNotExist:
+                    raise serializers.ValidationError("Perfil de estudiante no encontrado o incompleto.", code="profile_missing")
+            elif user_type_display == "DOCENTE":
+                try:
+                    profile_instance = Docente.objects.get(user_id=user)
+                    user_profile_data = DocenteDetailSerializer(profile_instance).data
+                except Docente.DoesNotExist:
+                    raise serializers.ValidationError("Perfil de docente no encontrado o incompleto.", code="profile_missing")
+            elif user_type_display == "ADMIN":
+                try:
+                    profile_instance = Admin.objects.get(user_id=user)
+                    user_profile_data = AdminDetailSerializer(profile_instance).data 
+                except Admin.DoesNotExist:
+                    raise serializers.ValidationError("Perfil de administrador no encontrado o incompleto.", code="profile_missing")
+            else:
+                print(f"Advertencia: Tipo de usuario '{user_type_display}' no tiene un perfil específico o no está configurado para el login.")
+                user_profile_data = {}
+
+            data["profile_data"] = user_profile_data
+            data["user_type"] = user_type_display
+            data["user_id_global"] = user.user_id
+
         else:
             raise serializers.ValidationError(
                 "Debe incluir 'correo electrónico' y 'contraseña'.",
-                code="authorization",
+                code="missing_credentials",
             )
 
         return data
