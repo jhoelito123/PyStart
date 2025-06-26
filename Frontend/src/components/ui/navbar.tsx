@@ -102,14 +102,14 @@ export default function Navbar({
             >
               Mi aprendizaje
             </Link>
-            <Button
-              onClick={() => {
-                localStorage.setItem('userRole', 'user');
-                navigate('/');
-              }}
-              label="Cerrar sesión"
-            />
           </li>
+          <Button
+            onClick={() => {
+              localStorage.setItem('userRole', 'user');
+              navigate('/');
+            }}
+            label="Cerrar sesión"
+          />
         </>
       )}
       {userRole === 'teacher' && (
