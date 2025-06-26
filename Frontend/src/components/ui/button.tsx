@@ -6,7 +6,8 @@ export const Button = ({
   variantColor = 'variant1',
   onClick,
   disabled = false,
-  icon: Icon,
+  icon1: Icon1,
+  icon2: Icon2,
   className = '',
   loading = false,
   loadingText = 'Cargando...',
@@ -43,8 +44,9 @@ export const Button = ({
         </>
       ) : (
         <>
-          {Icon && <Icon className="mr-0" />}
+          {Icon1 && <Icon1 className="mr-0" />}
           <p className="pl-1 text-center text-wrap">{label}</p>
+          {Icon2 && <Icon2 className="mr-0" />}
         </>
       )}
     </button>
