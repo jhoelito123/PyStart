@@ -334,3 +334,17 @@ def progreso_seccion_creado_o_actualizado(sender, instance, created, **kwargs):
         print(
             f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al actualizar progreso."
         )
+
+@receiver(post_delete, sender=ProgresoSeccion)
+def progreso_seccion_eliminado(sender, instance, **kwargs):
+    estudiante = instance.estudiante
+    curso = instance.seccion.curso
+
+    try:
+        inscripcion = InscripcionCurso.objects.get(
+            estudiante_inscripcion=estudiante,
+            curso_inscripcion=curso
+        )
+        inscripcion.recalcular_progreso()
+    except InscripcionCurso.DoesNotExist:
+        print(f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al eliminar progreso.")
