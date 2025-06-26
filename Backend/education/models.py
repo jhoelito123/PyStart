@@ -134,10 +134,31 @@ class InscripcionCurso(models.Model):
     estudiante_inscripcion = models.ForeignKey('users.Estudiante', on_delete=models.CASCADE)
     curso_inscripcion = models.ForeignKey('Curso', on_delete=models.CASCADE)
     fecha_inscripcion = models.DateField(auto_now_add=True)
+    porcentaje_progreso = models.FloatField(default=0.0, help_text="Porcentaje de secciones completadas en este curso.")
     completado = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.estudiante} en {self.curso}"
+    
+    def recalcular_progreso(self):
+        total_secciones = self.curso_inscripcion.secciones.count()
+        secciones_completadas = self.estudiante_inscripcion.progreso_secciones.filter(
+            seccion__curso=self.curso_inscripcion
+        ).count()
+
+        if total_secciones > 0:
+            nuevo_porcentaje = (secciones_completadas / total_secciones) * 100
+        else:
+            nuevo_porcentaje = 0.0
+        
+        if nuevo_porcentaje >= 100 and not self.completado:
+            self.completado = True
+        elif nuevo_porcentaje < 100 and self.completado:
+             self.completado = False
+
+        if self.porcentaje_progreso != nuevo_porcentaje or self.completado_changed: # pseudocódigo
+            self.porcentaje_progreso = round(nuevo_porcentaje, 2)
+            self.save(update_fields=['porcentaje_progreso', 'completado']) 
 
 class TipoRecurso(models.Model):
     id_tipo_recurso = models.AutoField(primary_key=True)
@@ -186,6 +207,20 @@ class Seccion(models.Model):
 
     def __str__(self):
         return self.nombre_seccion
+
+class ProgresoSeccion(models.Model):
+    id_progreso_seccion = models.AutoField(primary_key=True)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='progreso_secciones')
+    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='progreso_estudiantes')
+    fecha_completado = models.DateTimeField(auto_now_add=True, help_text="Fecha y hora en que la sección fue completada.")
+    
+    class Meta:
+        unique_together = ('estudiante', 'seccion')
+        verbose_name = "Progreso de Sección"
+        verbose_name_plural = "Progreso de Secciones"
+
+    def __str__(self):
+        return f"Progreso de {self.estudiante.user_id.username_user} en {self.seccion.titulo_seccion}"
 
 class Quiz(models.Model):
     id_quiz = models.AutoField(primary_key=True)
