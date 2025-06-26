@@ -7,6 +7,7 @@ import IconQuizz from '../icons/quizz';
 import { CourseSectionsList } from './section-course';
 
 type Props = {
+  course: number;
   title: string;
   university: string;
   language: string;
@@ -29,6 +30,7 @@ type Props = {
 };
 
 export const CardShowCourse: React.FC<Props> = ({
+  course,
   title,
   university,
   language,
@@ -106,7 +108,7 @@ export const CardShowCourse: React.FC<Props> = ({
             <div className="text-sm text-slate-900 whitespace-pre-line">
               {activeTab === 'general' && tabs.general}
               {activeTab === 'syllabus' && (
-                <CourseSectionsList sections={tabs.syllabus} />
+                <CourseSectionsList course={course} sections={tabs.syllabus} />
               )}
               {activeTab === 'requirements' && tabs.requirements}
             </div>

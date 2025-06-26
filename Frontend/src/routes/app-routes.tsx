@@ -47,9 +47,12 @@ export default function AppRoutes() {
           {/* Rutas para estudiante */}
           <Route path="/student">
             <Route index element={<MainLayout />} />
-            <Route path="course" element={<CoursesPage />} />
-            <Route path="show-course/:id" element={<ShowCoursePage />} />
-            <Route path="show-section/:id" element={<ShowSectionPage />} />
+            <Route path="courses" element={<CoursesPage />} />
+            <Route path="course/:id" element={<ShowCoursePage />} />
+            <Route
+              path="course/:id_course/section/:id_section"
+              element={<ShowSectionPage />}
+            />
             <Route path="show-quiz" element={<ShowQuiz />} />
           </Route>
         </Route>

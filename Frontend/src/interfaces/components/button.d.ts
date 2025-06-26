@@ -1,6 +1,7 @@
 export interface ButtonProps {
   label: string;
-  icon?: React.ElementType;
+  icon1?: React.ElementType;
+  icon2?: React.ElementType;
   variantColor?:
     | 'variant1'
     | 'variant2'
