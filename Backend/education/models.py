@@ -294,3 +294,16 @@ def comentario_creado_o_actualizado(sender, instance, created, **kwargs):
 def comentario_eliminado(sender, instance, **kwargs):
     if instance.curso:
         instance.curso.actualizar_calificacion_curso()
+
+@receiver(post_save, sender=ProgresoSeccion)
+def progreso_seccion_creado_o_actualizado(sender, instance, created, **kwargs):
+    estudiante = instance.estudiante
+    curso = instance.seccion.curso
+    try:
+        inscripcion = InscripcionCurso.objects.get(
+            estudiante_inscripcion=estudiante,
+            curso_inscripcion=curso
+        )
+        inscripcion.recalcular_progreso()
+    except InscripcionCurso.DoesNotExist:
+        print(f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al actualizar progreso.")
