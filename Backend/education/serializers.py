@@ -37,10 +37,7 @@ class RecursoSerializer(serializers.ModelSerializer):
         queryset=TipoRecurso.objects.all()
     )
     url_recurso = serializers.URLField(
-        max_length=1000,
-        required=False,
-        allow_blank=True,
-        allow_null=True
+        max_length=1000, required=False, allow_blank=True, allow_null=True
     )
 
     class Meta:
@@ -169,17 +166,21 @@ class CursoSerializer(serializers.ModelSerializer):
         model = Curso
         fields = "__all__"
 
+
 class InscripcionCursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = InscripcionCurso
-        fields = '__all__'
+        fields = "__all__"
 
     def validate(self, data):
-        estudiante = data['estudiante_inscripcion']
-        curso = data['curso_inscripcion']
-        if InscripcionCurso.objects.filter(estudiante_inscripcion=estudiante, curso_inscripcion=curso).exists():
+        estudiante = data["estudiante_inscripcion"]
+        curso = data["curso_inscripcion"]
+        if InscripcionCurso.objects.filter(
+            estudiante_inscripcion=estudiante, curso_inscripcion=curso
+        ).exists():
             raise serializers.ValidationError("Ya estás inscrito en este curso.")
         return data
+
 
 class SeccionesParaCursoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -289,28 +290,33 @@ class CodeExecutionOutputSerializer(serializers.Serializer):
 
 
 class ComentarioCreateSerializer(serializers.ModelSerializer):
-    autor_comentario = serializers.PrimaryKeyRelatedField(queryset=Estudiante.objects.all())
+    autor_comentario = serializers.PrimaryKeyRelatedField(
+        queryset=Estudiante.objects.all()
+    )
     curso = serializers.PrimaryKeyRelatedField(queryset=Curso.objects.all())
 
-    autor_nombre = serializers.CharField(source='autor_comentario.user_id.username_user', read_only=True)
-    nombre_curso = serializers.CharField(source='curso.nombre_curso', read_only=True)
-
+    autor_nombre = serializers.CharField(
+        source="autor_comentario.user_id.username_user", read_only=True
+    )
+    nombre_curso = serializers.CharField(source="curso.nombre_curso", read_only=True)
 
     class Meta:
         model = Comentario
         fields = [
-            'id_comentario',
-            'autor_comentario', 
-            'autor_nombre',  
-            'contenido_comentario',
-            'curso', 
-            'nombre_curso',
-            'puntuacion_curso',
-            'fecha_creacion_comentario'
+            "id_comentario",
+            "autor_comentario",
+            "autor_nombre",
+            "contenido_comentario",
+            "curso",
+            "nombre_curso",
+            "puntuacion_curso",
+            "fecha_creacion_comentario",
         ]
 
 
 class ComentarioDetailSerializer(serializers.ModelSerializer):
+    autor_comentario = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Comentario
-        fields = '__all__'
+        fields = "__all__"
