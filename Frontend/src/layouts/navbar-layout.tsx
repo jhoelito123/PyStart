@@ -140,7 +140,7 @@ export default function NavbarLayout() {
                       {' '}
                       <li>
                         <Link
-                          to="/student/course"
+                          to="/student/courses"
                           className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
                         >
                           Cursos

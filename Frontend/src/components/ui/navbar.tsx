@@ -86,7 +86,7 @@ export default function Navbar({
             ref={adminMenuRef}
           >
             <Link
-              to="/student/course"
+              to="/student/courses"
               className="hover:text-emerald-600 subtitle-sm"
             >
               Cursos
@@ -155,14 +155,14 @@ export default function Navbar({
             >
               Registrar Quizz
             </Link>
-            <Button
-              onClick={() => {
-                localStorage.setItem('userRole', 'user');
-                navigate('/');
-              }}
-              label="Cerrar sesión"
-            />
           </li>
+          <Button
+            onClick={() => {
+              localStorage.setItem('userRole', 'user');
+              navigate('/');
+            }}
+            label="Cerrar sesión"
+          />
         </>
       )}
       {userRole === 'admin' && (

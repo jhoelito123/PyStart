@@ -38,6 +38,7 @@ export default function ShowCoursePage() {
   return (
     <div className="p-10 min-h-screen">
       <CardShowCourse
+        course={curso.id_curso}
         title={curso.nombre_curso}
         university="Universidad Andina"
         language={curso.idioma}
