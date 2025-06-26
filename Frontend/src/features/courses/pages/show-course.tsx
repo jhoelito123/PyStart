@@ -2,6 +2,7 @@ import { useFetchData } from '../../../hooks/use-fetch-data';
 import { API_URL } from '../../../config/api-config';
 import { CardShowCourse } from '../components/card-show-course';
 import { useParams } from 'react-router';
+import { CommentsList } from '../components/comments-list';
 
 type Curso = {
   id_curso: number;
@@ -54,6 +55,7 @@ export default function ShowCoursePage() {
           requirements: 'Requiere conocimientos básicos de computación',
         }}
       />
+      <CommentsList />
     </div>
   );
 }
