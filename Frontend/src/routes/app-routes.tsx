@@ -13,6 +13,7 @@ import ShowSectionPage from '../features/courses/pages/show-section';
 import RegisterQuizPage from '../features/quizzes/pages/register-quiz';
 import ShowQuiz from '../features/quizzes/pages/show-quiz';
 import RegisterStudentPage from '../features/student/pages/register-student';
+import { Home } from '../features/home/home';
 
 export default function AppRoutes() {
   return (
@@ -24,7 +25,7 @@ export default function AppRoutes() {
           <Route path="/signup" element={<SignupPage />} />
           {/* Rutas para administrador */}
           <Route path="/administrator">
-            <Route index element={<MainLayout />} />
+            <Route index element={<Home />} />
             <Route
               path="register-inst-educational"
               element={<RegisterInstPage />}
@@ -35,7 +36,7 @@ export default function AppRoutes() {
 
           {/* Rutas para docente */}
           <Route path="/teacher">
-            <Route index element={<MainLayout />} />
+            <Route index element={<Home />} />
             <Route path="register-course" element={<RegisterCoursePage />} />
             <Route
               path="register-section-course"
@@ -46,7 +47,7 @@ export default function AppRoutes() {
 
           {/* Rutas para estudiante */}
           <Route path="/student">
-            <Route index element={<MainLayout />} />
+            <Route index element={<Home />} />
             <Route path="courses" element={<CoursesPage />} />
             <Route path="course/:id" element={<ShowCoursePage />} />
             <Route
