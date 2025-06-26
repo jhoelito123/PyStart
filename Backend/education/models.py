@@ -108,38 +108,46 @@ class Curso(models.Model):
         if self.duracion_curso != total_duration:
             self.duracion_curso = total_duration
             self.save(update_fields=["duracion_curso"])
-    
+
     def actualizar_calificacion_curso(self):
         # Calcula el promedio de las puntuaciones de todos los comentarios de ese curso
-        promedio = self.comentarios_curso.aggregate(Avg('puntuacion_curso'))['puntuacion_curso__avg']
+        promedio = self.comentarios_curso.aggregate(Avg("puntuacion_curso"))[
+            "puntuacion_curso__avg"
+        ]
 
         nueva_calificacion = round(promedio, 2) if promedio is not None else 0.0
         if self.calificacion_curso != nueva_calificacion:
             self.calificacion_curso = nueva_calificacion
-            self.save(update_fields=['calificacion_curso'])
+            self.save(update_fields=["calificacion_curso"])
+
 
 class EstudianteInstitucion(models.Model):
     id_estudiante_institucion = models.AutoField(primary_key=True)
     institucion_id = models.ForeignKey(Institucion, on_delete=models.PROTECT)
     estudiante_id = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    
+
     class Meta:
-        unique_together = ('institucion_id', 'estudiante_id') 
+        unique_together = ("institucion_id", "estudiante_id")
 
     def __str__(self):
         return f"Estudiante {self.estudiante_id.user_id.username_user} en Institución {self.institucion_id.nombre_institucion}"
 
+
 class InscripcionCurso(models.Model):
     id_inscripcion = models.AutoField(primary_key=True)
-    estudiante_inscripcion = models.ForeignKey('users.Estudiante', on_delete=models.CASCADE)
-    curso_inscripcion = models.ForeignKey('Curso', on_delete=models.CASCADE)
+    estudiante_inscripcion = models.ForeignKey(
+        "users.Estudiante", on_delete=models.CASCADE
+    )
+    curso_inscripcion = models.ForeignKey("Curso", on_delete=models.CASCADE)
     fecha_inscripcion = models.DateField(auto_now_add=True)
-    porcentaje_progreso = models.FloatField(default=0.0, help_text="Porcentaje de secciones completadas en este curso.")
+    porcentaje_progreso = models.FloatField(
+        default=0.0, help_text="Porcentaje de secciones completadas en este curso."
+    )
     completado = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.estudiante} en {self.curso}"
-    
+
     def recalcular_progreso(self):
         total_secciones = self.curso_inscripcion.secciones.count()
         secciones_completadas = self.estudiante_inscripcion.progreso_secciones.filter(
@@ -150,15 +158,18 @@ class InscripcionCurso(models.Model):
             nuevo_porcentaje = (secciones_completadas / total_secciones) * 100
         else:
             nuevo_porcentaje = 0.0
-        
+
         if nuevo_porcentaje >= 100 and not self.completado:
             self.completado = True
         elif nuevo_porcentaje < 100 and self.completado:
-             self.completado = False
+            self.completado = False
 
-        if self.porcentaje_progreso != nuevo_porcentaje or self.completado_changed: # pseudocódigo
+        if (
+            self.porcentaje_progreso != nuevo_porcentaje or self.completado_changed
+        ):  # pseudocódigo
             self.porcentaje_progreso = round(nuevo_porcentaje, 2)
-            self.save(update_fields=['porcentaje_progreso', 'completado']) 
+            self.save(update_fields=["porcentaje_progreso", "completado"])
+
 
 class TipoRecurso(models.Model):
     id_tipo_recurso = models.AutoField(primary_key=True)
@@ -208,19 +219,27 @@ class Seccion(models.Model):
     def __str__(self):
         return self.nombre_seccion
 
+
 class ProgresoSeccion(models.Model):
     id_progreso_seccion = models.AutoField(primary_key=True)
-    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE, related_name='progreso_secciones')
-    seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE, related_name='progreso_estudiantes')
-    fecha_completado = models.DateTimeField(auto_now_add=True, help_text="Fecha y hora en que la sección fue completada.")
-    
+    estudiante = models.ForeignKey(
+        Estudiante, on_delete=models.CASCADE, related_name="progreso_secciones"
+    )
+    seccion = models.ForeignKey(
+        Seccion, on_delete=models.CASCADE, related_name="progreso_estudiantes"
+    )
+    fecha_completado = models.DateTimeField(
+        auto_now_add=True, help_text="Fecha y hora en que la sección fue completada."
+    )
+
     class Meta:
-        unique_together = ('estudiante', 'seccion')
+        unique_together = ("estudiante", "seccion")
         verbose_name = "Progreso de Sección"
         verbose_name_plural = "Progreso de Secciones"
 
     def __str__(self):
         return f"Progreso de {self.estudiante.user_id.username_user} en {self.seccion.titulo_seccion}"
+
 
 class Quiz(models.Model):
     id_quiz = models.AutoField(primary_key=True)
@@ -257,43 +276,50 @@ class FeedbackSeccion(models.Model):
 
 
 class Comentario(models.Model):
-    id_comentario = models.AutoField(primary_key=True)  
+    id_comentario = models.AutoField(primary_key=True)
     autor_comentario = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    contenido_comentario = models.TextField()  
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name="comentarios_curso")
+    contenido_comentario = models.TextField()
+    curso = models.ForeignKey(
+        Curso, on_delete=models.CASCADE, related_name="comentarios_curso"
+    )
     puntuacion_curso = models.IntegerField(
         choices=[(i, str(i)) for i in range(1, 6)],
-        help_text="Puntuación del curso (1 a 5 estrellas)."
+        help_text="Puntuación del curso (1 a 5 estrellas).",
     )
-    fecha_creacion_comentario = models.DateTimeField(auto_now_add=True) 
+    fecha_creacion_comentario = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.autor_comentario}: {self.contenido_comentario}"
-    
+
     class Meta:
         verbose_name = "Comentario de Curso"
         verbose_name_plural = "Comentarios de Curso"
 
-#SIGNALS for models
+
+# SIGNALS for models
 @receiver(post_save, sender=Seccion)
 def update_curso_duration_on_seccion_save(sender, instance, **kwargs):
     if instance.seccion_del_curso:
         instance.seccion_del_curso.calcular_y_actualizar_duracion()
+
 
 @receiver(post_delete, sender=Seccion)
 def update_curso_duration_on_seccion_delete(sender, instance, **kwargs):
     if instance.seccion_del_curso:
         instance.seccion_del_curso.calcular_y_actualizar_duracion()
 
+
 @receiver(post_save, sender=Comentario)
 def comentario_creado_o_actualizado(sender, instance, created, **kwargs):
     if instance.curso:
         instance.curso.actualizar_calificacion_curso()
 
+
 @receiver(post_delete, sender=Comentario)
 def comentario_eliminado(sender, instance, **kwargs):
     if instance.curso:
         instance.curso.actualizar_calificacion_curso()
+
 
 @receiver(post_save, sender=ProgresoSeccion)
 def progreso_seccion_creado_o_actualizado(sender, instance, created, **kwargs):
@@ -301,9 +327,10 @@ def progreso_seccion_creado_o_actualizado(sender, instance, created, **kwargs):
     curso = instance.seccion.curso
     try:
         inscripcion = InscripcionCurso.objects.get(
-            estudiante_inscripcion=estudiante,
-            curso_inscripcion=curso
+            estudiante_inscripcion=estudiante, curso_inscripcion=curso
         )
         inscripcion.recalcular_progreso()
     except InscripcionCurso.DoesNotExist:
-        print(f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al actualizar progreso.")
+        print(
+            f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al actualizar progreso."
+        )

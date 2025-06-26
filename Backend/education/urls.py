@@ -39,7 +39,11 @@ urlpatterns = [
     path("curso/", views.CursoDetail.as_view(), name="courses-list"),
     path("curso/create/", views.CursoCreateView.as_view(), name="course-create"),
     path("cursos/<int:pk>/", views.CursoDetailView.as_view(), name="curso-detail"),
-    path('inscribirse/', views.InscripcionCursoCreateView.as_view(), name='inscripcion-curso'),
+    path(
+        "inscribirse/",
+        views.InscripcionCursoCreateView.as_view(),
+        name="inscripcion-curso",
+    ),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
     path("tipos-recurso/", views.TipoRecursoList.as_view(), name="tipos-recurso-list"),
@@ -61,9 +65,15 @@ urlpatterns = [
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
     path("preguntas/", views.PreguntaList.as_view(), name="pregunta-list"),
-
-    #For comments of courses
-    path("comentario/create/", views.ComentarioCreateView.as_view(), name="comentario-create"),
-    path("comentarios/curso/<int:curso_id>/", views.ComentarioDetailView.as_view(), name="comentarios-por-curso"),
-
+    # For comments of courses
+    path(
+        "comentario/create/",
+        views.ComentarioCreateView.as_view(),
+        name="comentario-create",
+    ),
+    path(
+        "comentarios/curso/<int:curso_id>/",
+        views.ComentarioDetailView.as_view(),
+        name="comentarios-por-curso",
+    ),
 ]

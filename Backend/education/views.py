@@ -165,9 +165,11 @@ class CursoDetailView(generics.RetrieveAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoDetalleSerializer
 
+
 class InscripcionCursoCreateView(generics.CreateAPIView):
     queryset = InscripcionCurso.objects.all()
     serializer_class = InscripcionCursoSerializer
+
 
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
@@ -305,10 +307,11 @@ class CodeExecutorAPIView(APIView):
 class ComentarioCreateView(generics.CreateAPIView):
     serializer_class = ComentarioCreateSerializer
 
+
 class ComentarioDetailView(generics.ListAPIView):
     serializer_class = ComentarioDetailSerializer
-    queryset = Comentario.objects.all().order_by('-fecha_creacion_comentario')
-    
+    queryset = Comentario.objects.all().order_by("-fecha_creacion_comentario")
+
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)

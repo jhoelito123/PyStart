@@ -44,6 +44,7 @@ class AdminCreateSerializer(serializers.ModelSerializer):
         admin = Admin.objects.create(user_id=user, **validated_data)
         return admin
 
+
 class AdminDetailSerializer(serializers.ModelSerializer):
     # Anida el UsuarioSerializer para mostrar los datos del usuario asociado al Admin
     # Usamos read_only=True porque no vamos a modificar el usuario a través del serializer del Admin
@@ -52,9 +53,10 @@ class AdminDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
         fields = [
-            "admin_id", # ID específico del administrador
-            "user",     
+            "admin_id",  # ID específico del administrador
+            "user",
         ]
+
 
 class DocenteCreateSerializer(serializers.ModelSerializer):
     user = UsuarioSerializer(source="user_id")  # <--- IMPORTANTE: Usamos 'source'
@@ -102,17 +104,17 @@ class EstudianteCreateSerializer(serializers.ModelSerializer):
         queryset=Institucion.objects.all(),
         write_only=True,
         required=True,
-        help_text="ID de la institución a la que el estudiante se va a registrar."
+        help_text="ID de la institución a la que el estudiante se va a registrar.",
     )
 
     class Meta:
         model = Estudiante
         fields = [
-            "user", 
-            "nombre_estudiante", 
-            "apellidos_estudiante", 
-            "ci_estudiante", 
-            "institucion_id"
+            "user",
+            "nombre_estudiante",
+            "apellidos_estudiante",
+            "ci_estudiante",
+            "institucion_id",
         ]
 
     def create(self, validated_data):
@@ -125,10 +127,9 @@ class EstudianteCreateSerializer(serializers.ModelSerializer):
 
         # Relación EstudianteInstitucion
         EstudianteInstitucion.objects.create(
-            estudiante_id=estudiante,
-            institucion_id=institucion
+            estudiante_id=estudiante, institucion_id=institucion
         )
-        
+
         return estudiante
 
 
@@ -174,28 +175,41 @@ class LoginSerializer(serializers.Serializer):
             data["user"] = user
 
             user_profile_data = {}
-            user_type_display = user.tipo_de_user.tipo_usuario 
+            user_type_display = user.tipo_de_user.tipo_usuario
 
             if user_type_display == "ESTUDIANTE":
                 try:
                     profile_instance = Estudiante.objects.get(user_id=user)
-                    user_profile_data = EstudianteDetailSerializer(profile_instance).data
+                    user_profile_data = EstudianteDetailSerializer(
+                        profile_instance
+                    ).data
                 except Estudiante.DoesNotExist:
-                    raise serializers.ValidationError("Perfil de estudiante no encontrado o incompleto.", code="profile_missing")
+                    raise serializers.ValidationError(
+                        "Perfil de estudiante no encontrado o incompleto.",
+                        code="profile_missing",
+                    )
             elif user_type_display == "DOCENTE":
                 try:
                     profile_instance = Docente.objects.get(user_id=user)
                     user_profile_data = DocenteDetailSerializer(profile_instance).data
                 except Docente.DoesNotExist:
-                    raise serializers.ValidationError("Perfil de docente no encontrado o incompleto.", code="profile_missing")
+                    raise serializers.ValidationError(
+                        "Perfil de docente no encontrado o incompleto.",
+                        code="profile_missing",
+                    )
             elif user_type_display == "ADMIN":
                 try:
                     profile_instance = Admin.objects.get(user_id=user)
-                    user_profile_data = AdminDetailSerializer(profile_instance).data 
+                    user_profile_data = AdminDetailSerializer(profile_instance).data
                 except Admin.DoesNotExist:
-                    raise serializers.ValidationError("Perfil de administrador no encontrado o incompleto.", code="profile_missing")
+                    raise serializers.ValidationError(
+                        "Perfil de administrador no encontrado o incompleto.",
+                        code="profile_missing",
+                    )
             else:
-                print(f"Advertencia: Tipo de usuario '{user_type_display}' no tiene un perfil específico o no está configurado para el login.")
+                print(
+                    f"Advertencia: Tipo de usuario '{user_type_display}' no tiene un perfil específico o no está configurado para el login."
+                )
                 user_profile_data = {}
 
             data["profile_data"] = user_profile_data

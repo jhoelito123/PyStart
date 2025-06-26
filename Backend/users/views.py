@@ -53,7 +53,7 @@ class LoginView(APIView):
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data["user"]
-        
+
         profile_data = serializer.validated_data.get("profile_data", {})
         user_type = serializer.validated_data["user_type"]
         user_id_global = serializer.validated_data["user_id_global"]
@@ -67,7 +67,7 @@ class LoginView(APIView):
                 "user_id": user_id_global,
                 "username": user.username_user,
                 "email": user.email_user,
-                "tipo_de_usuario_loggeado": user_type, 
+                "tipo_de_usuario_loggeado": user_type,
                 "profile_data": profile_data,
             },
             status=status.HTTP_200_OK,
