@@ -55,7 +55,7 @@ export default function CardCourse({
         </h3>
         <p className="text-sm text-blue-500 font-medium">{college}</p>
         <div className="flex items-center space-x-1">
-          <StarRating rating={4} />
+          <StarRating rating={Math.round(rating)} />
 
           <span className="subtitle-md text-slate-900 ml-1">
             {rating.toFixed(1)}

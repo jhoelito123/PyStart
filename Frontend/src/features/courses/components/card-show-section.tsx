@@ -14,7 +14,7 @@ export default function CardShowSection({
 }: CardShowSectionProps) {
   return (
     <div className="flex flex-col h-screen">
-      <h2 className="subtitle-lg text-slate-900 my-4">Sección 1: {title}</h2>
+      <h2 className="subtitle-lg text-slate-900 my-4"> {title}</h2>
 
       <div className="flex">
         <div className="flex flex-col items-start pr-6">
