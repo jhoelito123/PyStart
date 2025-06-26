@@ -1,8 +1,14 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { InputText } from '../../../components/ui/input';
 import { Button } from '../../../components';
+import { useEffect } from 'react';
 
 const SigninPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('userRole', 'user');
+  }, []);
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-15 md:pb-20 lg:pb-28 ">
@@ -110,8 +116,28 @@ const SigninPage = () => {
                   </div>
                   <div className="mb-6">
                     <Button
-                      label="Iniciar sesión"
+                      label="Iniciar sesión Estudiante"
                       className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'student');
+                        navigate('/student');
+                      }}
+                    />
+                    <Button
+                      label="Iniciar sesión Profesor"
+                      className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'teacher');
+                        navigate('/teacher');
+                      }}
+                    />
+                    <Button
+                      label="Iniciar sesión Admi"
+                      className="flex w-full items-center justify-center px-9 py-4 font-medium rounded-sm"
+                      onClick={() => {
+                        localStorage.setItem('userRole', 'admin');
+                        navigate('/administrator');
+                      }}
                     />
                   </div>
                 </form>

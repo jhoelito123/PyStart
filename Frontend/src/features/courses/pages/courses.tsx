@@ -73,7 +73,7 @@ export default function CoursesPage() {
                 sections={1}
                 practices={2}
                 quizzez={3}
-                link={`/show-course/${curso.id_curso}`}
+                link={`/student/show-course/${curso.id_curso}`}
               />
             ))}
           </div>
