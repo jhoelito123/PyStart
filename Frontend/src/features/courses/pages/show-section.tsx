@@ -6,6 +6,7 @@ import { Button } from '../../../components/ui/button';
 import { useEffect, useState } from 'react';
 import IconBefore from '../../../components/icons/before';
 import IconNext from '../../../components/icons/next';
+import { FeedbackList } from '../components/feedback-list';
 
 type Recurso = {
   nombre_recurso: string;
@@ -68,7 +69,7 @@ export default function ShowSectionPage() {
         }
         code={seccion.instruccion_ejecutor_seccion.texto_recurso || ''}
       />
-
+      <FeedbackList id_seccion={seccion.id_seccion} />
       <div className="flex justify-between mt-10">
         <Button
           label="Anterior"

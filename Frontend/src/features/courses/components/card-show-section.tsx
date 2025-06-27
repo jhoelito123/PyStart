@@ -13,7 +13,7 @@ export default function CardShowSection({
   code,
 }: CardShowSectionProps) {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       <h2 className="subtitle-lg text-slate-900 my-4"> {title}</h2>
 
       <div className="flex">
