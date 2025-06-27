@@ -44,6 +44,7 @@ urlpatterns = [
         views.InscripcionCursoCreateView.as_view(),
         name="inscripcion-curso",
     ),
+    path('api/progreso-estudiante/<int:id_estudiante>/', views.ProgresoPorEstudianteView.as_view(), name='progreso-estudiante'),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
     path("tipos-recurso/", views.TipoRecursoList.as_view(), name="tipos-recurso-list"),
