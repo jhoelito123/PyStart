@@ -170,7 +170,10 @@ class InscripcionCursoCreateView(generics.CreateAPIView):
     queryset = InscripcionCurso.objects.all()
     serializer_class = InscripcionCursoSerializer
 
-
+class QuizCreateView(generics.CreateAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
+    
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer

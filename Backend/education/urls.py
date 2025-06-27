@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import SeccionViewSet
+from .views import SeccionViewSet, QuizCreateView
 from . import views
 
 router = DefaultRouter()
@@ -65,7 +65,7 @@ urlpatterns = [
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
     path("preguntas/", views.PreguntaList.as_view(), name="pregunta-list"),
-    # For comments of courses
+    path("quizzes/create/", QuizCreateView.as_view(), name="quiz-create"),
     path(
         "comentario/create/",
         views.ComentarioCreateView.as_view(),
