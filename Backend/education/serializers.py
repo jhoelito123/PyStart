@@ -221,18 +221,26 @@ class CursoDetalleSerializer(serializers.ModelSerializer):
             "secciones",
         ]
 
-
-class QuizSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Quiz
-        fields = "__all__"
-
-
 class PreguntaQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreguntaQuiz
-        fields = "__all__"
+        fields = ['pregunta', 'opciones', 'opcion_correcta']
 
+class QuizSerializer(serializers.ModelSerializer):
+    preguntas = PreguntaQuizSerializer(many=True)
+    
+    class Meta:
+        model = Quiz
+        fields = ['nombre_quiz', 'curso', 'puntaje_quiz', 'preguntas']
+    
+    def create(self, validated_data):
+        preguntas_data = validated_data.pop('preguntas')
+        quiz = Quiz.objects.create(**validated_data)
+        
+        for pregunta_data in preguntas_data:
+            PreguntaQuiz.objects.create(quiz=quiz, **pregunta_data)
+        
+        return quiz
 
 class FeedbackSerializer(serializers.ModelSerializer):
     from_seccion = serializers.PrimaryKeyRelatedField(queryset=Seccion.objects.all())

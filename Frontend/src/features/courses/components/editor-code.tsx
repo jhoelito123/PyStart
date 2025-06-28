@@ -5,15 +5,21 @@ import axios from 'axios';
 
 export default function Ejecutor({
   initialCode = '',
+  onCodeChange,
 }: {
   initialCode?: string;
+  onCodeChange?: (code: string) => void;
 }) {
   const [code, setCode] = useState<string>(initialCode);
   const [output, setOutput] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCodeChange = (newCode: string | undefined) => {
-    setCode(newCode || '');
+    const codeFinal = newCode || '';
+    setCode(codeFinal);
+    if (onCodeChange) {
+      onCodeChange(codeFinal);
+    }
   };
 
   const handleExecuteCode = async () => {

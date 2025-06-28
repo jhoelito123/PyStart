@@ -63,6 +63,7 @@ export default function ShowSectionPage() {
     <div className="min-h-screen px-10">
       <CardShowSection
         title={seccion.nombre_seccion}
+        codeInstruction={seccion.instruccion_ejecutor_seccion.nombre_recurso}
         video={seccion.video_seccion.url_recurso}
         text={
           seccion.contenido_seccion.texto_recurso || seccion.descripcion_seccion

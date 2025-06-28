@@ -182,6 +182,10 @@ class ProgresoPorEstudianteView(APIView):
         inscripciones = InscripcionCurso.objects.filter(estudiante_inscripcion=estudiante).select_related('curso_inscripcion')
         serializer = ProgresoInscripcionSerializer(inscripciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class QuizCreateView(generics.CreateAPIView):
+    queryset = Quiz.objects.all()
+    serializer_class = QuizSerializer
     
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
@@ -327,3 +331,7 @@ class ComentarioDetailView(generics.ListAPIView):
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
+    
+class CursoDeleteView(generics.DestroyAPIView):
+    queryset = Curso.objects.all()
+    lookup_field = "id_curso" 
