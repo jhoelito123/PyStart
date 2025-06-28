@@ -74,7 +74,13 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl h-[600px] flex flex-col">
         <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-t-lg">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🤖</span>
+            <img
+              src="/icons/ai-icon.webp"
+              alt="AI Icon"
+              width={34}
+              height={34}
+              loading="lazy"
+            />
             <h3 className="font-semibold">Asistente IA</h3>
             <span className="text-xs opacity-80">Powered by Groq</span>
           </div>

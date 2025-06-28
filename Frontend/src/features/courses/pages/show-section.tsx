@@ -33,6 +33,7 @@ export default function ShowSectionPage() {
   const navigate = useNavigate();
   const [seccionesCurso, setSeccionesCurso] = useState<Seccion[]>([]);
   const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [currentCode, setCurrentCode] = useState<string>(''); 
 
   const {
     data: seccion,
@@ -62,13 +63,15 @@ export default function ShowSectionPage() {
   const seccionAnterior = seccionesCurso[currentIndex - 1];
   const seccionSiguiente = seccionesCurso[currentIndex + 1];
 
-  // Preparar contexto para el IA
   const courseContext = seccion
     ? {
         courseName: `Curso de Python - Sección ${currentIndex + 1}`,
         sectionName: seccion.nombre_seccion,
         sectionDescription: seccion.descripcion_seccion,
-        exerciseCode: seccion.instruccion_ejecutor_seccion.texto_recurso || '',
+        exerciseCode:
+          currentCode ||
+          seccion.instruccion_ejecutor_seccion.texto_recurso ||
+          '',
         exerciseInstructions:
           seccion.instruccion_ejecutor_seccion.nombre_recurso || '',
       }
@@ -84,6 +87,7 @@ export default function ShowSectionPage() {
           seccion.contenido_seccion.texto_recurso || seccion.descripcion_seccion
         }
         code={seccion.instruccion_ejecutor_seccion.texto_recurso || ''}
+        onCodeChange={setCurrentCode}
       />
       <FeedbackList id_seccion={seccion.id_seccion} />
       <div className="flex justify-between mt-10">

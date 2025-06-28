@@ -5,6 +5,7 @@ type CardShowSectionProps = {
   codeInstruction: string;
   text: string;
   code: string;
+  onCodeChange?: (code: string) => void;
 };
 
 export default function CardShowSection({
@@ -13,6 +14,7 @@ export default function CardShowSection({
   codeInstruction,
   text,
   code,
+  onCodeChange,
 }: CardShowSectionProps) {
   return (
     <div className="flex flex-col h-full">
@@ -38,7 +40,7 @@ export default function CardShowSection({
               <p className="body-md text-slate-900 italic">{codeInstruction}</p>
             </div>
           </div>
-          <Ejecutor initialCode={code} />
+          <Ejecutor initialCode={code} onCodeChange={onCodeChange} />
         </div>
       </div>
     </div>
