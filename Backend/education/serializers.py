@@ -181,6 +181,12 @@ class InscripcionCursoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Ya estás inscrito en este curso.")
         return data
 
+class ProgresoInscripcionSerializer(serializers.ModelSerializer):
+    nombre_curso = serializers.CharField(source='curso_inscripcion.nombre_curso')
+    
+    class Meta:
+        model = InscripcionCurso
+        fields = ['id_inscripcion', 'nombre_curso', 'porcentaje_progreso', 'completado', 'fecha_inscripcion']
 
 class SeccionesParaCursoSerializer(serializers.ModelSerializer):
     class Meta:
