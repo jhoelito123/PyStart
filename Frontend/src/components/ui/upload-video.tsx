@@ -69,7 +69,7 @@ export const UploadVideo = <T extends FieldValues>({
         onClick={openFileDialog}
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
-        className={`w-full h-64 border-[1px] rounded-md cursor-pointer 
+        className={`w-full h-56 border-[1px] rounded-md cursor-pointer 
         flex items-center justify-center relative overflow-hidden bg-neutral-50
         hover:bg-neutral-100 transition ${
           fileError || error ? 'border-red-400' : 'border-slate-900'

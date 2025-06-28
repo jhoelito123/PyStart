@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { getData, postData } from '../../../services/api-service';
 import { useCloudinaryUpload } from '../../../hooks';
 import Swal from 'sweetalert2';
+import Ejecutor from './editor-code';
 
 interface FormData {
   section: {
@@ -48,6 +49,7 @@ export default function FormSectionCourse() {
   });
 
   const { uploadFile } = useCloudinaryUpload();
+  const [codigoEjecutor, setCodigoEjecutor] = useState('');
   const [cursos, setCursos] = useState<Curso[]>([]);
   const getVideoDuration = (file: File): Promise<number> => {
     return new Promise((resolve, reject) => {
@@ -119,17 +121,15 @@ export default function FormSectionCourse() {
           tipo_recurso: 1,
         },
         contenido_seccion: {
-          nombre_recurso:
-            formatos.find((f) => f.id === parseInt(data.section.format))?.formato ||
-            'Texto plano',
+          nombre_recurso: 'Explicación de la sección',
           url_recurso: null,
           texto_recurso: data.section.explanation,
           tipo_recurso: 2,
         },
         instruccion_ejecutor_seccion: {
-          nombre_recurso: 'Instrucción código',
+          nombre_recurso: data.section.codeExecutorInstruction,
           url_recurso: null,
-          texto_recurso: data.section.codeExecutorInstruction,
+          texto_recurso: codigoEjecutor,
           tipo_recurso: 3,
         },
       };
@@ -169,11 +169,6 @@ export default function FormSectionCourse() {
 
     fetchCursos();
   }, []);
-
-  const formatos = [
-    { id: 1, formato: 'Texto plano' },
-    { id: 2, formato: 'Html' },
-  ];
 
   return (
     <div className="flex flex-col w-10/12 max-w-screen h-full my-10">
@@ -238,9 +233,9 @@ export default function FormSectionCourse() {
             />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-9 mb-2">
-            <div className="grid grid-cols-1">
+            <div className="grid grid-cols-1 mt-5">
               <TextArea
-                label="Explicación de la sección del curso (Puede ser texto o html)"
+                label="Explicación de la sección del curso"
                 name="section.explanation"
                 className="w-full"
                 placeholder="Escribe la explicación de la sección del curso"
@@ -287,15 +282,6 @@ export default function FormSectionCourse() {
                 }}
                 errors={errors}
               />
-              <Dropdown
-                name="section.format"
-                label="Formato de la explicación"
-                options={formatos}
-                displayKey="formato"
-                valueKey="id"
-                placeholder="Selecciona un formato"
-                register={register}
-              />
             </div>
             <div className="grid grid-cols-1 lg:gap-9 mb-6">
               <UploadVideo 
@@ -304,10 +290,16 @@ export default function FormSectionCourse() {
                 setValue={setValue}
                 error={errors.section?.video}/>
             </div>
-            <div></div>
           </div>
         </div>
-
+        <div className="flex flex-col w-full mb-10 h-[560px]">
+          <p className="text-slate-900 body-lg mb-4">
+            Código del ejecutor de código de la sección del curso:
+          </p>
+          <div className="flex flex-col">
+            <Ejecutor onCodeChange={setCodigoEjecutor} />
+          </div>
+        </div>
         <div className="flex flex-col-reverse md:flex-row md:justify-between md:space-x-5">
           <Button
             label="Cancelar"
