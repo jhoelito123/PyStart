@@ -20,5 +20,9 @@ urlpatterns = [
         name="get-estudiante",
     ),
     path("login/", views.LoginView.as_view(), name="login"),
-    path("estudiante/curso/<int:curso_id>/", views.EstudiantesPorCursoView.as_view(), name="estudiantes-por-curso"),
+    path(
+        "estudiante/curso/<int:curso_id>/",
+        views.EstudiantesPorCursoView.as_view(),
+        name="estudiantes-por-curso",
+    ),
 ]

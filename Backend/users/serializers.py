@@ -225,14 +225,12 @@ class LoginSerializer(serializers.Serializer):
         return data
 
 
-
-
 class EstudianteDetailByCoursesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estudiante
         fields = [
             "id_estudiante",
             "nombre_estudiante",
-            "apellidos_estudiante", 
+            "apellidos_estudiante",
             "ci_estudiante",
         ]
