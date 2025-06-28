@@ -40,12 +40,20 @@ urlpatterns = [
     path("curso/create/", views.CursoCreateView.as_view(), name="course-create"),
     path("cursos/<int:pk>/", views.CursoDetailView.as_view(), name="curso-detail"),
     path(
+        "curso/options/<int:id_curso>/",
+        views.CursoRetrieveUpdateDestroyView.as_view(),
+        name="curso-delete",
+    ),
+    path(
         "inscribirse/",
         views.InscripcionCursoCreateView.as_view(),
         name="inscripcion-curso",
     ),
-    path('progreso-estudiante/<int:id_estudiante>/', views.ProgresoPorEstudianteView.as_view(), name='progreso-estudiante'),
-    path("curso/delete/<int:id_curso>/", views.CursoDeleteView.as_view(), name="curso-delete"),
+    path(
+        "progreso-estudiante/<int:id_estudiante>/",
+        views.ProgresoPorEstudianteView.as_view(),
+        name="progreso-estudiante",
+    ),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
     path("tipos-recurso/", views.TipoRecursoList.as_view(), name="tipos-recurso-list"),
@@ -78,5 +86,4 @@ urlpatterns = [
         views.ComentarioDetailView.as_view(),
         name="comentarios-por-curso",
     ),
-    
 ]

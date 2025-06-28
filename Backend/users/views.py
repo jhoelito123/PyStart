@@ -77,7 +77,6 @@ class LoginView(APIView):
         )
 
 
-
 class EstudiantesPorCursoView(generics.ListAPIView):
     serializer_class = EstudianteDetailByCoursesSerializer
 
@@ -88,7 +87,7 @@ class EstudiantesPorCursoView(generics.ListAPIView):
         inscripciones = InscripcionCurso.objects.filter(curso_inscripcion_id=curso_id)
         if not inscripciones.exists():
             raise NotFound("No hay estudiantes inscritos en este curso.")
-    
+
         for insc in inscripciones:
             estudiante = insc.estudiante_inscripcion
             resultado.append(estudiante)

@@ -168,25 +168,38 @@ class CursoDetailView(generics.RetrieveAPIView):
     serializer_class = CursoDetalleSerializer
 
 
+class CursoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Curso.objects.all()
+    serializer_class = CursoSerializer
+    lookup_field = "id_curso"
+
+
 class InscripcionCursoCreateView(generics.CreateAPIView):
     queryset = InscripcionCurso.objects.all()
     serializer_class = InscripcionCursoSerializer
+
 
 class ProgresoPorEstudianteView(APIView):
     def get(self, request, id_estudiante):
         try:
             estudiante = models.Estudiante.objects.get(id_estudiante=id_estudiante)
         except models.Estudiante.DoesNotExist:
-            return Response({"error": "Estudiante no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-        
-        inscripciones = InscripcionCurso.objects.filter(estudiante_inscripcion=estudiante).select_related('curso_inscripcion')
+            return Response(
+                {"error": "Estudiante no encontrado"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        inscripciones = InscripcionCurso.objects.filter(
+            estudiante_inscripcion=estudiante
+        ).select_related("curso_inscripcion")
         serializer = ProgresoInscripcionSerializer(inscripciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class QuizCreateView(generics.CreateAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
-    
+
+
 class QuizList(generics.ListAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
@@ -331,7 +344,3 @@ class ComentarioDetailView(generics.ListAPIView):
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
-    
-class CursoDeleteView(generics.DestroyAPIView):
-    queryset = Curso.objects.all()
-    lookup_field = "id_curso" 
