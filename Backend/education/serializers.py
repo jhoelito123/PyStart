@@ -92,6 +92,42 @@ class SeccionSerializer(serializers.ModelSerializer):
 
         seccion.save()
         return seccion
+    
+    def update(self, instance, validated_data):
+        video_data = validated_data.pop('video_seccion', None)
+        if video_data is not None:
+            if instance.video_seccion: 
+                for attr, value in video_data.items():
+                    setattr(instance.video_seccion, attr, value)
+                instance.video_seccion.save()
+            else:
+                instance.video_seccion = Recurso.objects.create(**video_data)
+                
+        # --- Lógica para contenido_seccion ---
+        contenido_data = validated_data.pop('contenido_seccion', None)
+        if contenido_data is not None:
+            if instance.contenido_seccion:
+                for attr, value in contenido_data.items():
+                    setattr(instance.contenido_seccion, attr, value)
+                instance.contenido_seccion.save()
+            else:
+                instance.contenido_seccion = Recurso.objects.create(**contenido_data)
+
+        # --- Lógica para instruccion_ejecutor_seccion ---
+        instruccion_data = validated_data.pop('instruccion_ejecutor_seccion', None)
+        if instruccion_data is not None:
+            if instance.instruccion_ejecutor_seccion:
+                for attr, value in instruccion_data.items():
+                    setattr(instance.instruccion_ejecutor_seccion, attr, value)
+                instance.instruccion_ejecutor_seccion.save()
+            else:
+                instance.instruccion_ejecutor_seccion = Recurso.objects.create(**instruccion_data)
+
+        # --- Actualizar campos directos de la instancia de Seccion ---
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
 
 
 class ProvinciaSerializer(serializers.ModelSerializer):
