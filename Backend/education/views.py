@@ -318,3 +318,7 @@ class ComentarioDetailView(generics.ListAPIView):
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
+    
+class CursoDeleteView(generics.DestroyAPIView):
+    queryset = Curso.objects.all()
+    lookup_field = "id_curso" 
