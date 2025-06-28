@@ -11,7 +11,7 @@ class AIService:
             raise Exception("GROQ_API_KEY no está configurada en el archivo .env")
         
         self.client = None  # Inicializaremos cuando sea necesario
-        self.model = "llama-3-8b-8192"  # Modelo gratis disponible
+        self.model = "llama3-8b-8192"  # Modelo gratis disponible
 
     def _get_client(self):
         """Inicializa el cliente de Groq solo cuando se necesita"""
