@@ -167,6 +167,10 @@ class CursoDetailView(generics.RetrieveAPIView):
     queryset = Curso.objects.all()
     serializer_class = CursoDetalleSerializer
 
+class CursoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Curso.objects.all()
+    serializer_class = CursoSerializer
+    lookup_field = "id_curso" 
 
 class InscripcionCursoCreateView(generics.CreateAPIView):
     queryset = InscripcionCurso.objects.all()
@@ -332,6 +336,3 @@ class ComentarioDetailView(generics.ListAPIView):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
     
-class CursoDeleteView(generics.DestroyAPIView):
-    queryset = Curso.objects.all()
-    lookup_field = "id_curso" 
