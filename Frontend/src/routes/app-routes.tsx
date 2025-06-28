@@ -14,6 +14,7 @@ import RegisterQuizPage from '../features/quizzes/pages/register-quiz';
 import ShowQuiz from '../features/quizzes/pages/show-quiz';
 import RegisterStudentPage from '../features/student/pages/register-student';
 import { Home } from '../features/home/home';
+import GenerateCertificate from '../features/certificate/pages/generate-certificate';
 
 export default function AppRoutes() {
   return (
@@ -55,6 +56,7 @@ export default function AppRoutes() {
               element={<ShowSectionPage />}
             />
             <Route path="show-quiz" element={<ShowQuiz />} />
+            <Route path="certificado" element={ <GenerateCertificate/> } />
           </Route>
         </Route>
       </Routes>
