@@ -31,7 +31,15 @@ class AIAssistantView(APIView):
             
             # Construir el prompt con contexto
             system_prompt = self._build_system_prompt(context)
-            messages = self._build_conversation_messages(system_prompt, conversation_history, user_message)
+            
+            # **NUEVA FUNCIONALIDAD**: Detectar si el usuario pregunta sobre errores y hacer análisis automático
+            code_analysis_result = None
+            if self._is_asking_about_code_errors(user_message) and context and context.get('exerciseCode'):
+                ai_service_instance = get_ai_service()
+                if ai_service_instance:
+                    code_analysis_result = ai_service_instance.analyze_python_code(context.get('exerciseCode', ''))
+            
+            messages = self._build_conversation_messages(system_prompt, conversation_history, user_message, code_analysis_result)
             
             # Usar el servicio de IA
             ai_response = ai_service.get_ai_response(messages, max_tokens=1000)
@@ -94,21 +102,48 @@ Usa este contexto para dar respuestas más específicas y relevantes."""
         
         return base_prompt
     
-    def _build_conversation_messages(self, system_prompt, history, current_message):
-        """Construye la lista de mensajes para la conversación."""
+    def _is_asking_about_code_errors(self, message):
+        """Detecta si el usuario está preguntando sobre errores en el código."""
+        message_lower = message.lower()
+        
+        error_keywords = [
+            'error', 'errores', 'problema', 'problemas', 'falla', 'fallas',
+            'no funciona', 'mal', 'incorrecto', 'bug', 'debugg', 'revisar',
+            'qué está mal', 'qué pasa', 'por qué no', 'funciona mal'
+        ]
+        
+        return any(keyword in message_lower for keyword in error_keywords)
+    
+    def _build_conversation_messages(self, system_prompt, history, current_message, code_analysis=None):
+        """Construye la lista de mensajes para la conversación, incluyendo análisis de código si está disponible."""
         
         messages = [{"role": "system", "content": system_prompt}]
         
-        # Añadir historial de conversación (limitado a los últimos 5 intercambios)
-        for msg in history[-5:]:
-            if msg.get('sender') == 'user':
-                messages.append({"role": "user", "content": msg.get('content', '')})
-            elif msg.get('sender') == 'ai':
-                messages.append({"role": "assistant", "content": msg.get('content', '')})
+        # Agregar historial de conversación
+        for msg in history[-10:]:  # Últimos 10 mensajes para no sobrecargar
+            role = "user" if msg.get('sender') == 'user' else "assistant"
+            messages.append({"role": role, "content": msg.get('content', '')})
         
-        # Añadir mensaje actual
-        messages.append({"role": "user", "content": current_message})
+        # Si hay análisis de código automático, incluirlo en el mensaje del usuario
+        final_user_message = current_message
+        if code_analysis and code_analysis.get('has_issues'):
+            analysis_info = "\\n\\n[ANÁLISIS AUTOMÁTICO DEL CÓDIGO DETECTADO]\\n"
+            
+            if code_analysis.get('errors'):
+                analysis_info += "ERRORES ENCONTRADOS:\\n"
+                for error in code_analysis['errors']:
+                    analysis_info += f"- {error['type']} en línea {error['line']}: {error['message']}\\n"
+            
+            if code_analysis.get('warnings'):
+                analysis_info += "ADVERTENCIAS ENCONTRADAS:\\n"
+                for warning in code_analysis['warnings']:
+                    analysis_info += f"- {warning['type']} en línea {warning['line']}: {warning['message']}\\n"
+                    if 'suggestion' in warning:
+                        analysis_info += f"  Sugerencia: {warning['suggestion']}\\n"
+            
+            final_user_message += analysis_info
         
+        messages.append({"role": "user", "content": final_user_message})
         return messages
 
 
@@ -119,8 +154,9 @@ class AICodeAnalysisView(APIView):
     
     def post(self, request, *args, **kwargs):
         try:
+            # Obtener datos de la request
             code = request.data.get('code', '')
-            analysis_type = request.data.get('type', 'general')
+            analysis_type = request.data.get('type', 'debug')
             
             if not code:
                 return Response(
@@ -128,49 +164,81 @@ class AICodeAnalysisView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
-            # Prompts específicos según el tipo de análisis
-            prompts = {
-                'debug': "Analiza este código Python y encuentra posibles errores o problemas. Explica qué está mal y cómo corregirlo:",
-                'optimize': "Analiza este código Python y sugiere mejoras en términos de eficiencia, legibilidad y mejores prácticas:",
-                'explain': "Explica línea por línea qué hace este código Python de manera educativa:",
-                'general': "Analiza este código Python y proporciona feedback general incluyendo posibles errores, mejoras y explicaciones:"
-            }
-            
-            prompt = prompts.get(analysis_type, prompts['general'])
-            
-            messages = [
-                {
-                    "role": "system", 
-                    "content": "Eres un experto instructor de Python. Proporciona análisis claros y educativos del código en español."
-                },
-                {
-                    "role": "user", 
-                    "content": f"{prompt}\n\n```python\n{code}\n```"
-                }
-            ]
-            
+            # Obtener servicio de IA
             ai_service = get_ai_service()
             if not ai_service:
                 return Response(
-                    {"analysis": "El servicio de IA no está disponible. Verifica tu configuración GROQ_API_KEY.", 
-                     "code": code, "type": analysis_type, "success": False}, 
+                    {"analysis": "El servicio de IA no está disponible.", "success": False}, 
                     status=status.HTTP_200_OK
                 )
             
-            analysis = ai_service.get_ai_response(messages, max_tokens=800)
+            # Análisis automático de código Python
+            code_analysis = ai_service.analyze_python_code(code)
+            
+            # Construir prompt para IA basado en el análisis
+            if code_analysis['has_issues']:
+                issues_text = "ERRORES DETECTADOS:\n"
+                for error in code_analysis['errors']:
+                    issues_text += f"- {error['type']} en línea {error['line']}: {error['message']}\n"
+                
+                for warning in code_analysis['warnings']:
+                    issues_text += f"- {warning['type']} en línea {warning['line']}: {warning['message']}\n"
+                    if 'suggestion' in warning:
+                        issues_text += f"  Sugerencia: {warning['suggestion']}\n"
+                
+                prompt = f"""Analiza este código Python y ayuda al estudiante:
+
+CÓDIGO:
+```python
+{code}
+```
+
+{issues_text}
+
+Proporciona:
+1. Explicación clara de los errores encontrados
+2. Cómo corregirlos paso a paso
+3. Código corregido
+4. Mejores prácticas relevantes
+
+Mantén la explicación educativa y alentadora."""
+            else:
+                # Si no hay errores, hacer análisis según el tipo
+                type_prompts = {
+                    'debug': 'Revisa si hay errores potenciales o mejoras en este código:',
+                    'optimize': 'Sugiere optimizaciones para este código:',
+                    'explain': 'Explica paso a paso cómo funciona este código:',
+                    'general': 'Haz un análisis general de este código:'
+                }
+                
+                prompt = f"""{type_prompts.get(analysis_type, type_prompts['general'])}
+
+```python
+{code}
+```
+
+Proporciona una respuesta educativa y constructiva."""
+            
+            # Obtener respuesta de IA
+            messages = [
+                {"role": "system", "content": "Eres un experto profesor de Python que ayuda a estudiantes a mejorar su código."},
+                {"role": "user", "content": prompt}
+            ]
+            
+            ai_response = ai_service.get_ai_response(messages, max_tokens=1500)
             
             return Response({
-                "analysis": analysis,
+                "analysis": ai_response,
                 "code": code,
                 "type": analysis_type,
+                "automatic_analysis": code_analysis,
                 "success": True,
                 "provider": "groq"
             }, status=status.HTTP_200_OK)
             
         except Exception as e:
-            logger.error(f"Error en análisis de código: {e}")
+            logger.error(f"Error en AICodeAnalysisView: {e}")
             return Response(
-                {"analysis": "Lo siento, no pude analizar el código en este momento. Verifica tu configuración de IA.", 
-                 "code": code, "type": analysis_type, "success": False}, 
+                {"analysis": "Lo siento, no pude analizar el código en este momento.", "success": False}, 
                 status=status.HTTP_200_OK
             )
