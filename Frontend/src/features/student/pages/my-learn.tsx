@@ -16,7 +16,7 @@ export default function MyLearnPage() {
     loading,
     error,
   } = useFetchData<CursoProgreso[]>(
-    `${API_URL}/education/progreso-estudiante/1/`,
+    `${API_URL}/education/progreso-estudiante/1/`, // Obtener esto del usuario autenticado
   );
 
   if (loading) return <p className="p-4">Cargando progreso...</p>;

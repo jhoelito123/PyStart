@@ -1,10 +1,11 @@
-// src/components/card-full-info-course.tsx
 import React, { useState } from 'react';
 import { Button } from '../../../components';
 import IconHour from '../icons/hour';
 import IconCode from '../icons/code';
 import IconQuizz from '../icons/quizz';
 import { CourseSectionsList } from './section-course';
+import Swal from 'sweetalert2';
+import { postData } from '../../../services/api-service';
 
 type Props = {
   course: number;
@@ -47,6 +48,43 @@ export const CardShowCourse: React.FC<Props> = ({
     'general' | 'syllabus' | 'requirements'
   >('general');
 
+  const handleEnroll = async () => {
+    const payload = {
+      estudiante_inscripcion: 1, // Obtener esto del usuario autenticado
+      curso_inscripcion: course,
+    };
+    console.log(payload);
+    try {
+      Swal.fire({
+        title: 'Inscribiendo...',
+        text: 'Por favor espera',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      await postData('/education/inscribirse/', payload);
+
+      Swal.close();
+
+      Swal.fire({
+        icon: 'success',
+        title: '¡Inscripción exitosa!',
+        text: 'Te has inscrito correctamente en el curso.',
+      }).then(() => {
+        window.location.reload();
+      });
+    } catch (err) {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error inesperado',
+        text: 'No se pudo completar la inscripción. Intenta más tarde.',
+      });
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto rounded-xl shadow-md overflow-hidden">
       <div className="bg-emerald-500 h-6 w-full rounded-t-2xl" />
@@ -69,7 +107,7 @@ export const CardShowCourse: React.FC<Props> = ({
           <h1 className="text-2xl font-bold mt-2 text-slate-900">{title}</h1>
           <p className="body-md py-2">Inscríbete al curso:</p>
 
-          <Button label="Empieza ya" className="w-36" />
+          <Button label="Empieza ya" className="w-36" onClick={handleEnroll} />
 
           <div className="mt-6">
             <div className="grid gap-4 border-b mb-4 border-neutral-300 grid-cols-3">
