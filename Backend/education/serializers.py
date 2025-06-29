@@ -93,6 +93,44 @@ class SeccionSerializer(serializers.ModelSerializer):
         seccion.save()
         return seccion
 
+    def update(self, instance, validated_data):
+        video_data = validated_data.pop("video_seccion", None)
+        if video_data is not None:
+            if instance.video_seccion:
+                for attr, value in video_data.items():
+                    setattr(instance.video_seccion, attr, value)
+                instance.video_seccion.save()
+            else:
+                instance.video_seccion = Recurso.objects.create(**video_data)
+
+        # --- Lógica para contenido_seccion ---
+        contenido_data = validated_data.pop("contenido_seccion", None)
+        if contenido_data is not None:
+            if instance.contenido_seccion:
+                for attr, value in contenido_data.items():
+                    setattr(instance.contenido_seccion, attr, value)
+                instance.contenido_seccion.save()
+            else:
+                instance.contenido_seccion = Recurso.objects.create(**contenido_data)
+
+        # --- Lógica para instruccion_ejecutor_seccion ---
+        instruccion_data = validated_data.pop("instruccion_ejecutor_seccion", None)
+        if instruccion_data is not None:
+            if instance.instruccion_ejecutor_seccion:
+                for attr, value in instruccion_data.items():
+                    setattr(instance.instruccion_ejecutor_seccion, attr, value)
+                instance.instruccion_ejecutor_seccion.save()
+            else:
+                instance.instruccion_ejecutor_seccion = Recurso.objects.create(
+                    **instruccion_data
+                )
+
+        # --- Actualizar campos directos de la instancia de Seccion ---
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+
 
 class ProvinciaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -182,6 +220,20 @@ class InscripcionCursoSerializer(serializers.ModelSerializer):
         return data
 
 
+class ProgresoInscripcionSerializer(serializers.ModelSerializer):
+    nombre_curso = serializers.CharField(source="curso_inscripcion.nombre_curso")
+
+    class Meta:
+        model = InscripcionCurso
+        fields = [
+            "id_inscripcion",
+            "nombre_curso",
+            "porcentaje_progreso",
+            "completado",
+            "fecha_inscripcion",
+        ]
+
+
 class SeccionesParaCursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seccion
@@ -215,26 +267,29 @@ class CursoDetalleSerializer(serializers.ModelSerializer):
             "secciones",
         ]
 
+
 class PreguntaQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreguntaQuiz
-        fields = ['pregunta', 'opciones', 'opcion_correcta']
+        fields = ["pregunta", "opciones", "opcion_correcta"]
+
 
 class QuizSerializer(serializers.ModelSerializer):
     preguntas = PreguntaQuizSerializer(many=True)
-    
+
     class Meta:
         model = Quiz
-        fields = ['nombre_quiz', 'curso', 'puntaje_quiz', 'preguntas']
-    
+        fields = ["nombre_quiz", "curso", "puntaje_quiz", "preguntas"]
+
     def create(self, validated_data):
-        preguntas_data = validated_data.pop('preguntas')
+        preguntas_data = validated_data.pop("preguntas")
         quiz = Quiz.objects.create(**validated_data)
-        
+
         for pregunta_data in preguntas_data:
             PreguntaQuiz.objects.create(quiz=quiz, **pregunta_data)
-        
+
         return quiz
+
 
 class FeedbackSerializer(serializers.ModelSerializer):
     from_seccion = serializers.PrimaryKeyRelatedField(queryset=Seccion.objects.all())

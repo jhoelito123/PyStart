@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Usuario, Admin, Docente, Estudiante, TipoUsuario
-from education.models import Institucion, EstudianteInstitucion
+from education.models import Institucion, EstudianteInstitucion, InscripcionCurso
 
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -223,3 +223,14 @@ class LoginSerializer(serializers.Serializer):
             )
 
         return data
+
+
+class EstudianteDetailByCoursesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Estudiante
+        fields = [
+            "id_estudiante",
+            "nombre_estudiante",
+            "apellidos_estudiante",
+            "ci_estudiante",
+        ]

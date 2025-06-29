@@ -89,7 +89,6 @@ export default function ShowSectionPage() {
         code={seccion.instruccion_ejecutor_seccion.texto_recurso || ''}
         onCodeChange={setCurrentCode}
       />
-      <FeedbackList id_seccion={seccion.id_seccion} />
       <div className="flex justify-between mt-10">
         <Button
           label="Anterior"
@@ -126,6 +125,7 @@ export default function ShowSectionPage() {
       ) : (
         <AIIcon onClick={() => setShowAIAssistant(true)} />
       )}
+      <FeedbackList id_seccion={seccion.id_seccion} />
     </div>
   );
 }

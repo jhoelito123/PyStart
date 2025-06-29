@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from rest_framework.exceptions import NotFound
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .models import Admin, Docente, Estudiante, Usuario
+from education.models import InscripcionCurso
 from django.utils import timezone
 from .serializers import (
     LoginSerializer,
@@ -12,6 +14,7 @@ from .serializers import (
     DocenteDetailSerializer,
     EstudianteCreateSerializer,
     EstudianteDetailSerializer,
+    EstudianteDetailByCoursesSerializer,
 )
 
 
@@ -72,3 +75,20 @@ class LoginView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class EstudiantesPorCursoView(generics.ListAPIView):
+    serializer_class = EstudianteDetailByCoursesSerializer
+
+    def get_queryset(self):
+        curso_id = self.kwargs.get("curso_id")
+        resultado = []
+
+        inscripciones = InscripcionCurso.objects.filter(curso_inscripcion_id=curso_id)
+        if not inscripciones.exists():
+            raise NotFound("No hay estudiantes inscritos en este curso.")
+
+        for insc in inscripciones:
+            estudiante = insc.estudiante_inscripcion
+            resultado.append(estudiante)
+        return resultado
