@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import IconBefore from '../../../components/icons/before';
 import IconNext from '../../../components/icons/next';
 import { FeedbackList } from '../components/feedback-list';
+import { AIAssistant } from '../../ai';
+import AIIcon from '../../../components/icons/ia-icon';
 
 type Recurso = {
   nombre_recurso: string;
@@ -30,6 +32,8 @@ export default function ShowSectionPage() {
   const { id_section } = useParams();
   const navigate = useNavigate();
   const [seccionesCurso, setSeccionesCurso] = useState<Seccion[]>([]);
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [currentCode, setCurrentCode] = useState<string>(''); 
 
   const {
     data: seccion,
@@ -59,8 +63,22 @@ export default function ShowSectionPage() {
   const seccionAnterior = seccionesCurso[currentIndex - 1];
   const seccionSiguiente = seccionesCurso[currentIndex + 1];
 
+  const courseContext = seccion
+    ? {
+        courseName: `Curso de Python - Sección ${currentIndex + 1}`,
+        sectionName: seccion.nombre_seccion,
+        sectionDescription: seccion.descripcion_seccion,
+        exerciseCode:
+          currentCode ||
+          seccion.instruccion_ejecutor_seccion.texto_recurso ||
+          '',
+        exerciseInstructions:
+          seccion.instruccion_ejecutor_seccion.nombre_recurso || '',
+      }
+    : undefined;
+
   return (
-    <div className="min-h-screen px-10">
+    <div className="min-h-screen px-10 relative">
       <CardShowSection
         title={seccion.nombre_seccion}
         codeInstruction={seccion.instruccion_ejecutor_seccion.nombre_recurso}
@@ -69,6 +87,7 @@ export default function ShowSectionPage() {
           seccion.contenido_seccion.texto_recurso || seccion.descripcion_seccion
         }
         code={seccion.instruccion_ejecutor_seccion.texto_recurso || ''}
+        onCodeChange={setCurrentCode}
       />
       <div className="flex justify-between mt-10">
         <Button
@@ -96,6 +115,16 @@ export default function ShowSectionPage() {
           }
         />
       </div>
+
+      {/* Aqui es donde muestra la ia */}
+      {showAIAssistant ? (
+        <AIAssistant
+          courseContext={courseContext}
+          onClose={() => setShowAIAssistant(false)}
+        />
+      ) : (
+        <AIIcon onClick={() => setShowAIAssistant(true)} />
+      )}
       <FeedbackList id_seccion={seccion.id_seccion} />
     </div>
   );

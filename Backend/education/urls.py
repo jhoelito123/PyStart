@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import SeccionViewSet, QuizCreateView
 from . import views
+from .ai_views import AIAssistantView, AICodeAnalysisView
 
 router = DefaultRouter()
 router.register(r"secciones", SeccionViewSet, basename="seccion")
@@ -85,5 +86,16 @@ urlpatterns = [
         "comentarios/curso/<int:curso_id>/",
         views.ComentarioDetailView.as_view(),
         name="comentarios-por-curso",
+    ),
+    # endpoints para la ia
+    path(
+        "ai-assistant/",
+        AIAssistantView.as_view(),
+        name="ai-assistant"
+    ),
+    path(
+        "ai-code-analysis/",
+        AICodeAnalysisView.as_view(),
+        name="ai-code-analysis"
     ),
 ]
