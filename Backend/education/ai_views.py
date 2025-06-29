@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 import logging
-from .ai_service import get_ai_service
+from .ai_service_isolated import get_ai_service 
 
 logger = logging.getLogger(__name__)
 
