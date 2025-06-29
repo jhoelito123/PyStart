@@ -82,7 +82,6 @@ export const AIAssistant: React.FC<AIAssistantProps> = ({
               loading="lazy"
             />
             <h3 className="font-semibold">Asistente IA</h3>
-            <span className="text-xs opacity-80">Powered by Groq</span>
           </div>
           <button
             onClick={onClose}
