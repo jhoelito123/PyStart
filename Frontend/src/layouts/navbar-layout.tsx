@@ -146,6 +146,14 @@ export default function NavbarLayout() {
                           Cursos
                         </Link>
                       </li>
+                      <li>
+                        <Link
+                          to="/student/my-learn"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Mi aprendizaje
+                        </Link>
+                      </li>
                     </>
                   )}
                 </ul>

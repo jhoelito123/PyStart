@@ -19,7 +19,7 @@ export const CommentCard = ({ comment }: { comment: Comment }) => {
     <div className="bg-white rounded-lg shadow-md p-4 border border-neutral-200 mb-4">
       <div className="flex justify-between items-center mb-2">
         <h4 className="text-blue-600 font-semibold">
-          Usuario {comment.autor_comentario}
+          {comment.autor_comentario}
         </h4>
         <span className="text-sm text-gray-500">{fechaFormateada}</span>
       </div>
