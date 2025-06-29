@@ -93,11 +93,11 @@ export default function Navbar({
             </Link>
           </li>
           <li
-            className={`${location.pathname === '/student/my-courses' ? 'text-emerald-500' : 'text-white'}`}
+            className={`${location.pathname === '/student/my-learn' ? 'text-emerald-500' : 'text-white'}`}
             ref={adminMenuRef}
           >
             <Link
-              to="/student/my-courses"
+              to="/student/my-learn"
               className="hover:text-emerald-600 subtitle-sm"
             >
               Mi aprendizaje
