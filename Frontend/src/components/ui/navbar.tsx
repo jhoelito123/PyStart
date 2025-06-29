@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import IconLanguage from '../icons/language';
 import { Button } from './button';
 import IconBell from '../icons/bell';
-import DropdownMenu from './dropdown-menu';
 import { useEffect, useState } from 'react';
 
 type NavbarProps = {
@@ -82,7 +81,7 @@ export default function Navbar({
             </Link>
           </li>
           <li
-            className={`${location.pathname === '/student/course' ? 'text-emerald-500' : 'text-white'}`}
+            className={`${location.pathname === '/student/courses' ? 'text-emerald-500' : 'text-white'}`}
             ref={adminMenuRef}
           >
             <Link
@@ -154,6 +153,17 @@ export default function Navbar({
               className="hover:text-emerald-600 subtitle-sm"
             >
               Registrar Quizz
+            </Link>
+          </li>
+          <li
+            className={`${location.pathname === '/teacher/courses' ? 'text-emerald-500' : 'text-white'}`}
+            ref={adminMenuRef}
+          >
+            <Link
+              to="/teacher/courses"
+              className="hover:text-emerald-600 subtitle-sm"
+            >
+              Cursos
             </Link>
           </li>
           <Button

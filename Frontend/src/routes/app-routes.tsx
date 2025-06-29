@@ -16,6 +16,8 @@ import RegisterStudentPage from '../features/student/pages/register-student';
 import { Home } from '../features/home/home';
 import MyLearnPage from '../features/student/pages/my-learn';
 import GenerateCertificate from '../features/certificate/pages/generate-certificate';
+import CoursesTeacherPage from '../features/teacher/pages/courses-teacher';
+import StudentsByCoursePage from '../features/teacher/pages/show-students';
 
 export default function AppRoutes() {
   return (
@@ -40,6 +42,12 @@ export default function AppRoutes() {
           <Route path="/teacher">
             <Route index element={<Home />} />
             <Route path="register-course" element={<RegisterCoursePage />} />
+            <Route path="courses" element={<CoursesTeacherPage />} />
+            <Route
+              path="course/:id/students"
+              element={<StudentsByCoursePage />}
+            />
+
             <Route
               path="register-section-course"
               element={<RegisterSectionCoursePage />}
@@ -58,7 +66,7 @@ export default function AppRoutes() {
             />
             <Route path="show-quiz" element={<ShowQuiz />} />
             <Route path="my-learn" element={<MyLearnPage />} />
-            <Route path="certificado" element={ <GenerateCertificate/> } />
+            <Route path="certificado" element={<GenerateCertificate />} />
           </Route>
         </Route>
       </Routes>
