@@ -142,5 +142,5 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# IA Configuration - GROQ (GRATIS - 30,000 tokens/min)
+# IA Configuration 
 GROQ_API_KEY = os.getenv('GROQ_API_KEY', None)
