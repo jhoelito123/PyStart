@@ -24,9 +24,9 @@ const Certificate: React.FC<CertificateProps> = ({
     courseName: "________________________________",
     duration: 0,
     deanName: "Lic. Andrea Quelali",
-    deanTitle: "SEO de la Empresa mieee xd",
+    deanTitle: "Directora Ejecutiva",
     vicePresidentName: "Sr. Adam Mamani", 
-    vicePresidentTitle: "Gerente DevMente Company",
+    vicePresidentTitle: "Fundador",
     location: "COCHABAMBA-BOLIVIA",
     backgroundImage: "https://w0.peakpx.com/wallpaper/658/609/HD-wallpaper-python-glitter-logo-programming-language-grid-metal-background-python-creative-programming-language-signs-python-logo.jpg"
   }
@@ -90,7 +90,7 @@ const Certificate: React.FC<CertificateProps> = ({
           <div className="mt-7 flex justify-between">
             <div className="text-center">
                 <img 
-                    src="../public/images/firmaAJM.png" 
+                    src="../public/images/firmaALQQ.png" 
                     alt="Vice President Signature" 
                     className="h-14 mx-auto -mb-3.5 object-contain"
                 />
