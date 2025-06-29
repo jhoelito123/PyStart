@@ -70,7 +70,6 @@ export default function ShowSectionPage() {
         }
         code={seccion.instruccion_ejecutor_seccion.texto_recurso || ''}
       />
-      <FeedbackList id_seccion={seccion.id_seccion} />
       <div className="flex justify-between mt-10">
         <Button
           label="Anterior"
@@ -97,6 +96,7 @@ export default function ShowSectionPage() {
           }
         />
       </div>
+      <FeedbackList id_seccion={seccion.id_seccion} />
     </div>
   );
 }
