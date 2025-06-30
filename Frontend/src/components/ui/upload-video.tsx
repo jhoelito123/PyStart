@@ -5,6 +5,8 @@ import {
   FieldError,
   Path,
   UseFormSetValue,
+  useFormContext,
+  UseFormTrigger,
 } from 'react-hook-form';
 
 interface UploadVideoProps<T extends FieldValues> {
@@ -13,6 +15,7 @@ interface UploadVideoProps<T extends FieldValues> {
   setValue: UseFormSetValue<T>;
   error?: FieldError;
   currentVideo?: string;
+  trigger?: UseFormTrigger<T>; // <- así, con el tipo correcto
 }
 
 export const UploadVideo = <T extends FieldValues>({
@@ -21,6 +24,7 @@ export const UploadVideo = <T extends FieldValues>({
   setValue,
   error,
   currentVideo,
+  trigger, // <- desestructurado correctamente
 }: UploadVideoProps<T>) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(currentVideo || null);
@@ -32,23 +36,27 @@ export const UploadVideo = <T extends FieldValues>({
     }
   }, [currentVideo]);
 
-  const handleFile = (file: File | null) => {
+  const handleFile = async (file: File | null) => {
     if (!file) {
       setVideoUrl(currentVideo || null);
+      setValue(name, null as any);
+      if (trigger) await trigger(name);
       return;
     }
 
     if (!file.type.startsWith('video/')) {
       setFileError('Solo se permiten archivos de video (MP4, WebM, OGG, etc.)');
       setVideoUrl(currentVideo || null);
-      setValue(name, null as any, { shouldValidate: true });
+      setValue(name, null as any);
+      if (trigger) await trigger(name);
       return;
     }
 
     setFileError(null);
     const url = URL.createObjectURL(file);
     setVideoUrl(url);
-    setValue(name, [file] as any, { shouldValidate: true });
+    setValue(name, [file] as any);
+    if (trigger) await trigger(name); // validamos manualmente para que react-hook-form actualice su estado
   };
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -62,9 +70,9 @@ export const UploadVideo = <T extends FieldValues>({
     handleFile(file);
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    handleFile(file);
+    await handleFile(file);
   };
 
   const openFileDialog = () => {
@@ -106,12 +114,13 @@ export const UploadVideo = <T extends FieldValues>({
               if (currentVideo && (!fileList || fileList.length === 0)) {
                 return true;
               }
-              return fileList?.[0]?.type.startsWith('video/') ||
-                'Solo se permiten archivos de video (MP4, WebM, etc.)';
+              return (
+                fileList?.[0]?.type.startsWith('video/') ||
+                'Solo se permiten archivos de video (MP4, WebM, etc.)'
+              );
             },
           })}
           ref={(e) => {
-            register(name).ref(e);
             fileInputRef.current = e;
           }}
           onChange={handleInputChange}

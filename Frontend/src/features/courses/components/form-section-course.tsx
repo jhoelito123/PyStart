@@ -30,6 +30,7 @@ interface Curso extends Record<string, string | number> {
 export default function FormSectionCourse() {
   const {
     register,
+    trigger,
     handleSubmit,
     formState: { errors, isValid },
     setValue,
@@ -288,6 +289,7 @@ export default function FormSectionCourse() {
                 name="section.video" 
                 register={register}
                 setValue={setValue}
+                trigger={trigger}
                 error={errors.section?.video}/>
             </div>
           </div>
