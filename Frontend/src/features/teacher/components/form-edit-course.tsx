@@ -95,7 +95,7 @@ export default function FormEditCourse() {
       };
 
       setOriginalData(initialData);
-      
+
       setValue('name', initialData.name);
       setValue('desc', initialData.desc);
       setValue('dateini', initialData.dateini);
@@ -109,7 +109,7 @@ export default function FormEditCourse() {
   // Detectar cambios comparando con los datos originales
   useEffect(() => {
     if (originalData && watchedFields) {
-      const hasAnyChanges = 
+      const hasAnyChanges =
         watchedFields.name !== originalData.name ||
         watchedFields.desc !== originalData.desc ||
         watchedFields.dateini !== originalData.dateini ||
@@ -154,7 +154,7 @@ export default function FormEditCourse() {
         confirmButtonColor: '#FF2162',
         cancelButtonColor: '#3257FF',
         confirmButtonText: 'Sí, actualizar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
       });
 
       if (!result.isConfirmed) {
@@ -171,7 +171,7 @@ export default function FormEditCourse() {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error al subir la imagen'
+            text: 'Error al subir la imagen',
           });
           setIsSubmitting(false);
           return;
@@ -192,23 +192,23 @@ export default function FormEditCourse() {
       };
 
       await axios.put(`${API_URL}/education/curso/options/${id}/`, payload);
-      
+
       await Swal.fire({
         icon: 'success',
         title: '¡Éxito!',
         text: 'Curso actualizado exitosamente',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
-      
+
       window.location.href = '/teacher/courses';
     } catch (error) {
       console.error('Error al actualizar:', error);
-      
+
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Error al actualizar el curso'
+        text: 'Error al actualizar el curso',
       });
     } finally {
       setIsSubmitting(false);
@@ -400,7 +400,7 @@ export default function FormEditCourse() {
                 confirmButtonColor: '#FF2162',
                 cancelButtonColor: '#3257FF',
                 confirmButtonText: 'Sí, cancelar',
-                cancelButtonText: 'Continuar editando'
+                cancelButtonText: 'Continuar editando',
               });
 
               if (result.isConfirmed) {
@@ -418,4 +418,4 @@ export default function FormEditCourse() {
       </form>
     </div>
   );
-} 
+}

@@ -111,7 +111,7 @@ export default function FormCourse() {
         text: 'El curso fue creado exitosamente.',
         showConfirmButton: false,
         timer: 2000,
-        timerProgressBar: true,      
+        timerProgressBar: true,
       }).then(() => {
         window.location.reload();
       });

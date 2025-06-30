@@ -179,27 +179,29 @@ class CursoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CursoSerializer
     lookup_field = "id_curso"
 
+
 class CursosPorDocenteView(generics.ListAPIView):
     serializer_class = CursoSerializer
 
     def get_queryset(self):
-        docente_id = self.kwargs['docente_id']
+        docente_id = self.kwargs["docente_id"]
         return Curso.objects.filter(profesor_curso_id=docente_id)
 
     def list(self, request, *args, **kwargs):
         try:
             # Verificar que el docente existe
-            docente_id = kwargs['docente_id']
+            docente_id = kwargs["docente_id"]
             Docente.objects.get(id_docente=docente_id)
-            
+
             queryset = self.get_queryset()
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data)
         except Docente.DoesNotExist:
             return Response(
                 {"error": f"Docente con id {docente_id} no encontrado."},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )
+
 
 class InscripcionCursoCreateView(generics.CreateAPIView):
     queryset = InscripcionCurso.objects.all()
@@ -221,9 +223,11 @@ class ProgresoPorEstudianteView(APIView):
         serializer = ProgresoInscripcionSerializer(inscripciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class ProgresoSeccionCreateView(generics.CreateAPIView):
     queryset = ProgresoSeccion.objects.all()
     serializer_class = ProgresoSeccionSerializer
+
 
 class QuizCreateView(generics.CreateAPIView):
     queryset = Quiz.objects.all()
@@ -239,28 +243,30 @@ class QuizDetail(generics.RetrieveAPIView):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
+
 class QuizPorCursoView(generics.ListAPIView):
     serializer_class = QuizSerializer
 
     def get_queryset(self):
-        curso_id = self.kwargs['curso_id']
-        return Quiz.objects.filter(curso_id=curso_id).prefetch_related('preguntas')
+        curso_id = self.kwargs["curso_id"]
+        return Quiz.objects.filter(curso_id=curso_id).prefetch_related("preguntas")
 
     def list(self, request, *args, **kwargs):
         try:
             # Verify the course exists
-            curso_id = kwargs['curso_id']
+            curso_id = kwargs["curso_id"]
             Curso.objects.get(id_curso=curso_id)
-            
+
             queryset = self.get_queryset()
             serializer = self.get_serializer(queryset, many=True)
             return Response(serializer.data)
         except Curso.DoesNotExist:
             return Response(
                 {"error": f"Curso con id {curso_id} no encontrado."},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )
-        
+
+
 class PreguntaList(generics.ListAPIView):
     serializer_class = PreguntaQuizSerializer
 
@@ -396,11 +402,13 @@ class ComentarioDetailView(generics.ListAPIView):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
 
+
 class CertificadoCreateView(generics.CreateAPIView):
     queryset = Certificado.objects.all()
     serializer_class = CertificadoSerializer
 
+
 class CertificadoInscripcionDetailView(generics.RetrieveAPIView):
     queryset = InscripcionCurso.objects.all()
     serializer_class = CertificadoInscripcionSerializer
-    lookup_field = 'id_inscripcion'
+    lookup_field = "id_inscripcion"

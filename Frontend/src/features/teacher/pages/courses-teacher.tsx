@@ -7,7 +7,7 @@ import { getCurrentUser } from '../../auth/services/auth.service';
 import Swal from 'sweetalert2';
 
 const user = getCurrentUser();
-console.log(user)
+console.log(user);
 const docenteId = user?.profile_data?.id_docente;
 
 if (!docenteId) {
@@ -36,7 +36,9 @@ export default function CoursesTeacherPage() {
     data: cursos,
     loading,
     error,
-  } = useFetchData<Curso[]>(`${API_URL}/education/docentes/${docenteId}/cursos`); //actualizar para que sea dinamico
+  } = useFetchData<Curso[]>(
+    `${API_URL}/education/docentes/${docenteId}/cursos`,
+  ); //actualizar para que sea dinamico
 
   const cursosFiltrados = cursos?.filter((curso) =>
     curso.nombre_curso.toLowerCase().includes(query.toLowerCase()),

@@ -50,18 +50,12 @@ export default function AppRoutes() {
               path="course/:id/students"
               element={<StudentsByCoursePage />}
             />
-            <Route
-              path="course/:id/edit"
-              element={<EditCoursePage />}
-            />
+            <Route path="course/:id/edit" element={<EditCoursePage />} />
             <Route
               path="course/:id/sections"
               element={<ShowCourseSectionsPage />}
             />
-            <Route
-              path="section/:id/edit"
-              element={<EditSectionPage />}
-            />
+            <Route path="section/:id/edit" element={<EditSectionPage />} />
 
             <Route
               path="register-section-course"

@@ -13,7 +13,7 @@ type Feedback = {
 export const FeedbackCard = ({ feedback }: { feedback: Feedback }) => {
   const fechaFormateada = format(
     new Date(feedback.fecha_feedback),
-    'dd/MM/yyyy HH:mm'
+    'dd/MM/yyyy HH:mm',
   );
 
   return (

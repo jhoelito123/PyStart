@@ -167,14 +167,23 @@ class InscripcionCurso(models.Model):
         if nuevo_porcentaje >= 100:
             self.completado = True
         else:
-            self.completado = False # Si el porcentaje baja de 100, no debería estar 'completado'
+            self.completado = (
+                False  # Si el porcentaje baja de 100, no debería estar 'completado'
+            )
 
-        if (self.porcentaje_progreso != original_porcentaje or
-            self.completado != original_completado):
+        if (
+            self.porcentaje_progreso != original_porcentaje
+            or self.completado != original_completado
+        ):
             self.save(update_fields=["porcentaje_progreso", "completado"])
-            print(f"DEBUG: Inscripción {self.id_inscripcion} actualizada. Nuevo porcentaje: {self.porcentaje_progreso}%, Completado: {self.completado}")
+            print(
+                f"DEBUG: Inscripción {self.id_inscripcion} actualizada. Nuevo porcentaje: {self.porcentaje_progreso}%, Completado: {self.completado}"
+            )
         else:
-            print(f"DEBUG: Inscripción {self.id_inscripcion} no necesita actualización. Porcentaje y estado completado sin cambios.")
+            print(
+                f"DEBUG: Inscripción {self.id_inscripcion} no necesita actualización. Porcentaje y estado completado sin cambios."
+            )
+
 
 class TipoRecurso(models.Model):
     id_tipo_recurso = models.AutoField(primary_key=True)
@@ -227,7 +236,11 @@ class Seccion(models.Model):
 
 class ProgresoSeccion(models.Model):
     id_progreso_seccion = models.AutoField(primary_key=True)
-    from_inscripcion = models.ForeignKey(InscripcionCurso, on_delete=models.CASCADE, related_name="progreso_de_inscripcion")
+    from_inscripcion = models.ForeignKey(
+        InscripcionCurso,
+        on_delete=models.CASCADE,
+        related_name="progreso_de_inscripcion",
+    )
     estudiante = models.ForeignKey(
         Estudiante, on_delete=models.CASCADE, related_name="progreso_secciones"
     )
@@ -246,12 +259,17 @@ class ProgresoSeccion(models.Model):
     def __str__(self):
         return f"Progreso de {self.estudiante.user_id.username_user} en {self.seccion.titulo_seccion}"
 
+
 class Certificado(models.Model):
     id_certificado = models.AutoField(primary_key=True)
-    certificado_de_inscripcion = models.ForeignKey(InscripcionCurso, on_delete=models.CASCADE, related_name="certificado_inscripcion")
+    certificado_de_inscripcion = models.ForeignKey(
+        InscripcionCurso,
+        on_delete=models.CASCADE,
+        related_name="certificado_inscripcion",
+    )
     fecha_emision_certificado = models.DateTimeField(auto_now_add=True)
     url_certificado = models.URLField()
-    
+
     class Meta:
         verbose_name = "Certificado"
         verbose_name_plural = "Certificados"
@@ -263,6 +281,7 @@ class Certificado(models.Model):
             return f"Certificado para {self.certificado_de_inscripcion.estudiante_inscripcion.nombre_estudiante} - {self.certificado_de_inscripcion.curso_inscripcion.nombre_curso}"
         except AttributeError:
             return f"Certificado #{self.id_certificado} - Inscripción {self.certificado_de_inscripcion.id_inscripcion_curso}"
+
 
 class Quiz(models.Model):
     id_quiz = models.AutoField(primary_key=True)
@@ -358,8 +377,9 @@ def progreso_seccion_creado_o_actualizado(sender, instance, created, **kwargs):
                 f"Curso: {inscripcion.curso_inscripcion.nombre_curso}. Error: {e}"
             )
     else:
-        print(f"Advertencia: ProgresoSeccion ID {instance.id_progreso_seccion} se creó sin una InscripcionCurso válida.")
-
+        print(
+            f"Advertencia: ProgresoSeccion ID {instance.id_progreso_seccion} se creó sin una InscripcionCurso válida."
+        )
 
 
 @receiver(post_delete, sender=ProgresoSeccion)
@@ -376,4 +396,6 @@ def progreso_seccion_eliminado(sender, instance, **kwargs):
                 f"Curso: {inscripcion.curso_inscripcion.nombre_curso}. Error: {e}"
             )
     else:
-        print(f"Advertencia: ProgresoSeccion ID {instance.id_progreso_seccion} se creó sin una InscripcionCurso válida.")
+        print(
+            f"Advertencia: ProgresoSeccion ID {instance.id_progreso_seccion} se creó sin una InscripcionCurso válida."
+        )

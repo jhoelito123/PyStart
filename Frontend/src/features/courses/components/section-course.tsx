@@ -28,63 +28,65 @@ export const CourseSectionsList = ({
 }: CourseSectionsListProps) => {
   const navigate = useNavigate();
 
- const completarSeccion = async (seccionId: number) => {
-  if (!estudianteId) {
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_URL}/education/progreso-secciones/completar/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        estudiante_id: estudianteId,
-        seccion_id: seccionId,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-
-      // Verificamos si el error es el de "ya existe"
-      const uniqueSetError = errorData?.non_field_errors?.find((msg: string) =>
-        msg.includes('must make a unique set')
-      );
-
-      if (uniqueSetError) {
-        // Lo ignoramos: ya estaba registrada, no pasa nada
-        console.warn('Sección ya estaba registrada como completada');
-        return;
-      }
-
-      // Si no era ese error, lo mostramos con Swal
-      const errorMsg =
-        typeof errorData === 'string'
-          ? errorData
-          : Object.values(errorData).flat().join('\n');
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al completar sección',
-        text: errorMsg || 'Ocurrió un error desconocido',
-      });
-
+  const completarSeccion = async (seccionId: number) => {
+    if (!estudianteId) {
       return;
     }
 
-    console.log('Sección completada correctamente');
+    try {
+      const response = await fetch(
+        `${API_URL}/education/progreso-secciones/completar/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            estudiante_id: estudianteId,
+            seccion_id: seccionId,
+          }),
+        },
+      );
 
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error de red',
-      text: 'No se pudo conectar con el servidor. Intenta de nuevo.',
-    });
-    console.error(error);
-  }
-};
+      if (!response.ok) {
+        const errorData = await response.json();
+
+        // Verificamos si el error es el de "ya existe"
+        const uniqueSetError = errorData?.non_field_errors?.find(
+          (msg: string) => msg.includes('must make a unique set'),
+        );
+
+        if (uniqueSetError) {
+          // Lo ignoramos: ya estaba registrada, no pasa nada
+          console.warn('Sección ya estaba registrada como completada');
+          return;
+        }
+
+        // Si no era ese error, lo mostramos con Swal
+        const errorMsg =
+          typeof errorData === 'string'
+            ? errorData
+            : Object.values(errorData).flat().join('\n');
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al completar sección',
+          text: errorMsg || 'Ocurrió un error desconocido',
+        });
+
+        return;
+      }
+
+      console.log('Sección completada correctamente');
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de red',
+        text: 'No se pudo conectar con el servidor. Intenta de nuevo.',
+      });
+      console.error(error);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -99,7 +101,9 @@ export const CourseSectionsList = ({
             onClick={async () => {
               if (!disabled) {
                 await completarSeccion(section.id_seccion);
-                navigate(`/student/course/${course}/section/${section.id_seccion}`);
+                navigate(
+                  `/student/course/${course}/section/${section.id_seccion}`,
+                );
               }
             }}
             title={disabled ? 'Debes estar inscrito para acceder' : ''}

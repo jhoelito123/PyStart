@@ -235,41 +235,42 @@ class ProgresoInscripcionSerializer(serializers.ModelSerializer):
             "fecha_inscripcion",
         ]
 
+
 class ProgresoSeccionSerializer(serializers.ModelSerializer):
 
     estudiante_id = serializers.PrimaryKeyRelatedField(
-        queryset=Estudiante.objects.all(), source='estudiante', write_only=True
+        queryset=Estudiante.objects.all(), source="estudiante", write_only=True
     )
     seccion_id = serializers.PrimaryKeyRelatedField(
-        queryset=Seccion.objects.all(), source='seccion', write_only=True
+        queryset=Seccion.objects.all(), source="seccion", write_only=True
     )
 
     class Meta:
         model = ProgresoSeccion
         fields = [
-            'id_progreso_seccion',
-            'estudiante_id', 
-            'seccion_id',
-            'from_inscripcion',
-            'fecha_completado'
+            "id_progreso_seccion",
+            "estudiante_id",
+            "seccion_id",
+            "from_inscripcion",
+            "fecha_completado",
         ]
         read_only_fields = [
-            'id_progreso_seccion',
-            'fecha_completado',
-            'from_inscripcion',
-            'estudiante', 
-            'seccion'
+            "id_progreso_seccion",
+            "fecha_completado",
+            "from_inscripcion",
+            "estudiante",
+            "seccion",
         ]
 
     def create(self, validated_data):
-        estudiante = validated_data.pop('estudiante')
-        seccion = validated_data.pop('seccion')
+        estudiante = validated_data.pop("estudiante")
+        seccion = validated_data.pop("seccion")
 
         # Buscamos la InscripcionCurso que coincida con el estudiante y el curso de la sección
         try:
             inscripcion = InscripcionCurso.objects.get(
                 estudiante_inscripcion=estudiante,
-                curso_inscripcion=seccion.seccion_del_curso
+                curso_inscripcion=seccion.seccion_del_curso,
             )
         except InscripcionCurso.DoesNotExist:
             raise serializers.ValidationError(
@@ -287,19 +288,25 @@ class ProgresoSeccionSerializer(serializers.ModelSerializer):
 
     # Validar que el estudiante no haya completado ya esta sección
     def validate(self, data):
-        estudiante = data.get('estudiante')
-        seccion = data.get('seccion')
+        estudiante = data.get("estudiante")
+        seccion = data.get("seccion")
 
-        if ProgresoSeccion.objects.filter(estudiante=estudiante, seccion=seccion).exists():
+        if ProgresoSeccion.objects.filter(
+            estudiante=estudiante, seccion=seccion
+        ).exists():
             raise serializers.ValidationError(
-                {"detail": "Este estudiante ya ha marcado esta sección como completada."}
+                {
+                    "detail": "Este estudiante ya ha marcado esta sección como completada."
+                }
             )
         return data
+
 
 class SeccionesParaCursoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seccion
         fields = ["id_seccion", "nombre_seccion", "descripcion_seccion"]
+
 
 class PreguntaQuizSerializer(serializers.ModelSerializer):
     class Meta:
@@ -323,6 +330,7 @@ class QuizSerializer(serializers.ModelSerializer):
 
         return quiz
 
+
 class CursoDetalleSerializer(serializers.ModelSerializer):
     idioma = serializers.CharField(source="idioma_curso.idioma", read_only=True)
     dificultad = serializers.CharField(
@@ -334,6 +342,7 @@ class CursoDetalleSerializer(serializers.ModelSerializer):
     )
     secciones = SeccionesParaCursoSerializer(many=True, read_only=True)
     quizzes = QuizSerializer(many=True, read_only=True)
+
     class Meta:
         model = Curso
         fields = [
@@ -350,9 +359,6 @@ class CursoDetalleSerializer(serializers.ModelSerializer):
             "secciones",
             "quizzes",
         ]
-
-
-
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
@@ -448,58 +454,62 @@ class ComentarioDetailSerializer(serializers.ModelSerializer):
         model = Comentario
         fields = "__all__"
 
+
 class CertificadoSerializer(serializers.ModelSerializer):
     inscripcion_id = serializers.PrimaryKeyRelatedField(
         queryset=InscripcionCurso.objects.all(),
-        source='certificado_de_inscripcion',
+        source="certificado_de_inscripcion",
         write_only=True,
-        help_text="ID de la inscripción a la que pertenece este certificado."
+        help_text="ID de la inscripción a la que pertenece este certificado.",
     )
 
     class Meta:
         model = Certificado
         fields = [
-            'id_certificado',
-            'inscripcion_id',
-            'url_certificado',
-            'fecha_emision_certificado',
-            'certificado_de_inscripcion',
+            "id_certificado",
+            "inscripcion_id",
+            "url_certificado",
+            "fecha_emision_certificado",
+            "certificado_de_inscripcion",
         ]
         read_only_fields = [
-            'id_certificado',
-            'fecha_emision_certificado',
-            'certificado_de_inscripcion', 
+            "id_certificado",
+            "fecha_emision_certificado",
+            "certificado_de_inscripcion",
         ]
+
 
 class EstudianteLiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estudiante
-        fields = ['nombre_estudiante', 'apellidos_estudiante']
+        fields = ["nombre_estudiante", "apellidos_estudiante"]
+
 
 class CertificadoLiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certificado
         fields = "__all__"
 
+
 class CertificadoInscripcionSerializer(serializers.ModelSerializer):
-    estudiante = EstudianteLiteSerializer(source='estudiante_inscripcion', read_only=True)
-    curso = CursoSerializer(source='curso_inscripcion', read_only=True)
+    estudiante = EstudianteLiteSerializer(
+        source="estudiante_inscripcion", read_only=True
+    )
+    curso = CursoSerializer(source="curso_inscripcion", read_only=True)
 
     certificados = CertificadoLiteSerializer(
-        source='certificado_inscripcion',
-        many=True,
-        read_only=True
+        source="certificado_inscripcion", many=True, read_only=True
     )
 
     class Meta:
         model = InscripcionCurso
         fields = [
-            'id_inscripcion',
-            'estudiante', 
-            'curso',   
-            'certificados', 
-            'fecha_inscripcion',
-            'porcentaje_progreso',
-            'completado'
+            "id_inscripcion",
+            "estudiante",
+            "curso",
+            "certificados",
+            "fecha_inscripcion",
+            "porcentaje_progreso",
+            "completado",
         ]
         read_only_fields = fields

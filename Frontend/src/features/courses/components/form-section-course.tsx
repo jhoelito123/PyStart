@@ -146,7 +146,6 @@ export default function FormSectionCourse() {
       }).then(() => {
         window.location.reload();
       });
-
     } catch (err) {
       console.error('Error al registrar la sección:', err);
       Swal.close();
@@ -285,12 +284,13 @@ export default function FormSectionCourse() {
               />
             </div>
             <div className="grid grid-cols-1 lg:gap-9 mb-6">
-              <UploadVideo 
-                name="section.video" 
+              <UploadVideo
+                name="section.video"
                 register={register}
                 setValue={setValue}
                 trigger={trigger}
-                error={errors.section?.video}/>
+                error={errors.section?.video}
+              />
             </div>
           </div>
         </div>

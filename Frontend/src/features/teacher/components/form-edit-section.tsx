@@ -54,7 +54,7 @@ export default function FormEditSection() {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
     setValue,
     watch,
   } = useForm<FormData>({
@@ -104,30 +104,36 @@ export default function FormEditSection() {
       try {
         const response = await getData(`/education/secciones/${id}/`);
         setSectionData(response);
-        
+
         const initialData = {
           section: {
             title: response.nombre_seccion,
             description: response.descripcion_seccion,
             explanation: response.contenido_seccion?.texto_recurso || '',
-            codeExecutorInstruction: response.instruccion_ejecutor_seccion?.nombre_recurso || '',
+            codeExecutorInstruction:
+              response.instruccion_ejecutor_seccion?.nombre_recurso || '',
             video: null,
           },
         };
 
         setOriginalData(initialData);
-        setCodigoEjecutor(response.instruccion_ejecutor_seccion?.texto_recurso || '');
-        
+        setCodigoEjecutor(
+          response.instruccion_ejecutor_seccion?.texto_recurso || '',
+        );
+
         setValue('section.title', initialData.section.title);
         setValue('section.description', initialData.section.description);
         setValue('section.explanation', initialData.section.explanation);
-        setValue('section.codeExecutorInstruction', initialData.section.codeExecutorInstruction);
+        setValue(
+          'section.codeExecutorInstruction',
+          initialData.section.codeExecutorInstruction,
+        );
       } catch (error) {
         console.error('Error al obtener la sección:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se pudo cargar la información de la sección'
+          text: 'No se pudo cargar la información de la sección',
         });
       }
     };
@@ -140,13 +146,17 @@ export default function FormEditSection() {
   // Detectar cambios comparando con los datos originales
   useEffect(() => {
     if (originalData && watchedFields) {
-      const hasAnyChanges = 
+      const hasAnyChanges =
         watchedFields.section.title !== originalData.section.title ||
-        watchedFields.section.description !== originalData.section.description ||
-        watchedFields.section.explanation !== originalData.section.explanation ||
-        watchedFields.section.codeExecutorInstruction !== originalData.section.codeExecutorInstruction ||
+        watchedFields.section.description !==
+          originalData.section.description ||
+        watchedFields.section.explanation !==
+          originalData.section.explanation ||
+        watchedFields.section.codeExecutorInstruction !==
+          originalData.section.codeExecutorInstruction ||
         watchedFields.section.video !== null ||
-        codigoEjecutor !== (sectionData?.instruccion_ejecutor_seccion?.texto_recurso || '');
+        codigoEjecutor !==
+          (sectionData?.instruccion_ejecutor_seccion?.texto_recurso || '');
 
       setHasChanges(hasAnyChanges);
     }
@@ -162,7 +172,7 @@ export default function FormEditSection() {
         confirmButtonColor: '#FF2162',
         cancelButtonColor: '#3257FF',
         confirmButtonText: 'Sí, actualizar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
       });
 
       if (!result.isConfirmed) {
@@ -187,7 +197,7 @@ export default function FormEditSection() {
           Swal.fire({
             icon: 'error',
             title: 'Error al subir el video',
-            text: 'No se pudo obtener la URL del video. Intenta nuevamente.'
+            text: 'No se pudo obtener la URL del video. Intenta nuevamente.',
           });
           setIsSubmitting(false);
           return;
@@ -227,26 +237,26 @@ export default function FormEditSection() {
         title: '¡Éxito!',
         text: 'Sección actualizada exitosamente',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
 
       window.location.href = `/teacher/course/${sectionData?.seccion_del_curso}/sections`;
-
     } catch (error: any) {
       console.error('Error al actualizar la sección:', error);
-      
+
       let errorMessage = 'Error al actualizar la sección';
-      
+
       if (error.response) {
-        errorMessage = error.response.data?.message || error.response.data || errorMessage;
+        errorMessage =
+          error.response.data?.message || error.response.data || errorMessage;
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: errorMessage
+        text: errorMessage,
       });
     } finally {
       setIsSubmitting(false);
@@ -371,8 +381,8 @@ export default function FormEditSection() {
               />
             </div>
             <div className="grid grid-cols-1 lg:gap-9 mb-6">
-              <UploadVideo 
-                name="section.video" 
+              <UploadVideo
+                name="section.video"
                 register={register}
                 setValue={setValue}
                 error={errors.section?.video}
@@ -386,7 +396,10 @@ export default function FormEditSection() {
             Código del ejecutor de código de la sección del curso:
           </p>
           <div className="flex flex-col">
-            <Ejecutor onCodeChange={setCodigoEjecutor} initialCode={codigoEjecutor} />
+            <Ejecutor
+              onCodeChange={setCodigoEjecutor}
+              initialCode={codigoEjecutor}
+            />
           </div>
         </div>
         <div className="flex flex-col-reverse md:flex-row md:justify-between md:space-x-5">
@@ -403,7 +416,7 @@ export default function FormEditSection() {
                 confirmButtonColor: '#FF2162',
                 cancelButtonColor: '#3257FF',
                 confirmButtonText: 'Sí, cancelar',
-                cancelButtonText: 'Continuar editando'
+                cancelButtonText: 'Continuar editando',
               });
 
               if (result.isConfirmed) {
@@ -421,4 +434,4 @@ export default function FormEditSection() {
       </form>
     </div>
   );
-} 
+}

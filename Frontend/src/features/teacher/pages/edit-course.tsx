@@ -6,4 +6,4 @@ export default function EditCoursePage() {
       <FormEditCourse />
     </div>
   );
-} 
+}

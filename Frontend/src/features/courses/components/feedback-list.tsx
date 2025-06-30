@@ -38,7 +38,7 @@ export const FeedbackList = ({ id_seccion }: { id_seccion: number }) => {
     error,
     refetch,
   } = useFetchData<Feedback[]>(
-    `${API_URL}/education/feedback/seccion/${id_seccion}/`
+    `${API_URL}/education/feedback/seccion/${id_seccion}/`,
   );
 
   const {
@@ -148,7 +148,11 @@ export const FeedbackList = ({ id_seccion }: { id_seccion: number }) => {
 
           {visibleCount < feedbacks.length && (
             <div className="mt-4 flex justify-center">
-              <Button label="Ver más" variantColor='variantText' onClick={handleShowMore} />
+              <Button
+                label="Ver más"
+                variantColor="variantText"
+                onClick={handleShowMore}
+              />
             </div>
           )}
         </>
