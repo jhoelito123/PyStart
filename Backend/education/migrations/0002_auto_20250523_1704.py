@@ -2,192 +2,197 @@
 
 from django.db import migrations
 
+
 def forwards(apps, schema_editor):
-    NivelEducativo = apps.get_model('education', 'NivelEducativo')
-    #Migración para la tabla NivelEducativo
+    NivelEducativo = apps.get_model("education", "NivelEducativo")
+    # Migración para la tabla NivelEducativo
     niveles = [
-        {'nivel_educativo': 'Primaria'},
-        {'nivel_educativo': 'Secundaria'},
-        {'nivel_educativo': 'Bachillerato'},
-        {'nivel_educativo': 'Superior'},
+        {"nivel_educativo": "Primaria"},
+        {"nivel_educativo": "Secundaria"},
+        {"nivel_educativo": "Bachillerato"},
+        {"nivel_educativo": "Superior"},
     ]
     for nivel_data in niveles:
         NivelEducativo.objects.create(**nivel_data)
-    
-    Departamento = apps.get_model('education', 'Departamento')
-    Provincia = apps.get_model('education', 'Provincia')
+
+    Departamento = apps.get_model("education", "Departamento")
+    Provincia = apps.get_model("education", "Provincia")
     # Datos de Departamentos
     departamentos_data = [
-        {'id_departamento': 1, 'nombre_departamento': 'Chuquisaca', 'nombre_corto': 'CH'},
-        {'id_departamento': 2, 'nombre_departamento': 'La Paz', 'nombre_corto': 'LP'},
-        {'id_departamento': 3, 'nombre_departamento': 'Cochabamba', 'nombre_corto': 'CB'},
-        {'id_departamento': 4, 'nombre_departamento': 'Oruro', 'nombre_corto': 'OR'},
-        {'id_departamento': 5, 'nombre_departamento': 'Potosí', 'nombre_corto': 'PT'},
-        {'id_departamento': 6, 'nombre_departamento': 'Tarija', 'nombre_corto': 'TJ'},
-        {'id_departamento': 7, 'nombre_departamento': 'Santa Cruz', 'nombre_corto': 'SC'},
-        {'id_departamento': 8, 'nombre_departamento': 'Beni', 'nombre_corto': 'BN'},
-        {'id_departamento': 9, 'nombre_departamento': 'Pando', 'nombre_corto': 'PD'},
+        {
+            "id_departamento": 1,
+            "nombre_departamento": "Chuquisaca",
+            "nombre_corto": "CH",
+        },
+        {"id_departamento": 2, "nombre_departamento": "La Paz", "nombre_corto": "LP"},
+        {
+            "id_departamento": 3,
+            "nombre_departamento": "Cochabamba",
+            "nombre_corto": "CB",
+        },
+        {"id_departamento": 4, "nombre_departamento": "Oruro", "nombre_corto": "OR"},
+        {"id_departamento": 5, "nombre_departamento": "Potosí", "nombre_corto": "PT"},
+        {"id_departamento": 6, "nombre_departamento": "Tarija", "nombre_corto": "TJ"},
+        {
+            "id_departamento": 7,
+            "nombre_departamento": "Santa Cruz",
+            "nombre_corto": "SC",
+        },
+        {"id_departamento": 8, "nombre_departamento": "Beni", "nombre_corto": "BN"},
+        {"id_departamento": 9, "nombre_departamento": "Pando", "nombre_corto": "PD"},
     ]
 
     # Creación de Departamentos e inserción en la base de datos
     for data in departamentos_data:
         Departamento.objects.create(**data)
 
-
     # Datos de Provincias
     provincias_data = [
         # CHUQUISACA (1)
-        {'nombre_provincia': 'Belisario Boeto', 'departamento_id': 1},
-        {'nombre_provincia': 'Hernando Siles', 'departamento_id': 1},
-        {'nombre_provincia': 'Jaime Zudáñez', 'departamento_id': 1},
-        {'nombre_provincia': 'Juana Azurduy de Padilla', 'departamento_id': 1},
-        {'nombre_provincia': 'Luis Calvo', 'departamento_id': 1},
-        {'nombre_provincia': 'Nor Cinti', 'departamento_id': 1},
-        {'nombre_provincia': 'Oropeza', 'departamento_id': 1},
-        {'nombre_provincia': 'Sud Cinti', 'departamento_id': 1},
-        {'nombre_provincia': 'Tomina', 'departamento_id': 1},
-        {'nombre_provincia': 'Yamparáez', 'departamento_id': 1},
-        {'nombre_provincia': 'Otro', 'departamento_id': 1},
-
+        {"nombre_provincia": "Belisario Boeto", "departamento_id": 1},
+        {"nombre_provincia": "Hernando Siles", "departamento_id": 1},
+        {"nombre_provincia": "Jaime Zudáñez", "departamento_id": 1},
+        {"nombre_provincia": "Juana Azurduy de Padilla", "departamento_id": 1},
+        {"nombre_provincia": "Luis Calvo", "departamento_id": 1},
+        {"nombre_provincia": "Nor Cinti", "departamento_id": 1},
+        {"nombre_provincia": "Oropeza", "departamento_id": 1},
+        {"nombre_provincia": "Sud Cinti", "departamento_id": 1},
+        {"nombre_provincia": "Tomina", "departamento_id": 1},
+        {"nombre_provincia": "Yamparáez", "departamento_id": 1},
+        {"nombre_provincia": "Otro", "departamento_id": 1},
         # LA PAZ (2)
-        {'nombre_provincia': 'Abel Iturralde', 'departamento_id': 2},
-        {'nombre_provincia': 'Aroma', 'departamento_id': 2},
-        {'nombre_provincia': 'Bautista Saavedra', 'departamento_id': 2},
-        {'nombre_provincia': 'Caranavi', 'departamento_id': 2},
-        {'nombre_provincia': 'Eliodoro Camacho', 'departamento_id': 2},
-        {'nombre_provincia': 'Franz Tamayo', 'departamento_id': 2},
-        {'nombre_provincia': 'Gualberto Villarroel', 'departamento_id': 2},
-        {'nombre_provincia': 'Ingavi', 'departamento_id': 2},
-        {'nombre_provincia': 'Inquisivi', 'departamento_id': 2},
-        {'nombre_provincia': 'José Manuel Pando', 'departamento_id': 2},
-        {'nombre_provincia': 'José Ramón Loayza', 'departamento_id': 2},
-        {'nombre_provincia': 'Larecaja', 'departamento_id': 2},
-        {'nombre_provincia': 'Los Andes', 'departamento_id': 2},
-        {'nombre_provincia': 'Manco Kapac', 'departamento_id': 2},
-        {'nombre_provincia': 'Muñecas', 'departamento_id': 2},
-        {'nombre_provincia': 'Nor Yungas', 'departamento_id': 2},
-        {'nombre_provincia': 'Omasuyos', 'departamento_id': 2},
-        {'nombre_provincia': 'Pacajes', 'departamento_id': 2},
-        {'nombre_provincia': 'Pedro Domingo Murillo', 'departamento_id': 2},
-        {'nombre_provincia': 'Sud Yungas', 'departamento_id': 2},
-        {'nombre_provincia': 'Otro', 'departamento_id': 2},
-
+        {"nombre_provincia": "Abel Iturralde", "departamento_id": 2},
+        {"nombre_provincia": "Aroma", "departamento_id": 2},
+        {"nombre_provincia": "Bautista Saavedra", "departamento_id": 2},
+        {"nombre_provincia": "Caranavi", "departamento_id": 2},
+        {"nombre_provincia": "Eliodoro Camacho", "departamento_id": 2},
+        {"nombre_provincia": "Franz Tamayo", "departamento_id": 2},
+        {"nombre_provincia": "Gualberto Villarroel", "departamento_id": 2},
+        {"nombre_provincia": "Ingavi", "departamento_id": 2},
+        {"nombre_provincia": "Inquisivi", "departamento_id": 2},
+        {"nombre_provincia": "José Manuel Pando", "departamento_id": 2},
+        {"nombre_provincia": "José Ramón Loayza", "departamento_id": 2},
+        {"nombre_provincia": "Larecaja", "departamento_id": 2},
+        {"nombre_provincia": "Los Andes", "departamento_id": 2},
+        {"nombre_provincia": "Manco Kapac", "departamento_id": 2},
+        {"nombre_provincia": "Muñecas", "departamento_id": 2},
+        {"nombre_provincia": "Nor Yungas", "departamento_id": 2},
+        {"nombre_provincia": "Omasuyos", "departamento_id": 2},
+        {"nombre_provincia": "Pacajes", "departamento_id": 2},
+        {"nombre_provincia": "Pedro Domingo Murillo", "departamento_id": 2},
+        {"nombre_provincia": "Sud Yungas", "departamento_id": 2},
+        {"nombre_provincia": "Otro", "departamento_id": 2},
         # COCHABAMBA (3)
-        {'nombre_provincia': 'Arani', 'departamento_id': 3},
-        {'nombre_provincia': 'Arque', 'departamento_id': 3},
-        {'nombre_provincia': 'Ayopaya', 'departamento_id': 3},
-        {'nombre_provincia': 'Bolívar', 'departamento_id': 3},
-        {'nombre_provincia': 'Capinota', 'departamento_id': 3},
-        {'nombre_provincia': 'Carrasco', 'departamento_id': 3},
-        {'nombre_provincia': 'Cercado', 'departamento_id': 3},
-        {'nombre_provincia': 'Chapare', 'departamento_id': 3},
-        {'nombre_provincia': 'Esteban Arce', 'departamento_id': 3},
-        {'nombre_provincia': 'Germán Jordán', 'departamento_id': 3},
-        {'nombre_provincia': 'Mizque', 'departamento_id': 3},
-        {'nombre_provincia': 'Narciso Campero', 'departamento_id': 3},
-        {'nombre_provincia': 'Punata', 'departamento_id': 3},
-        {'nombre_provincia': 'Quillacollo', 'departamento_id': 3},
-        {'nombre_provincia': 'Tapacarí', 'departamento_id': 3},
-        {'nombre_provincia': 'Tiraque', 'departamento_id': 3},
-        {'nombre_provincia': 'Otro', 'departamento_id': 3},
-
+        {"nombre_provincia": "Arani", "departamento_id": 3},
+        {"nombre_provincia": "Arque", "departamento_id": 3},
+        {"nombre_provincia": "Ayopaya", "departamento_id": 3},
+        {"nombre_provincia": "Bolívar", "departamento_id": 3},
+        {"nombre_provincia": "Capinota", "departamento_id": 3},
+        {"nombre_provincia": "Carrasco", "departamento_id": 3},
+        {"nombre_provincia": "Cercado", "departamento_id": 3},
+        {"nombre_provincia": "Chapare", "departamento_id": 3},
+        {"nombre_provincia": "Esteban Arce", "departamento_id": 3},
+        {"nombre_provincia": "Germán Jordán", "departamento_id": 3},
+        {"nombre_provincia": "Mizque", "departamento_id": 3},
+        {"nombre_provincia": "Narciso Campero", "departamento_id": 3},
+        {"nombre_provincia": "Punata", "departamento_id": 3},
+        {"nombre_provincia": "Quillacollo", "departamento_id": 3},
+        {"nombre_provincia": "Tapacarí", "departamento_id": 3},
+        {"nombre_provincia": "Tiraque", "departamento_id": 3},
+        {"nombre_provincia": "Otro", "departamento_id": 3},
         # ORURO (4)
-        {'nombre_provincia': 'Atahuallpa', 'departamento_id': 4},
-        {'nombre_provincia': 'Carangas', 'departamento_id': 4},
-        {'nombre_provincia': 'Cercado', 'departamento_id': 4},
-        {'nombre_provincia': 'Eduardo Avaroa', 'departamento_id': 4},
-        {'nombre_provincia': 'Ladislao Cabrera', 'departamento_id': 4},
-        {'nombre_provincia': 'Sabaya', 'departamento_id': 4},
-        {'nombre_provincia': 'Nor Carangas', 'departamento_id': 4},
-        {'nombre_provincia': 'Pantaleón Dalence', 'departamento_id': 4},
-        {'nombre_provincia': 'Poopó', 'departamento_id': 4},
-        {'nombre_provincia': 'Puerto de Mejillones', 'departamento_id': 4},
-        {'nombre_provincia': 'Sajama', 'departamento_id': 4},
-        {'nombre_provincia': 'San Pedro de Totora', 'departamento_id': 4},
-        {'nombre_provincia': 'Saucarí', 'departamento_id': 4},
-        {'nombre_provincia': 'Sebastián Pagador', 'departamento_id': 4},
-        {'nombre_provincia': 'Sud Carangas', 'departamento_id': 4},
-        {'nombre_provincia': 'Tomas Barrón', 'departamento_id': 4},
-        {'nombre_provincia': 'Otro', 'departamento_id': 4},
-
+        {"nombre_provincia": "Atahuallpa", "departamento_id": 4},
+        {"nombre_provincia": "Carangas", "departamento_id": 4},
+        {"nombre_provincia": "Cercado", "departamento_id": 4},
+        {"nombre_provincia": "Eduardo Avaroa", "departamento_id": 4},
+        {"nombre_provincia": "Ladislao Cabrera", "departamento_id": 4},
+        {"nombre_provincia": "Sabaya", "departamento_id": 4},
+        {"nombre_provincia": "Nor Carangas", "departamento_id": 4},
+        {"nombre_provincia": "Pantaleón Dalence", "departamento_id": 4},
+        {"nombre_provincia": "Poopó", "departamento_id": 4},
+        {"nombre_provincia": "Puerto de Mejillones", "departamento_id": 4},
+        {"nombre_provincia": "Sajama", "departamento_id": 4},
+        {"nombre_provincia": "San Pedro de Totora", "departamento_id": 4},
+        {"nombre_provincia": "Saucarí", "departamento_id": 4},
+        {"nombre_provincia": "Sebastián Pagador", "departamento_id": 4},
+        {"nombre_provincia": "Sud Carangas", "departamento_id": 4},
+        {"nombre_provincia": "Tomas Barrón", "departamento_id": 4},
+        {"nombre_provincia": "Otro", "departamento_id": 4},
         # POTOSÍ (5)
-        {'nombre_provincia': 'Alonso de Ibáñez', 'departamento_id': 5},
-        {'nombre_provincia': 'Antonio Quijarro', 'departamento_id': 5},
-        {'nombre_provincia': 'Bernardino Bilbao', 'departamento_id': 5},
-        {'nombre_provincia': 'Charcas', 'departamento_id': 5},
-        {'nombre_provincia': 'Chayanta', 'departamento_id': 5},
-        {'nombre_provincia': 'Cornelio Saavedra', 'departamento_id': 5},
-        {'nombre_provincia': 'Daniel Campos', 'departamento_id': 5},
-        {'nombre_provincia': 'Enrique Baldivieso', 'departamento_id': 5},
-        {'nombre_provincia': 'José María Linares', 'departamento_id': 5},
-        {'nombre_provincia': 'Modesto Omiste', 'departamento_id': 5},
-        {'nombre_provincia': 'Nor Chichas', 'departamento_id': 5},
-        {'nombre_provincia': 'Nor Lípez', 'departamento_id': 5},
-        {'nombre_provincia': 'Rafael Bustillo', 'departamento_id': 5},
-        {'nombre_provincia': 'Sud Chichas', 'departamento_id': 5},
-        {'nombre_provincia': 'Sud Lípez', 'departamento_id': 5},
-        {'nombre_provincia': 'Tomás Frías', 'departamento_id': 5},
-        {'nombre_provincia': 'Otro', 'departamento_id': 5},
-
+        {"nombre_provincia": "Alonso de Ibáñez", "departamento_id": 5},
+        {"nombre_provincia": "Antonio Quijarro", "departamento_id": 5},
+        {"nombre_provincia": "Bernardino Bilbao", "departamento_id": 5},
+        {"nombre_provincia": "Charcas", "departamento_id": 5},
+        {"nombre_provincia": "Chayanta", "departamento_id": 5},
+        {"nombre_provincia": "Cornelio Saavedra", "departamento_id": 5},
+        {"nombre_provincia": "Daniel Campos", "departamento_id": 5},
+        {"nombre_provincia": "Enrique Baldivieso", "departamento_id": 5},
+        {"nombre_provincia": "José María Linares", "departamento_id": 5},
+        {"nombre_provincia": "Modesto Omiste", "departamento_id": 5},
+        {"nombre_provincia": "Nor Chichas", "departamento_id": 5},
+        {"nombre_provincia": "Nor Lípez", "departamento_id": 5},
+        {"nombre_provincia": "Rafael Bustillo", "departamento_id": 5},
+        {"nombre_provincia": "Sud Chichas", "departamento_id": 5},
+        {"nombre_provincia": "Sud Lípez", "departamento_id": 5},
+        {"nombre_provincia": "Tomás Frías", "departamento_id": 5},
+        {"nombre_provincia": "Otro", "departamento_id": 5},
         # TARIJA (6)
-        {'nombre_provincia': 'Aniceto Arce', 'departamento_id': 6},
-        {'nombre_provincia': 'Burdet O’Connor', 'departamento_id': 6},
-        {'nombre_provincia': 'Cercado', 'departamento_id': 6},
-        {'nombre_provincia': 'Eustaquio Méndez', 'departamento_id': 6},
-        {'nombre_provincia': 'Gran Chaco', 'departamento_id': 6},
-        {'nombre_provincia': 'José María Avilés', 'departamento_id': 6},
-        {'nombre_provincia': 'Otro', 'departamento_id': 6},
-
+        {"nombre_provincia": "Aniceto Arce", "departamento_id": 6},
+        {"nombre_provincia": "Burdet O’Connor", "departamento_id": 6},
+        {"nombre_provincia": "Cercado", "departamento_id": 6},
+        {"nombre_provincia": "Eustaquio Méndez", "departamento_id": 6},
+        {"nombre_provincia": "Gran Chaco", "departamento_id": 6},
+        {"nombre_provincia": "José María Avilés", "departamento_id": 6},
+        {"nombre_provincia": "Otro", "departamento_id": 6},
         # SANTA CRUZ (7)
-        {'nombre_provincia': 'Ángel Sandoval', 'departamento_id': 7},
-        {'nombre_provincia': 'Chiquitos', 'departamento_id': 7},
-        {'nombre_provincia': 'Cordillera', 'departamento_id': 7},
-        {'nombre_provincia': 'Florida', 'departamento_id': 7},
-        {'nombre_provincia': 'Germán Busch', 'departamento_id': 7},
-        {'nombre_provincia': 'Guarayos', 'departamento_id': 7},
-        {'nombre_provincia': 'Ichilo', 'departamento_id': 7},
-        {'nombre_provincia': 'Ignacio Warnes', 'departamento_id': 7},
-        {'nombre_provincia': 'José Miguel de Velasco', 'departamento_id': 7},
-        {'nombre_provincia': 'Manuel María Caballero', 'departamento_id': 7},
-        {'nombre_provincia': 'Ñuflo de Chávez', 'departamento_id': 7},
-        {'nombre_provincia': 'Obispo Santistevan', 'departamento_id': 7},
-        {'nombre_provincia': 'Sara', 'departamento_id': 7},
-        {'nombre_provincia': 'Vallegrande', 'departamento_id': 7},
-        {'nombre_provincia': 'Otro', 'departamento_id': 7},
-
+        {"nombre_provincia": "Ángel Sandoval", "departamento_id": 7},
+        {"nombre_provincia": "Chiquitos", "departamento_id": 7},
+        {"nombre_provincia": "Cordillera", "departamento_id": 7},
+        {"nombre_provincia": "Florida", "departamento_id": 7},
+        {"nombre_provincia": "Germán Busch", "departamento_id": 7},
+        {"nombre_provincia": "Guarayos", "departamento_id": 7},
+        {"nombre_provincia": "Ichilo", "departamento_id": 7},
+        {"nombre_provincia": "Ignacio Warnes", "departamento_id": 7},
+        {"nombre_provincia": "José Miguel de Velasco", "departamento_id": 7},
+        {"nombre_provincia": "Manuel María Caballero", "departamento_id": 7},
+        {"nombre_provincia": "Ñuflo de Chávez", "departamento_id": 7},
+        {"nombre_provincia": "Obispo Santistevan", "departamento_id": 7},
+        {"nombre_provincia": "Sara", "departamento_id": 7},
+        {"nombre_provincia": "Vallegrande", "departamento_id": 7},
+        {"nombre_provincia": "Otro", "departamento_id": 7},
         # BENI (8)
-        {'nombre_provincia': 'Cercado', 'departamento_id':8},
-        {'nombre_provincia': 'Iténez', 'departamento_id':8},
-        {'nombre_provincia': 'José Ballivián', 'departamento_id':8},
-        {'nombre_provincia': 'Mamoré', 'departamento_id':8},
-        {'nombre_provincia': 'Marbán', 'departamento_id':8},
-        {'nombre_provincia': 'Moxos', 'departamento_id':8},
-        {'nombre_provincia': 'Vaca Díez', 'departamento_id':8},
-        {'nombre_provincia': 'Yacuma', 'departamento_id':8},
-        {'nombre_provincia': 'Otro', 'departamento_id':8},
-
+        {"nombre_provincia": "Cercado", "departamento_id": 8},
+        {"nombre_provincia": "Iténez", "departamento_id": 8},
+        {"nombre_provincia": "José Ballivián", "departamento_id": 8},
+        {"nombre_provincia": "Mamoré", "departamento_id": 8},
+        {"nombre_provincia": "Marbán", "departamento_id": 8},
+        {"nombre_provincia": "Moxos", "departamento_id": 8},
+        {"nombre_provincia": "Vaca Díez", "departamento_id": 8},
+        {"nombre_provincia": "Yacuma", "departamento_id": 8},
+        {"nombre_provincia": "Otro", "departamento_id": 8},
         # PANDO (9)
-        {'nombre_provincia': 'Abuná', 'departamento_id': 9},
-        {'nombre_provincia': 'Federico Román', 'departamento_id': 9},
-        {'nombre_provincia': 'Madre de Dios', 'departamento_id': 9},
-        {'nombre_provincia': 'Manuripi', 'departamento_id': 9},
-        {'nombre_provincia': 'Nicolás Suárez', 'departamento_id': 9},
-        {'nombre_provincia': 'Otro', 'departamento_id': 9},
+        {"nombre_provincia": "Abuná", "departamento_id": 9},
+        {"nombre_provincia": "Federico Román", "departamento_id": 9},
+        {"nombre_provincia": "Madre de Dios", "departamento_id": 9},
+        {"nombre_provincia": "Manuripi", "departamento_id": 9},
+        {"nombre_provincia": "Nicolás Suárez", "departamento_id": 9},
+        {"nombre_provincia": "Otro", "departamento_id": 9},
     ]
 
     for data in provincias_data:
         Provincia.objects.create(**data)
-    
+
 
 def backwards(apps, schema_editor):
-    NivelEducativo = apps.get_model('education', 'NivelEducativo')
-    niveles_a_eliminar = ['Primaria', 'Secundaria', 'Bachillerato', 'Superior']
+    NivelEducativo = apps.get_model("education", "NivelEducativo")
+    niveles_a_eliminar = ["Primaria", "Secundaria", "Bachillerato", "Superior"]
     NivelEducativo.objects.filter(nivel_educativo__in=niveles_a_eliminar).delete()
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('education', '0001_initial'),
+        ("education", "0001_initial"),
     ]
 
     operations = [

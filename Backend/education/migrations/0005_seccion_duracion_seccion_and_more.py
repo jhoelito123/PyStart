@@ -8,28 +8,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('education', '0004_auto_20250526_1204'),
+        ("education", "0004_auto_20250526_1204"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='seccion',
-            name='duracion_seccion',
+            model_name="seccion",
+            name="duracion_seccion",
             field=models.DurationField(default=datetime.timedelta(0)),
         ),
         migrations.AlterField(
-            model_name='curso',
-            name='calificacion_curso',
+            model_name="curso",
+            name="calificacion_curso",
             field=models.FloatField(default=0.0),
         ),
         migrations.AlterField(
-            model_name='curso',
-            name='duracion_curso',
+            model_name="curso",
+            name="duracion_curso",
             field=models.DurationField(default=datetime.timedelta(0)),
         ),
         migrations.AlterField(
-            model_name='seccion',
-            name='seccion_del_curso',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='secciones', to='education.curso'),
+            model_name="seccion",
+            name="seccion_del_curso",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="secciones",
+                to="education.curso",
+            ),
         ),
     ]

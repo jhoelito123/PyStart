@@ -2,48 +2,48 @@
 
 from django.db import migrations
 
+
 def forwards(apps, schema_editor):
-    Modulo = apps.get_model('education', 'Modulo')
-        #Migración para la tabla Modulo
+    Modulo = apps.get_model("education", "Modulo")
+    # Migración para la tabla Modulo
     modulos = [
-        {'nombre_modulo': 'Introducción'},
+        {"nombre_modulo": "Introducción"},
     ]
     for nivel_data in modulos:
         Modulo.objects.create(**nivel_data)
-       
-        #Migracion para la tabla Idioma 
-    Idioma = apps.get_model('education', 'Idioma')
+
+        # Migracion para la tabla Idioma
+    Idioma = apps.get_model("education", "Idioma")
     idiomas = [
-        {'idioma': 'Español'},
-        {'idioma': 'Quechua'}, 
-        {'idioma': 'Aymara'}, 
-        {'idioma': 'Guaraní'}
+        {"idioma": "Español"},
+        {"idioma": "Quechua"},
+        {"idioma": "Aymara"},
+        {"idioma": "Guaraní"},
     ]
     for idioma_data in idiomas:
         Idioma.objects.create(**idioma_data)
-    
-        #Migracion para la tabla Dificultad
-    DificultadCurso = apps.get_model('education', 'DificultadCurso')
+
+        # Migracion para la tabla Dificultad
+    DificultadCurso = apps.get_model("education", "DificultadCurso")
     dificultades = [
-        {'dificultad_curso': 'Básico'},
-        {'dificultad_curso': 'Intermedio'},
-        {'dificultad_curso': 'Avanzado'},
+        {"dificultad_curso": "Básico"},
+        {"dificultad_curso": "Intermedio"},
+        {"dificultad_curso": "Avanzado"},
     ]
     for dificultad in dificultades:
         DificultadCurso.objects.create(**dificultad)
-    
+
 
 def backwards(apps, schema_editor):
-    Modulo = apps.get_model('education', 'Modulo')
-    modulos_a_eliminar = ['Introducción']
+    Modulo = apps.get_model("education", "Modulo")
+    modulos_a_eliminar = ["Introducción"]
     Modulo.objects.filter(nombre_modulo__in=modulos_a_eliminar).delete()
+
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('education', '0003_dificultadcurso_idioma_modulo_curso_seccion'),
+        ("education", "0003_dificultadcurso_idioma_modulo_curso_seccion"),
     ]
 
-    operations = [
-        migrations.RunPython(forwards, backwards)
-    ]
+    operations = [migrations.RunPython(forwards, backwards)]

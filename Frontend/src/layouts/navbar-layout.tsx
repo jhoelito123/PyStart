@@ -9,6 +9,18 @@ export default function NavbarLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const adminMenuRef = useRef<HTMLLIElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentRole = localStorage.getItem('userRole');
+      if (currentRole !== userRole) {
+        setUserRole(currentRole);
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [userRole]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -37,12 +49,19 @@ export default function NavbarLayout() {
     <div className="flex flex-col min-h-screen">
       <nav className="sticky top-0 bg-slate-900 h-[80px] flex items-center px-3 z-50">
         <div className="flex justify-between items-center w-full h-full">
-          <Link to="/" className="flex items-center">
-            <img
-              src="/icons/pystart.png"
-              alt="Logo"
-              className="h-10 "
-            />
+          <Link
+            to={
+              userRole === 'admin'
+                ? '/administrator'
+                : userRole === 'student'
+                  ? '/student'
+                  : userRole === 'teacher'
+                    ? '/teacher'
+                    : ''
+            }
+            className="flex items-center"
+          >
+            <img src="/icons/pystart.png" alt="Logo" className="h-10 " />
           </Link>
           <Navbar
             isAdminMenuOpen={isAdminMenuOpen}
@@ -66,30 +85,85 @@ export default function NavbarLayout() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <ul>
-                  <li>
-                    <Link
-                      to="/"
-                      className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
-                    >
-                      Inicio
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/register-inst-educational"
-                      className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
-                    >
-                      Registro Institución Educativa
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/register-teacher"
-                      className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
-                    >
-                      Registro Docente
-                    </Link>
-                  </li>
+                  {userRole === 'admin' && (
+                    <>
+                      {' '}
+                      <li>
+                        <Link
+                          to="/administrator/register-inst-educational"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Registro Institución Educativa
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/administrator"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Inicio
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                  {userRole === 'teacher' && (
+                    <>
+                      {' '}
+                      <li>
+                        <Link
+                          to="/teacher/register-course"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Registrar Curso
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/teacher/register-section-course"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Registro Sección de Curso
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/teacher/register-quiz"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Registro Quizz
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/teacher/courses"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Cursos
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                  {userRole === 'student' && (
+                    <>
+                      {' '}
+                      <li>
+                        <Link
+                          to="/student/courses"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Cursos
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/student/my-learn"
+                          className="block px-4 py-2 text-sm text-white hover:text-emerald-500"
+                        >
+                          Mi aprendizaje
+                        </Link>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
             )}

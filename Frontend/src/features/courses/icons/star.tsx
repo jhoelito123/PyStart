@@ -1,12 +1,13 @@
 type IconStarProps = {
   filled?: boolean;
+  size?: number;
 };
 
-export default function IconStar({ filled = false }: IconStarProps) {
+export default function IconStar({ filled = false, size = 24 }: IconStarProps) {
   return (
     <svg
-      width="24"
-      height="24"
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill={filled ? '#0F132B' : 'none'}
       xmlns="http://www.w3.org/2000/svg"

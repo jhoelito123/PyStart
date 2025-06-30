@@ -25,35 +25,32 @@ export const TextArea = <T extends FieldValues>({
 
   return (
     <div className="flex flex-col w-full">
-      <div className={`relative w-full ${className}`}>
-        <textarea
-          id={name as string}
-          placeholder=" "
-          className={`
-            peer w-full h-[120px] subtitle-md text-slate-900 placeholder-transparent
-            border-b-[1px] border-neutral-500 rounded pt-8 pb-1 px-2
-            focus:outline-none focus:border-slate-900 resize-none
-            ${fieldError ? 'border-red-400' : ''}
-          `}
-          {...(register ? register(name, validationRules) : {})}
-          onInput={onInput}
-        />
+      <div className={`w-full ${className}`}>
         <label
           htmlFor={name as string}
-          className={`
-          absolute left-2 text-slate-900 transition-all duration-200
-            peer-placeholder-shown:top-5 peer-placeholder-shown:subtitle-sm
-            peer-focus:top-0 peer-focus:text-xs peer-focus:text-slate-900
-            ${labelPadding}
-          `}
+          className={`block text-slate-900 mb-1 px-2 ${labelPadding}`}
         >
           {label} {isRequired && <span className="text-red-400">*</span>}
         </label>
+        <div className="p-0 m-0 leading-none">
+          <textarea
+            id={name as string}
+            placeholder={placeholder}
+            className={`
+              w-full h-[70px] subtitle-md text-slate-900
+              border-b-[2px] border-neutral-500 rounded
+              px-2 pt-2 resize-none
+              focus:outline-none focus:border-slate-900
+              ${fieldError ? 'border-red-400' : ''}
+            `}
+            {...(register ? register(name, validationRules) : {})}
+            onInput={onInput}
+          />
+        </div>
       </div>
-
       <div className="min-h-[25px] text-start pl-2">
         {fieldError && (
-          <span className="text-red-400 subtitle-sm text-wrap text-center">
+          <span className="text-red-400 body-sm text-wrap text-center">
             {String((fieldError as Record<string, unknown>)?.message)}
           </span>
         )}

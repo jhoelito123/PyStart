@@ -31,7 +31,19 @@ export default function CoursesPage() {
     curso.nombre_curso.toLowerCase().includes(query.toLowerCase()),
   );
 
-  if (loading) return <p className="p-4">Cargando cursos...</p>;
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center py-10">
+        <div className="flex-col gap-4 w-full flex items-center justify-center">
+          <div className="w-20 h-20 border-4 border-transparent text-blue-500 text-4xl animate-spin flex items-center justify-center border-t-blue-500 rounded-full">
+            <div className="w-16 h-16 border-4 border-transparent text-emerald-600 text-2xl animate-spin flex items-center justify-center border-t-emerald-600 rounded-full"></div>
+          </div>
+        </div>
+
+        <p className="mt-4 text-lg text-gray-600">Cargando cursos...</p>
+      </div>
+    );
+  if (error) return <p className="p-4 text-red-500">Error al cargar cursos</p>;
   if (error) return <p className="p-4 text-red-500">Error al cargar cursos</p>;
 
   return (
@@ -47,22 +59,24 @@ export default function CoursesPage() {
           No se encontraron cursos.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {cursosFiltrados?.map((curso) => (
-            <CardCourse
-              key={curso.id_curso}
-              level={mapDificultad(curso.dificultad_curso)}
-              image={curso.portada_curso}
-              title={curso.nombre_curso}
-              college="Universidad Andina"
-              rating={curso.calificacion_curso}
-              votes={0}
-              sections={1}
-              practices={2}
-              quizzez={3}
-              link={`/show-course/${curso.id_curso}`}
-            />
-          ))}
+        <div className="flex justify-center mt-10">
+          <div className="inline-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-20">
+            {cursosFiltrados?.map((curso) => (
+              <CardCourse
+                key={curso.id_curso}
+                level={mapDificultad(curso.dificultad_curso)}
+                image={curso.portada_curso}
+                title={curso.nombre_curso}
+                college="Universidad Andina"
+                rating={curso.calificacion_curso}
+                votes={0}
+                sections={1}
+                practices={2}
+                quizzez={3}
+                link={`/student/course/${curso.id_curso}`}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

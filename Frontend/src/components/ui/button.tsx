@@ -6,7 +6,8 @@ export const Button = ({
   variantColor = 'variant1',
   onClick,
   disabled = false,
-  icon: Icon,
+  icon1: Icon1,
+  icon2: Icon2,
   className = '',
   loading = false,
   loadingText = 'Cargando...',
@@ -22,11 +23,13 @@ export const Button = ({
     variant4:
       'text-white bg-transparent border-[1px] border-white hover:border-emerald-500 cursor-pointer hover:text-emerald-500',
     variantDesactivate: 'bg-blue-500 text-white opacity-40',
+    variantText: 'text-blue-500 hover:underline hover:text-blue-600 cursor-pointer bg-transparent border-none',
   };
 
-  const currentVariantColorClasses = loading || disabled
-    ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-    : varCol[variantColor];
+  const currentVariantColorClasses =
+    loading || disabled
+      ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+      : varCol[variantColor];
 
   return (
     <button
@@ -42,8 +45,9 @@ export const Button = ({
         </>
       ) : (
         <>
-          {Icon && <Icon className="mr-0" />}
+          {Icon1 && <Icon1 className="mr-0" />}
           <p className="pl-1 text-center text-wrap">{label}</p>
+          {Icon2 && <Icon2 className="mr-0" />}
         </>
       )}
     </button>
