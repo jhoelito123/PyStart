@@ -30,11 +30,18 @@ export default function StudentsByCoursePage() {
         <h1 className="text-3xl font-bold text-slate-900">
           Estudiantes inscritos
         </h1>
-        <Button
-          label="Editar Curso"
-          variantColor="variant1"
-          onClick={() => window.location.href = `/teacher/course/${id}/edit`}
-        />
+        <div className="flex gap-3">
+          <Button
+            label="Ver Secciones"
+            variantColor="variant1"
+            onClick={() => window.location.href = `/teacher/course/${id}/sections`}
+          />
+          <Button
+            label="Editar Curso"
+            variantColor="variant1"
+            onClick={() => window.location.href = `/teacher/course/${id}/edit`}
+          />
+        </div>
       </div>
 
       {students.length === 0 ? (
