@@ -11,7 +11,6 @@ import { getCurrentUser } from '../../auth/services/auth.service';
 
 
 const user = getCurrentUser();
-
 const estudianteId = user?.profile_data?.id_estudiante;
 
 if (!estudianteId) {
