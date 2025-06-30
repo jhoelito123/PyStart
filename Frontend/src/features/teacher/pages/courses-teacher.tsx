@@ -3,6 +3,23 @@ import SearchBar from '../../../components/ui/search';
 import { API_URL } from '../../../config/api-config';
 import { useFetchData } from '../../../hooks/use-fetch-data';
 import CardCourseTeacher from '../components/card-course-teacher';
+import { getCurrentUser } from '../../auth/services/auth.service';
+import Swal from 'sweetalert2';
+
+const user = getCurrentUser();
+console.log(user)
+const docenteId = user?.profile_data?.id_docente;
+
+if (!docenteId) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Acceso denegado',
+    text: 'No estás logueado como Docente',
+    confirmButtonText: 'Aceptar'
+  });
+} else {
+  console.log('ID del docente:', docenteId);
+}
 
 type Curso = {
   id_curso: number;
@@ -25,7 +42,7 @@ export default function CoursesTeacherPage() {
     data: cursos,
     loading,
     error,
-  } = useFetchData<Curso[]>(`${API_URL}/education/docentes/1/cursos`); //actualizar para que sea dinamico
+  } = useFetchData<Curso[]>(`${API_URL}/education/docentes/${docenteId}/cursos`); //actualizar para que sea dinamico
 
   const cursosFiltrados = cursos?.filter((curso) =>
     curso.nombre_curso.toLowerCase().includes(query.toLowerCase()),

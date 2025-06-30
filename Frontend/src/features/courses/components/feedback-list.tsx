@@ -6,6 +6,22 @@ import { InputText } from '../../../components/ui/input';
 import { Button } from '../../../components/ui/button';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
+import { getCurrentUser } from '../../auth/services/auth.service';
+
+const user = getCurrentUser();
+
+const estudianteId = user?.profile_data?.id_estudiante;
+
+if (!estudianteId) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Acceso denegado',
+    text: 'No estás logueado como estudiante',
+    confirmButtonText: 'Aceptar'
+  });
+} else {
+  console.log('ID del estudiante:', estudianteId);
+}
 
 type Feedback = {
   id_feedback: number;
@@ -57,7 +73,7 @@ export const FeedbackList = ({ id_seccion }: { id_seccion: number }) => {
         body: JSON.stringify({
           from_seccion: id_seccion,
           contenido_feedback: data.contenido_feedback,
-          autor_feedback: 1, // autor fijo por ahora
+          autor_feedback: estudianteId,
         }),
       });
 

@@ -9,6 +9,24 @@ import { useFetchData } from '../../../hooks/use-fetch-data';
 import { API_URL } from '../../../config/api-config';
 import axios from 'axios';
 import { useCloudinaryUpload } from '../../../hooks/use-cloudinary-upload';
+import { getCurrentUser } from '../../auth/services/auth.service';
+import Swal from 'sweetalert2';
+
+const user = getCurrentUser();
+
+const docenteId = user?.profile_data?.id_docente;
+
+if (!docenteId) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Acceso denegado',
+    text: 'No estás logueado como estudiante',
+    confirmButtonText: 'Aceptar'
+  });
+} else {
+  console.log('ID del estudiante:', docenteId);
+}
+
 interface FormData {
   module: string;
   level: string;
@@ -88,12 +106,21 @@ export default function FormCourse() {
         modulo_curso: parseInt(data.module),
         idioma_curso: parseInt(data.language),
         dificultad_curso: parseInt(data.level),
-        profesor_curso: 1,
+        profesor_curso: docenteId,
       };
 
       await axios.post(`${API_URL}/education/curso/create/`, payload);
-      alert('Curso registrado exitosamente');
-      window.location.reload();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Curso registrado',
+        text: 'El curso fue creado exitosamente.',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,      
+      }).then(() => {
+        window.location.reload();
+      });
     } catch (error) {
       console.error('Error al registrar:', error);
       alert('Error al registrar el curso');
