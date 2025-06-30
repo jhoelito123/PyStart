@@ -17,12 +17,6 @@ const user = getCurrentUser();
 const docenteId = user?.profile_data?.id_docente;
 
 if (!docenteId) {
-  Swal.fire({
-    icon: 'warning',
-    title: 'Acceso denegado',
-    text: 'No estás logueado como estudiante',
-    confirmButtonText: 'Aceptar'
-  });
 } else {
   console.log('ID del estudiante:', docenteId);
 }

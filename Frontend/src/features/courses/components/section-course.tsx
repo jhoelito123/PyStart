@@ -8,12 +8,6 @@ const user = getCurrentUser();
 const estudianteId = user?.profile_data?.id_estudiante;
 
 if (!estudianteId) {
-  Swal.fire({
-    icon: 'warning',
-    title: 'Acceso denegado',
-    text: 'No estás logueado como estudiante',
-    confirmButtonText: 'Aceptar'
-  });
 } else {
   console.log('ID del estudiante:', estudianteId);
 }
@@ -36,11 +30,6 @@ export const CourseSectionsList = ({
 
  const completarSeccion = async (seccionId: number) => {
   if (!estudianteId) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Acceso denegado',
-      text: 'No estás logueado como estudiante',
-    });
     return;
   }
 
