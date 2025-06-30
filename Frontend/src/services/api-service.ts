@@ -43,3 +43,18 @@ export const putData = async (endpoint: string, data: object) => {
     }
   }
 };
+
+export const deleteData = async (endpoint: string, data?: object) => {
+  try {
+    const response = await apiClient.delete(endpoint, { data });
+    return response.data;
+  } catch (error: any) {
+    if (error.response?.data) {
+      throw new Error(JSON.stringify(error.response.data));
+    } else if (error.message) {
+      throw new Error(error.message);
+    } else {
+      throw new Error('Error desconocido en la petición DELETE');
+    }
+  }
+};

@@ -1,6 +1,8 @@
 import { useFetchData } from '../../../hooks/use-fetch-data';
 import { API_URL } from '../../../config/api-config';
 import { Button } from '../../../components';
+import { deleteData } from '../../../services/api-service';
+import Swal from 'sweetalert2';
 
 type Section = {
   id_seccion: number;
@@ -40,12 +42,72 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
     data: sections,
     loading,
     error,
+    refetch,
   } = useFetchData<Section[]>(`${API_URL}/education/secciones`);
 
   // Filtrar secciones del curso específico
   const courseSections = sections?.filter(
     (section) => section.seccion_del_curso === courseId
   );
+
+  const handleDeleteSection = async (section: Section) => {
+    try {
+      const result = await Swal.fire({
+        title: '¿Estás seguro?',
+        text: `¿Deseas eliminar la sección "${section.nombre_seccion}"? Esta acción no se puede deshacer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#FF2162',
+        cancelButtonColor: '#3257FF',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+
+      if (!result.isConfirmed) {
+        return;
+      }
+
+      const payload = {
+        nombre_seccion: section.nombre_seccion,
+        descripcion_seccion: section.descripcion_seccion,
+        seccion_del_curso: section.seccion_del_curso,
+        duracion_seccion: section.duracion_seccion,
+        video_seccion: section.video_seccion,
+        contenido_seccion: section.contenido_seccion,
+        instruccion_ejecutor_seccion: section.instruccion_ejecutor_seccion,
+      };
+
+      await deleteData(`/education/secciones/${section.id_seccion}/`, payload);
+
+      await Swal.fire({
+        icon: 'success',
+        title: '¡Sección eliminada!',
+        text: 'La sección fue eliminada exitosamente',
+        timer: 2000,
+        showConfirmButton: false
+      });
+
+      // Recargar las secciones
+      refetch();
+
+    } catch (error: any) {
+      console.error('Error al eliminar la sección:', error);
+      
+      let errorMessage = 'Error al eliminar la sección';
+      
+      if (error.response) {
+        errorMessage = error.response.data?.message || error.response.data || errorMessage;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMessage
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -96,11 +158,18 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
                     {section.descripcion_seccion}
                   </p>
                 </div>
-                <Button
-                  label="Editar"
-                  variantColor="variant1"
-                  onClick={() => window.location.href = `/teacher/section/${section.id_seccion}/edit`}
-                />
+                <div className="flex gap-2">
+                  <Button
+                    label="Editar"
+                    variantColor="variant1"
+                    onClick={() => window.location.href = `/teacher/section/${section.id_seccion}/edit`}
+                  />
+                  <Button
+                    label="Eliminar"
+                    variantColor="variant2"
+                    onClick={() => handleDeleteSection(section)}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -108,4 +177,4 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
       </div>
     </div>
   );
-}; 
+};
