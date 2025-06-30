@@ -301,35 +301,6 @@ class SeccionesParaCursoSerializer(serializers.ModelSerializer):
         model = Seccion
         fields = ["id_seccion", "nombre_seccion", "descripcion_seccion"]
 
-
-class CursoDetalleSerializer(serializers.ModelSerializer):
-    idioma = serializers.CharField(source="idioma_curso.idioma", read_only=True)
-    dificultad = serializers.CharField(
-        source="dificultad_curso.dificultad_curso", read_only=True
-    )
-    modulo = serializers.CharField(source="modulo_curso.nombre_modulo", read_only=True)
-    profesor = serializers.CharField(
-        source="profesor_curso.nombre_docente", read_only=True
-    )
-    secciones = SeccionesParaCursoSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Curso
-        fields = [
-            "id_curso",
-            "nombre_curso",
-            "descripcion_curso",
-            "fecha_inicio_curso",
-            "duracion_curso",
-            "portada_curso",
-            "idioma",
-            "dificultad",
-            "modulo",
-            "profesor",
-            "secciones",
-        ]
-
-
 class PreguntaQuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreguntaQuiz
@@ -351,6 +322,37 @@ class QuizSerializer(serializers.ModelSerializer):
             PreguntaQuiz.objects.create(quiz=quiz, **pregunta_data)
 
         return quiz
+
+class CursoDetalleSerializer(serializers.ModelSerializer):
+    idioma = serializers.CharField(source="idioma_curso.idioma", read_only=True)
+    dificultad = serializers.CharField(
+        source="dificultad_curso.dificultad_curso", read_only=True
+    )
+    modulo = serializers.CharField(source="modulo_curso.nombre_modulo", read_only=True)
+    profesor = serializers.CharField(
+        source="profesor_curso.nombre_docente", read_only=True
+    )
+    secciones = SeccionesParaCursoSerializer(many=True, read_only=True)
+    quizzes = QuizSerializer(many=True, read_only=True)
+    class Meta:
+        model = Curso
+        fields = [
+            "id_curso",
+            "nombre_curso",
+            "descripcion_curso",
+            "fecha_inicio_curso",
+            "duracion_curso",
+            "portada_curso",
+            "idioma",
+            "dificultad",
+            "modulo",
+            "profesor",
+            "secciones",
+            "quizzes",
+        ]
+
+
+
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
