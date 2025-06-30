@@ -28,7 +28,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Hashear la contraseña antes de crear el usuario
-        validated_data['password_user'] = make_password(validated_data['password_user'])
+        validated_data["password_user"] = make_password(validated_data["password_user"])
         return super().create(validated_data)
 
 
@@ -82,8 +82,8 @@ class DocenteCreateSerializer(serializers.ModelSerializer):
         )  # <--- Ahora es 'user_id' por el 'source'
 
         # Hash password before creating user
-        if 'password_user' in user_data:
-            user_data['password_user'] = make_password(user_data['password_user'])
+        if "password_user" in user_data:
+            user_data["password_user"] = make_password(user_data["password_user"])
 
         user = Usuario.objects.create(**user_data)
 
@@ -132,8 +132,8 @@ class EstudianteCreateSerializer(serializers.ModelSerializer):
         institucion = validated_data.pop("institucion_id")
 
         # Hash password before creating user
-        if 'password_user' in user_data:
-            user_data['password_user'] = make_password(user_data['password_user'])
+        if "password_user" in user_data:
+            user_data["password_user"] = make_password(user_data["password_user"])
 
         user = Usuario.objects.create(**user_data)
 
@@ -152,7 +152,13 @@ class EstudianteDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Estudiante
-        fields = ["user", "id_estudiante", "nombre_estudiante", "apellidos_estudiante", "ci_estudiante"]
+        fields = [
+            "user",
+            "id_estudiante",
+            "nombre_estudiante",
+            "apellidos_estudiante",
+            "ci_estudiante",
+        ]
 
 
 class LoginSerializer(serializers.Serializer):

@@ -5,15 +5,17 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Cargar variables de entorno desde .env
 def load_env():
-    env_path = os.path.join(BASE_DIR, '.env')
+    env_path = os.path.join(BASE_DIR, ".env")
     if os.path.exists(env_path):
-        with open(env_path, 'r') as f:
+        with open(env_path, "r") as f:
             for line in f:
-                if '=' in line and not line.strip().startswith('#'):
-                    key, value = line.strip().split('=', 1)
+                if "=" in line and not line.strip().startswith("#"):
+                    key, value = line.strip().split("=", 1)
                     os.environ.setdefault(key, value)
+
 
 load_env()
 
@@ -142,5 +144,5 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# IA Configuration 
-GROQ_API_KEY = os.getenv('GROQ_API_KEY', None)
+# IA Configuration
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", None)

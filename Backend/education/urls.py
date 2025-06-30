@@ -1,6 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import SeccionViewSet, QuizCreateView, QuizPorCursoView, CursosPorDocenteView
+from .views import (
+    SeccionViewSet,
+    QuizCreateView,
+    QuizPorCursoView,
+    CursosPorDocenteView,
+)
 from . import views
 from .ai_views import AIAssistantView, AICodeAnalysisView
 
@@ -55,8 +60,16 @@ urlpatterns = [
         views.ProgresoPorEstudianteView.as_view(),
         name="progreso-estudiante",
     ),
-    path('progreso-secciones/completar/', views.ProgresoSeccionCreateView.as_view(), name='progreso-seccion-completar'),
-    path('docentes/<int:docente_id>/cursos/', CursosPorDocenteView.as_view(), name='cursos-por-docente'),
+    path(
+        "progreso-secciones/completar/",
+        views.ProgresoSeccionCreateView.as_view(),
+        name="progreso-seccion-completar",
+    ),
+    path(
+        "docentes/<int:docente_id>/cursos/",
+        CursosPorDocenteView.as_view(),
+        name="cursos-por-docente",
+    ),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
     path("tipos-recurso/", views.TipoRecursoList.as_view(), name="tipos-recurso-list"),
@@ -74,13 +87,25 @@ urlpatterns = [
         views.FeedbackListSeccionView.as_view(),
         name="feedback-list-by-seccion",
     ),
-    #Certificates
-    path('certificado/create', views.CertificadoCreateView.as_view(), name='certificado-create'),
-    path('certificado/<int:id_inscripcion>/', views.CertificadoInscripcionDetailView.as_view(), name='inscripcion-certificado-detail'),
+    # Certificates
+    path(
+        "certificado/create",
+        views.CertificadoCreateView.as_view(),
+        name="certificado-create",
+    ),
+    path(
+        "certificado/<int:id_inscripcion>/",
+        views.CertificadoInscripcionDetailView.as_view(),
+        name="inscripcion-certificado-detail",
+    ),
     # For Quizzes
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
-    path('cursos/<int:curso_id>/quizzes/', QuizPorCursoView.as_view(), name='quizzes-por-curso'),
+    path(
+        "cursos/<int:curso_id>/quizzes/",
+        QuizPorCursoView.as_view(),
+        name="quizzes-por-curso",
+    ),
     path("preguntas/", views.PreguntaList.as_view(), name="pregunta-list"),
     path("quizzes/create/", QuizCreateView.as_view(), name="quiz-create"),
     path(
@@ -94,14 +119,6 @@ urlpatterns = [
         name="comentarios-por-curso",
     ),
     # endpoints para la ia
-    path(
-        "ai-assistant/",
-        AIAssistantView.as_view(),
-        name="ai-assistant"
-    ),
-    path(
-        "ai-code-analysis/",
-        AICodeAnalysisView.as_view(),
-        name="ai-code-analysis"
-    ),
+    path("ai-assistant/", AIAssistantView.as_view(), name="ai-assistant"),
+    path("ai-code-analysis/", AICodeAnalysisView.as_view(), name="ai-code-analysis"),
 ]
