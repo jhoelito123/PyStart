@@ -468,3 +468,36 @@ class CertificadoSerializer(serializers.ModelSerializer):
             'fecha_emision_certificado',
             'certificado_de_inscripcion', 
         ]
+
+class EstudianteLiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Estudiante
+        fields = ['nombre_estudiante', 'apellidos_estudiante']
+
+class CertificadoLiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certificado
+        fields = "__all__"
+
+class CertificadoInscripcionSerializer(serializers.ModelSerializer):
+    estudiante = EstudianteLiteSerializer(source='estudiante_inscripcion', read_only=True)
+    curso = CursoSerializer(source='curso_inscripcion', read_only=True)
+
+    certificados = CertificadoLiteSerializer(
+        source='certificado_inscripcion',
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = InscripcionCurso
+        fields = [
+            'id_inscripcion',
+            'estudiante', 
+            'curso',   
+            'certificados', 
+            'fecha_inscripcion',
+            'porcentaje_progreso',
+            'completado'
+        ]
+        read_only_fields = fields

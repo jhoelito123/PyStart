@@ -58,7 +58,8 @@ from .serializers import (
     ComentarioCreateSerializer,
     ComentarioDetailSerializer,
     ProgresoSeccionSerializer,
-    CertificadoSerializer
+    CertificadoSerializer,
+    CertificadoInscripcionSerializer,
 )
 
 
@@ -398,3 +399,8 @@ class ComentarioDetailView(generics.ListAPIView):
 class CertificadoCreateView(generics.CreateAPIView):
     queryset = Certificado.objects.all()
     serializer_class = CertificadoSerializer
+
+class CertificadoInscripcionDetailView(generics.RetrieveAPIView):
+    queryset = InscripcionCurso.objects.all()
+    serializer_class = CertificadoInscripcionSerializer
+    lookup_field = 'id_inscripcion'

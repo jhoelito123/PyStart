@@ -76,7 +76,7 @@ urlpatterns = [
     ),
     #Certificates
     path('certificado/create', views.CertificadoCreateView.as_view(), name='certificado-create'),
-    
+    path('certificado/<int:id_inscripcion>/', views.CertificadoInscripcionDetailView.as_view(), name='inscripcion-certificado-detail'),
     # For Quizzes
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
