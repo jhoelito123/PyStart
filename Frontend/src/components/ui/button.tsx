@@ -23,7 +23,8 @@ export const Button = ({
     variant4:
       'text-white bg-transparent border-[1px] border-white hover:border-emerald-500 cursor-pointer hover:text-emerald-500',
     variantDesactivate: 'bg-blue-500 text-white opacity-40',
-    variantText: 'text-blue-500 hover:underline hover:text-blue-600 cursor-pointer bg-transparent border-none',
+    variantText:
+      'text-blue-500 hover:underline hover:text-blue-600 cursor-pointer bg-transparent border-none',
   };
 
   const currentVariantColorClasses =

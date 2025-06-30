@@ -47,7 +47,7 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
 
   // Filtrar secciones del curso específico
   const courseSections = sections?.filter(
-    (section) => section.seccion_del_curso === courseId
+    (section) => section.seccion_del_curso === courseId,
   );
 
   const handleDeleteSection = async (section: Section) => {
@@ -60,7 +60,7 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
         confirmButtonColor: '#FF2162',
         cancelButtonColor: '#3257FF',
         confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
       });
 
       if (!result.isConfirmed) {
@@ -84,27 +84,27 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
         title: '¡Sección eliminada!',
         text: 'La sección fue eliminada exitosamente',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
 
       // Recargar las secciones
       refetch();
-
     } catch (error: any) {
       console.error('Error al eliminar la sección:', error);
-      
+
       let errorMessage = 'Error al eliminar la sección';
-      
+
       if (error.response) {
-        errorMessage = error.response.data?.message || error.response.data || errorMessage;
+        errorMessage =
+          error.response.data?.message || error.response.data || errorMessage;
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: errorMessage
+        text: errorMessage,
       });
     }
   };
@@ -162,7 +162,9 @@ export const CourseSectionsList = ({ courseId }: CourseSectionsListProps) => {
                   <Button
                     label="Editar"
                     variantColor="variant1"
-                    onClick={() => window.location.href = `/teacher/section/${section.id_seccion}/edit`}
+                    onClick={() =>
+                      (window.location.href = `/teacher/section/${section.id_seccion}/edit`)
+                    }
                   />
                   <Button
                     label="Eliminar"

@@ -31,7 +31,7 @@ export default function StudentsByCoursePage() {
         confirmButtonColor: '#FF2162',
         cancelButtonColor: '#3257FF',
         confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
       });
 
       if (!result.isConfirmed) {
@@ -45,27 +45,27 @@ export default function StudentsByCoursePage() {
         title: '¡Curso eliminado!',
         text: 'El curso fue eliminado exitosamente',
         timer: 2000,
-        showConfirmButton: false
+        showConfirmButton: false,
       });
 
       // Regresar a la lista de cursos
       window.location.href = '/teacher/courses';
-
     } catch (error: any) {
       console.error('Error al eliminar el curso:', error);
-      
+
       let errorMessage = 'Error al eliminar el curso';
-      
+
       if (error.response) {
-        errorMessage = error.response.data?.message || error.response.data || errorMessage;
+        errorMessage =
+          error.response.data?.message || error.response.data || errorMessage;
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: errorMessage
+        text: errorMessage,
       });
     }
   };
@@ -85,12 +85,16 @@ export default function StudentsByCoursePage() {
           <Button
             label="Ver Secciones"
             variantColor="variant1"
-            onClick={() => window.location.href = `/teacher/course/${id}/sections`}
+            onClick={() =>
+              (window.location.href = `/teacher/course/${id}/sections`)
+            }
           />
           <Button
             label="Editar Curso"
             variantColor="variant1"
-            onClick={() => window.location.href = `/teacher/course/${id}/edit`}
+            onClick={() =>
+              (window.location.href = `/teacher/course/${id}/edit`)
+            }
           />
           <Button
             label="Eliminar Curso"

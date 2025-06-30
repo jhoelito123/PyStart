@@ -9,7 +9,6 @@ import { postData } from '../../../services/api-service';
 import { useFetchData } from '../../../hooks/use-fetch-data';
 import { getCurrentUser } from '../../auth/services/auth.service';
 
-
 const user = getCurrentUser();
 const estudianteId = user?.profile_data?.id_estudiante;
 

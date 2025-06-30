@@ -33,7 +33,7 @@ export default function ShowSectionPage() {
   const navigate = useNavigate();
   const [seccionesCurso, setSeccionesCurso] = useState<Seccion[]>([]);
   const [showAIAssistant, setShowAIAssistant] = useState(false);
-  const [currentCode, setCurrentCode] = useState<string>(''); 
+  const [currentCode, setCurrentCode] = useState<string>('');
 
   const {
     data: seccion,

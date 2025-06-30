@@ -21,10 +21,14 @@ export const useCertificate = () => {
       });
 
       // 1. Obtener datos del certificado desde el backend
-      const certificateData = await certificateService.getCertificateData(inscripcionId);
+      const certificateData =
+        await certificateService.getCertificateData(inscripcionId);
 
       // Verificar si los datos están completos
-      if (!certificateData.studentName || certificateData.studentName === '________________') {
+      if (
+        !certificateData.studentName ||
+        certificateData.studentName === '________________'
+      ) {
         Swal.close();
         Swal.fire({
           icon: 'warning',
@@ -36,7 +40,8 @@ export const useCertificate = () => {
       }
 
       // 2. Generar el certificado y subirlo a Cloudinary
-      const certificateUrl = await certificateService.generateAndUploadCertificate(certificateData);
+      const certificateUrl =
+        await certificateService.generateAndUploadCertificate(certificateData);
 
       // 3. Registrar el certificado en la base de datos
       await certificateService.registerCertificate({
@@ -46,7 +51,7 @@ export const useCertificate = () => {
 
       // Cerrar loading y mostrar opciones
       Swal.close();
-      
+
       // Mostrar diálogo con opciones de descarga
       const result = await Swal.fire({
         icon: 'success',
@@ -115,4 +120,4 @@ export const useCertificate = () => {
     generateCertificate,
     isGenerating,
   };
-}; 
+};

@@ -7,16 +7,16 @@ function GenerateCertificate() {
   const certificateRef = useRef<HTMLDivElement>(null);
 
   const certificateData = {
-    studentName: "Juan Rodrigo",
-    studentApellido: "Loza Lazcano",
-    courseName: "Desarrollo Web con React",
+    studentName: 'Juan Rodrigo',
+    studentApellido: 'Loza Lazcano',
+    courseName: 'Desarrollo Web con React',
     duration: 120,
-    deanName: "Lic. Andrea Quelali",
-    deanTitle: "Directora Ejecutiva",
-    vicePresidentName: "Sr. Adam Mamani",
-    vicePresidentTitle: "Fundador",
-    location: "COCHABAMBA-BOLIVIA",
-    backgroundImage: "https://i.ytimg.com/vi/5qap5aO4i9A/maxresdefault.jpg",
+    deanName: 'Lic. Andrea Quelali',
+    deanTitle: 'Directora Ejecutiva',
+    vicePresidentName: 'Sr. Adam Mamani',
+    vicePresidentTitle: 'Fundador',
+    location: 'COCHABAMBA-BOLIVIA',
+    backgroundImage: 'https://i.ytimg.com/vi/5qap5aO4i9A/maxresdefault.jpg',
   };
 
   const downloadPDF = async () => {

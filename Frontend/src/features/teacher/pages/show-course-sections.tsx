@@ -9,4 +9,4 @@ export default function ShowCourseSectionsPage() {
       <CourseSectionsList courseId={parseInt(id || '0')} />
     </div>
   );
-} 
+}

@@ -27,7 +27,8 @@ export const ProgressCard = ({
       if (porcentaje_progreso === 100) {
         setIsCheckingCertificate(true);
         try {
-          const certificateData = await certificateService.getCertificateData(id_inscripcion);
+          const certificateData =
+            await certificateService.getCertificateData(id_inscripcion);
           setCertificateUrl('exists');
         } catch (error) {
           setCertificateUrl(null);
@@ -51,7 +52,8 @@ export const ProgressCard = ({
 
   const handleDownloadCertificate = async () => {
     try {
-      const certificateData = await certificateService.getCertificateData(id_inscripcion);
+      const certificateData =
+        await certificateService.getCertificateData(id_inscripcion);
       await certificateService.generateAndDownloadPDF(certificateData);
     } catch (error) {
       console.error('Error al descargar el certificado:', error);
@@ -79,11 +81,13 @@ export const ProgressCard = ({
             {completado ? 'Completado ' : 'En curso '}
           </p>
         </div>
-        
+
         {porcentaje_progreso === 100 && (
           <div className="ml-4 flex flex-col gap-2">
             {isCheckingCertificate ? (
-              <div className="text-sm text-gray-500">Verificando certificado...</div>
+              <div className="text-sm text-gray-500">
+                Verificando certificado...
+              </div>
             ) : certificateUrl ? (
               <Button
                 label="Generar Certificado"

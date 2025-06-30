@@ -15,7 +15,7 @@ export const useFetchData = <T>(endpoint: string) => {
     } catch (err) {
       setError(
         (err instanceof Error ? err.message : 'Error desconocido') ||
-        'Error al obtener los datos.'
+          'Error al obtener los datos.',
       );
     } finally {
       setLoading(false);
@@ -26,5 +26,5 @@ export const useFetchData = <T>(endpoint: string) => {
     fetchData();
   }, [fetchData]);
 
-  return { data, loading, error, refetch: fetchData }; 
+  return { data, loading, error, refetch: fetchData };
 };
