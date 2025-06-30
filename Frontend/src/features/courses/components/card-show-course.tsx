@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '../../../components';
 import IconHour from '../icons/hour';
 import IconCode from '../icons/code';
@@ -6,6 +6,9 @@ import IconQuizz from '../icons/quizz';
 import { CourseSectionsList } from './section-course';
 import Swal from 'sweetalert2';
 import { postData } from '../../../services/api-service';
+import { useFetchData } from '../../../hooks/use-fetch-data';
+
+const estudianteId = 2;
 
 type Props = {
   course: number;
@@ -18,7 +21,6 @@ type Props = {
   duration: string;
   practices: number;
   quizzes: number;
-
   tabs: {
     general: string;
     syllabus: {
@@ -41,40 +43,60 @@ export const CardShowCourse: React.FC<Props> = ({
   duration,
   practices,
   quizzes,
-
   tabs,
 }) => {
   const [activeTab, setActiveTab] = useState<
     'general' | 'syllabus' | 'requirements'
   >('general');
+  const [isEnrolled, setIsEnrolled] = useState(false);
+
+  const { data: estudiantes, loading } = useFetchData<any[]>(
+    `/users/estudiante/curso/${course}/`,
+  );
+
+  useEffect(() => {
+    if (estudiantes) {
+      const inscrito = estudiantes.some(
+        (e) => e.id_estudiante === estudianteId,
+      );
+      setIsEnrolled(inscrito);
+    }
+  }, [estudiantes]);
 
   const handleEnroll = async () => {
     const payload = {
-      estudiante_inscripcion: 1, // Obtener esto del usuario autenticado
+      estudiante_inscripcion: estudianteId,
       curso_inscripcion: course,
     };
-    console.log(payload);
+
     try {
       Swal.fire({
         title: 'Inscribiendo...',
         text: 'Por favor espera',
         allowOutsideClick: false,
-        didOpen: () => {
-          Swal.showLoading();
-        },
+        didOpen: () => Swal.showLoading(),
       });
 
-      await postData('/education/inscribirse/', payload);
-
+      const response = await postData('/education/inscribirse/', payload);
       Swal.close();
+
+      if (
+        response?.non_field_errors?.includes('Ya estás inscrito en este curso.')
+      ) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Ya estás inscrito',
+          text: 'No es necesario volver a inscribirte.',
+        });
+        setIsEnrolled(true);
+        return;
+      }
 
       Swal.fire({
         icon: 'success',
         title: '¡Inscripción exitosa!',
         text: 'Te has inscrito correctamente en el curso.',
-      }).then(() => {
-        window.location.reload();
-      });
+      }).then(() => window.location.reload());
     } catch (err) {
       Swal.close();
       Swal.fire({
@@ -94,7 +116,7 @@ export const CardShowCourse: React.FC<Props> = ({
             <h4 className="text-medium font-roboto text-md text-blue-500 font-semibold">
               {university}
             </h4>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <span className="bg-emerald-500 text-slate-800 subtitle-sm px-4 py-2 rounded-lg">
                 {language}
               </span>
@@ -107,37 +129,30 @@ export const CardShowCourse: React.FC<Props> = ({
           <h1 className="text-2xl font-bold mt-2 text-slate-900">{title}</h1>
           <p className="body-md py-2">Inscríbete al curso:</p>
 
-          <Button label="Empieza ya" className="w-36" onClick={handleEnroll} />
+          <Button
+            label={isEnrolled ? 'Inscrito' : 'Empieza ya'}
+            className="w-36"
+            onClick={handleEnroll}
+            disabled={isEnrolled}
+          />
 
           <div className="mt-6">
             <div className="grid gap-4 border-b mb-4 border-neutral-300 grid-cols-3">
               <button
                 onClick={() => setActiveTab('general')}
-                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${
-                  activeTab === 'general'
-                    ? 'border-b-2 border-emerald-500 '
-                    : ''
-                }`}
+                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${activeTab === 'general' ? 'border-b-2 border-emerald-500' : ''}`}
               >
                 Descripción general
               </button>
               <button
                 onClick={() => setActiveTab('syllabus')}
-                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${
-                  activeTab === 'syllabus'
-                    ? 'border-b-2 border-emerald-500'
-                    : ''
-                }`}
+                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${activeTab === 'syllabus' ? 'border-b-2 border-emerald-500' : ''}`}
               >
                 Secciones
               </button>
               <button
                 onClick={() => setActiveTab('requirements')}
-                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${
-                  activeTab === 'requirements'
-                    ? 'border-b-2 border-emerald-500 '
-                    : ''
-                }`}
+                className={`pb-2 font-semibold text-slate-900 cursor-pointer ${activeTab === 'requirements' ? 'border-b-2 border-emerald-500' : ''}`}
               >
                 Quizzez
               </button>
@@ -146,7 +161,11 @@ export const CardShowCourse: React.FC<Props> = ({
             <div className="text-sm text-slate-900 whitespace-pre-line">
               {activeTab === 'general' && tabs.general}
               {activeTab === 'syllabus' && (
-                <CourseSectionsList course={course} sections={tabs.syllabus} />
+                <CourseSectionsList
+                  course={course}
+                  sections={tabs.syllabus}
+                  disabled={!isEnrolled}
+                />
               )}
               {activeTab === 'requirements' && tabs.requirements}
             </div>
