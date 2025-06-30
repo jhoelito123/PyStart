@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import {
   UseFormRegister,
   FieldValues,
@@ -12,6 +12,7 @@ interface UploadVideoProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   setValue: UseFormSetValue<T>;
   error?: FieldError;
+  currentVideo?: string;
 }
 
 export const UploadVideo = <T extends FieldValues>({
@@ -19,17 +20,27 @@ export const UploadVideo = <T extends FieldValues>({
   register,
   setValue,
   error,
+  currentVideo,
 }: UploadVideoProps<T>) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(currentVideo || null);
   const [fileError, setFileError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (currentVideo) {
+      setVideoUrl(currentVideo);
+    }
+  }, [currentVideo]);
+
   const handleFile = (file: File | null) => {
-    if (!file) return;
+    if (!file) {
+      setVideoUrl(currentVideo || null);
+      return;
+    }
 
     if (!file.type.startsWith('video/')) {
       setFileError('Solo se permiten archivos de video (MP4, WebM, OGG, etc.)');
-      setVideoUrl(null);
+      setVideoUrl(currentVideo || null);
       setValue(name, null as any, { shouldValidate: true });
       return;
     }
@@ -63,7 +74,7 @@ export const UploadVideo = <T extends FieldValues>({
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={name as string}>
-        Video <span className="text-red-400">*</span>
+        Video {!currentVideo && <span className="text-red-400">*</span>}
       </label>
       <div
         onClick={openFileDialog}
@@ -90,9 +101,14 @@ export const UploadVideo = <T extends FieldValues>({
           type="file"
           accept="video/*"
           {...register(name, {
-            validate: (fileList) =>
-              fileList?.[0]?.type.startsWith('video/') ||
-              'Solo se permiten archivos de video (MP4, WebM, etc.)',
+            required: currentVideo ? false : 'Por favor selecciona un video',
+            validate: (fileList) => {
+              if (currentVideo && (!fileList || fileList.length === 0)) {
+                return true;
+              }
+              return fileList?.[0]?.type.startsWith('video/') ||
+                'Solo se permiten archivos de video (MP4, WebM, etc.)';
+            },
           })}
           ref={(e) => {
             register(name).ref(e);
