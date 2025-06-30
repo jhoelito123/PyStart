@@ -7,8 +7,7 @@ import { RegisterSectionCoursePage } from '../features/courses/pages/register-se
 import CoursesPage from '../features/courses/pages/courses';
 import ShowCoursePage from '../features/courses/pages/show-course';
 import MainLayout from '../features/landing/pages/landing-page';
-import SigninPage from '../features/auth/components/sign-in';
-import SignupPage from '../features/auth/components/sign-up';
+import SignupPage from '../features/auth/pages/sign-up';
 import ShowSectionPage from '../features/courses/pages/show-section';
 import RegisterQuizPage from '../features/quizzes/pages/register-quiz';
 import ShowQuiz from '../features/quizzes/pages/show-quiz';
@@ -18,6 +17,7 @@ import MyLearnPage from '../features/student/pages/my-learn';
 import GenerateCertificate from '../features/certificate/pages/generate-certificate';
 import CoursesTeacherPage from '../features/teacher/pages/courses-teacher';
 import StudentsByCoursePage from '../features/teacher/pages/show-students';
+import SigninPage from '../features/auth/pages/sign-in';
 import EditCoursePage from '../features/teacher/pages/edit-course';
 import ShowCourseSectionsPage from '../features/teacher/pages/show-course-sections';
 import EditSectionPage from '../features/teacher/pages/edit-section';

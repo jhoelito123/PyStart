@@ -26,6 +26,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "tipo_de_user": {"required": True},
         }
 
+    def create(self, validated_data):
+        # Hashear la contraseña antes de crear el usuario
+        validated_data['password_user'] = make_password(validated_data['password_user'])
+        return super().create(validated_data)
+
 
 class AdminCreateSerializer(serializers.ModelSerializer):
     # Aquí anidamos el UsuarioSerializer y le decimos que su fuente es el campo 'user_id' del modelo Admin
@@ -76,6 +81,10 @@ class DocenteCreateSerializer(serializers.ModelSerializer):
             "user_id"
         )  # <--- Ahora es 'user_id' por el 'source'
 
+        # Hash password before creating user
+        if 'password_user' in user_data:
+            user_data['password_user'] = make_password(user_data['password_user'])
+
         user = Usuario.objects.create(**user_data)
 
         docente = Docente.objects.create(user_id=user, **validated_data)
@@ -121,6 +130,10 @@ class EstudianteCreateSerializer(serializers.ModelSerializer):
         user_data = validated_data.pop("user_id")
         institucion = validated_data.pop("institucion_id")
 
+        # Hash password before creating user
+        if 'password_user' in user_data:
+            user_data['password_user'] = make_password(user_data['password_user'])
+
         user = Usuario.objects.create(**user_data)
 
         estudiante = Estudiante.objects.create(user_id=user, **validated_data)
@@ -162,7 +175,7 @@ class LoginSerializer(serializers.Serializer):
                     "Credenciales inválidas.", code="authentication"
                 )
 
-            if user.password_user != password:
+            if not check_password(password, user.password_user):
                 raise serializers.ValidationError(
                     "Credenciales inválidas.", code="authentication"
                 )

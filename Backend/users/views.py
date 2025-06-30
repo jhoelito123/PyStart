@@ -39,6 +39,7 @@ class DocenteDetailView(generics.RetrieveAPIView):
 class EstudianteRegistroView(generics.CreateAPIView):
     queryset = Estudiante.objects.all()
     serializer_class = EstudianteCreateSerializer
+    permission_classes = [AllowAny]  # Permitir registro sin autenticación
     lookup_field = "user_id"
 
 
