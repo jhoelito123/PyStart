@@ -7,11 +7,13 @@ type CourseSectionsListProps = {
     nombre_seccion: string;
     descripcion_seccion: string;
   }[];
+  disabled?: boolean;
 };
 
 export const CourseSectionsList = ({
   course,
   sections,
+  disabled = false,
 }: CourseSectionsListProps) => {
   const navigate = useNavigate();
 
@@ -21,13 +23,18 @@ export const CourseSectionsList = ({
         <div>
           <h4 className="font-bold text-slate-800">Sección {index + 1}</h4>
           <div
-            key={index}
-            className="bg-white rounded-lg shadow p-4 border border-neutral-200 cursor-pointer"
-            onClick={() =>
-              navigate(
-                `/student/course/${course}/section/${section.id_seccion}`,
-              )
-            }
+            className={`
+              bg-white rounded-lg shadow p-4 border border-neutral-200
+              ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-neutral-100'}
+            `}
+            onClick={() => {
+              if (!disabled) {
+                navigate(
+                  `/student/course/${course}/section/${section.id_seccion}`,
+                );
+              }
+            }}
+            title={disabled ? 'Debes estar inscrito para acceder' : ''}
           >
             <h4 className="font-bold text-slate-800">
               {section.nombre_seccion}
