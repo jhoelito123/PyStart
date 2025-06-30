@@ -25,7 +25,7 @@ export default function CoursesTeacherPage() {
     data: cursos,
     loading,
     error,
-  } = useFetchData<Curso[]>(`${API_URL}/education/curso`);
+  } = useFetchData<Curso[]>(`${API_URL}/education/docentes/1/cursos`); //actualizar para que sea dinamico
 
   const cursosFiltrados = cursos?.filter((curso) =>
     curso.nombre_curso.toLowerCase().includes(query.toLowerCase()),
