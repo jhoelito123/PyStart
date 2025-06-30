@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import {
   UseFormRegister,
   FieldValues,
@@ -11,6 +11,8 @@ interface UploadCoverProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   error?: FieldError;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  currentImage?: string;
+  isOptional?: boolean;
 }
 
 const VALID_IMAGE_TYPES = [
@@ -36,18 +38,26 @@ export const UploadCover = <T extends FieldValues>({
   register,
   error,
   onChange,
+  currentImage,
+  isOptional = false,
 }: UploadCoverProps<T>) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(currentImage || null);
+
+  useEffect(() => {
+    if (currentImage) {
+      setPreview(currentImage);
+    }
+  }, [currentImage]);
 
   const handleFile = (file: File | null) => {
     if (!file) {
-      setPreview(null);
+      setPreview(currentImage || null);
       return;
     }
 
     if (!validateImageFile(file)) {
-      setPreview(null);
+      setPreview(currentImage || null);
       return;
     }
 
@@ -56,7 +66,7 @@ export const UploadCover = <T extends FieldValues>({
       setPreview(reader.result as string);
     };
     reader.onerror = () => {
-      setPreview(null);
+      setPreview(currentImage || null);
     };
     reader.readAsDataURL(file);
   };
@@ -87,7 +97,7 @@ export const UploadCover = <T extends FieldValues>({
   return (
     <div className="w-3/12 flex flex-col gap-2">
       <label htmlFor={name as string}>
-        Portada <span className="text-red-400">*</span>
+        Portada {!isOptional && <span className="text-red-400">*</span>}
       </label>
       <div
         onClick={openFileDialog}
@@ -114,8 +124,12 @@ export const UploadCover = <T extends FieldValues>({
           type="file"
           accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
           {...register(name, {
-            required: 'Por favor selecciona una imagen',
+            required: isOptional ? false : 'Por favor selecciona una imagen',
             validate: (fileList: FileList) => {
+              if (isOptional && (!fileList || fileList.length === 0)) {
+                return true;
+              }
+
               if (!fileList || fileList.length === 0) {
                 return 'Por favor selecciona una imagen';
               }

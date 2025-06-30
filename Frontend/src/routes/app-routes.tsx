@@ -18,6 +18,7 @@ import MyLearnPage from '../features/student/pages/my-learn';
 import GenerateCertificate from '../features/certificate/pages/generate-certificate';
 import CoursesTeacherPage from '../features/teacher/pages/courses-teacher';
 import StudentsByCoursePage from '../features/teacher/pages/show-students';
+import EditCoursePage from '../features/teacher/pages/edit-course';
 
 export default function AppRoutes() {
   return (
@@ -46,6 +47,10 @@ export default function AppRoutes() {
             <Route
               path="course/:id/students"
               element={<StudentsByCoursePage />}
+            />
+            <Route
+              path="course/:id/edit"
+              element={<EditCoursePage />}
             />
 
             <Route
