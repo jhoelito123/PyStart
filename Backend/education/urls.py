@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import SeccionViewSet, QuizCreateView
+from .views import SeccionViewSet, QuizCreateView, QuizPorCursoView, CursosPorDocenteView
 from . import views
 from .ai_views import AIAssistantView, AICodeAnalysisView
 
@@ -55,6 +55,7 @@ urlpatterns = [
         views.ProgresoPorEstudianteView.as_view(),
         name="progreso-estudiante",
     ),
+    path('docentes/<int:docente_id>/cursos/', CursosPorDocenteView.as_view(), name='cursos-por-docente'),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),
     path("tipos-recurso/", views.TipoRecursoList.as_view(), name="tipos-recurso-list"),
@@ -75,6 +76,7 @@ urlpatterns = [
     # For Quizzes
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),
+    path('cursos/<int:curso_id>/quizzes/', QuizPorCursoView.as_view(), name='quizzes-por-curso'),
     path("preguntas/", views.PreguntaList.as_view(), name="pregunta-list"),
     path("quizzes/create/", QuizCreateView.as_view(), name="quiz-create"),
     path(
