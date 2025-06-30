@@ -16,6 +16,7 @@ from .models import (
     FeedbackSeccion,
     Comentario,
     InscripcionCurso,
+    ProgresoSeccion,
 )
 from users.models import Estudiante
 
@@ -233,6 +234,66 @@ class ProgresoInscripcionSerializer(serializers.ModelSerializer):
             "fecha_inscripcion",
         ]
 
+class ProgresoSeccionSerializer(serializers.ModelSerializer):
+
+    estudiante_id = serializers.PrimaryKeyRelatedField(
+        queryset=Estudiante.objects.all(), source='estudiante', write_only=True
+    )
+    seccion_id = serializers.PrimaryKeyRelatedField(
+        queryset=Seccion.objects.all(), source='seccion', write_only=True
+    )
+
+    class Meta:
+        model = ProgresoSeccion
+        fields = [
+            'id_progreso_seccion',
+            'estudiante_id', 
+            'seccion_id',
+            'from_inscripcion',
+            'fecha_completado'
+        ]
+        read_only_fields = [
+            'id_progreso_seccion',
+            'fecha_completado',
+            'from_inscripcion',
+            'estudiante', 
+            'seccion'
+        ]
+
+    def create(self, validated_data):
+        estudiante = validated_data.pop('estudiante')
+        seccion = validated_data.pop('seccion')
+
+        # Buscamos la InscripcionCurso que coincida con el estudiante y el curso de la sección
+        try:
+            inscripcion = InscripcionCurso.objects.get(
+                estudiante_inscripcion=estudiante,
+                curso_inscripcion=seccion.seccion_del_curso
+            )
+        except InscripcionCurso.DoesNotExist:
+            raise serializers.ValidationError(
+                "No se encontró una inscripción activa para este estudiante en el curso de esta sección."
+            )
+
+        # Crear la instancia de ProgresoSeccion
+        progreso_seccion = ProgresoSeccion.objects.create(
+            estudiante=estudiante,
+            seccion=seccion,
+            from_inscripcion=inscripcion,
+            **validated_data
+        )
+        return progreso_seccion
+
+    # Validar que el estudiante no haya completado ya esta sección
+    def validate(self, data):
+        estudiante = data.get('estudiante')
+        seccion = data.get('seccion')
+
+        if ProgresoSeccion.objects.filter(estudiante=estudiante, seccion=seccion).exists():
+            raise serializers.ValidationError(
+                {"detail": "Este estudiante ya ha marcado esta sección como completada."}
+            )
+        return data
 
 class SeccionesParaCursoSerializer(serializers.ModelSerializer):
     class Meta:

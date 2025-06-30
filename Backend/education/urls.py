@@ -55,6 +55,7 @@ urlpatterns = [
         views.ProgresoPorEstudianteView.as_view(),
         name="progreso-estudiante",
     ),
+    path('progreso-secciones/completar/', views.ProgresoSeccionCreateView.as_view(), name='progreso-seccion-completar'),
     path('docentes/<int:docente_id>/cursos/', CursosPorDocenteView.as_view(), name='cursos-por-docente'),
     # For Sections
     path("execute-code/", views.CodeExecutorAPIView.as_view(), name="execute-code"),

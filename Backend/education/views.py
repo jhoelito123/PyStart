@@ -29,6 +29,7 @@ from .models import (
     PreguntaQuiz,
     FeedbackSeccion,
     Comentario,
+    ProgresoSeccion,
 )
 from users import models
 from .serializers import (
@@ -54,6 +55,7 @@ from .serializers import (
     FeedbackSerializer,
     ComentarioCreateSerializer,
     ComentarioDetailSerializer,
+    ProgresoSeccionSerializer,
 )
 
 
@@ -215,6 +217,9 @@ class ProgresoPorEstudianteView(APIView):
         serializer = ProgresoInscripcionSerializer(inscripciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class ProgresoSeccionCreateView(generics.CreateAPIView):
+    queryset = ProgresoSeccion.objects.all()
+    serializer_class = ProgresoSeccionSerializer
 
 class QuizCreateView(generics.CreateAPIView):
     queryset = Quiz.objects.all()
