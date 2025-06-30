@@ -53,3 +53,15 @@ export const authService = {
     return await postData('/users/login/', data);
   },
 };
+
+export function getCurrentUser() {
+  const userJson = localStorage.getItem('user');
+  if (!userJson) return null;
+
+  try {
+    return JSON.parse(userJson);
+  } catch (error) {
+    console.error('Error al parsear el usuario:', error);
+    return null;
+  }
+}
