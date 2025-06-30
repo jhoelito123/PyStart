@@ -222,6 +222,7 @@ class Seccion(models.Model):
 
 class ProgresoSeccion(models.Model):
     id_progreso_seccion = models.AutoField(primary_key=True)
+    from_inscripcion = models.ForeignKey(InscripcionCurso, on_delete=models.CASCADE, related_name="progreso_de_inscripcion")
     estudiante = models.ForeignKey(
         Estudiante, on_delete=models.CASCADE, related_name="progreso_secciones"
     )
