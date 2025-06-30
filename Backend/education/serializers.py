@@ -17,6 +17,7 @@ from .models import (
     Comentario,
     InscripcionCurso,
     ProgresoSeccion,
+    Certificado,
 )
 from users.models import Estudiante
 
@@ -444,3 +445,26 @@ class ComentarioDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentario
         fields = "__all__"
+
+class CertificadoSerializer(serializers.ModelSerializer):
+    inscripcion_id = serializers.PrimaryKeyRelatedField(
+        queryset=InscripcionCurso.objects.all(),
+        source='certificado_de_inscripcion',
+        write_only=True,
+        help_text="ID de la inscripción a la que pertenece este certificado."
+    )
+
+    class Meta:
+        model = Certificado
+        fields = [
+            'id_certificado',
+            'inscripcion_id',
+            'url_certificado',
+            'fecha_emision_certificado',
+            'certificado_de_inscripcion',
+        ]
+        read_only_fields = [
+            'id_certificado',
+            'fecha_emision_certificado',
+            'certificado_de_inscripcion', 
+        ]

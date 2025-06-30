@@ -74,6 +74,9 @@ urlpatterns = [
         views.FeedbackListSeccionView.as_view(),
         name="feedback-list-by-seccion",
     ),
+    #Certificates
+    path('certificado/create', views.CertificadoCreateView.as_view(), name='certificado-create'),
+    
     # For Quizzes
     path("quizzes/", views.QuizList.as_view(), name="quiz-list"),
     path("quizzes/<int:pk>/", views.QuizDetail.as_view(), name="quiz-detail"),

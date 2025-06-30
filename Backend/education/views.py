@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
+from users.models import Docente
 
 import subprocess
 import tempfile
@@ -30,6 +31,7 @@ from .models import (
     FeedbackSeccion,
     Comentario,
     ProgresoSeccion,
+    Certificado,
 )
 from users import models
 from .serializers import (
@@ -56,6 +58,7 @@ from .serializers import (
     ComentarioCreateSerializer,
     ComentarioDetailSerializer,
     ProgresoSeccionSerializer,
+    CertificadoSerializer
 )
 
 
@@ -391,3 +394,7 @@ class ComentarioDetailView(generics.ListAPIView):
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
+
+class CertificadoCreateView(generics.CreateAPIView):
+    queryset = Certificado.objects.all()
+    serializer_class = CertificadoSerializer
