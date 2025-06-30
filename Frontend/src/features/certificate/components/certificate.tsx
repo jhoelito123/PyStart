@@ -17,6 +17,24 @@ interface CertificateProps {
   data?: CertificateData;
 }
 
+// Función para formatear la duración de manera profesional
+const formatDuration = (duration: number): string => {
+  if (!duration || duration === 0) return "0 horas";
+  
+  const hours = Math.floor(duration);
+  const minutes = Math.round((duration - hours) * 60);
+  
+  if (hours > 0 && minutes > 0) {
+    return `${hours} hora${hours > 1 ? 's' : ''} y ${minutes} minuto${minutes > 1 ? 's' : ''}`;
+  } else if (hours > 0) {
+    return `${hours} hora${hours > 1 ? 's' : ''}`;
+  } else if (minutes > 0) {
+    return `${minutes} minuto${minutes > 1 ? 's' : ''}`;
+  } else {
+    return "menos de 1 minuto";
+  }
+};
+
 const Certificate: React.FC<CertificateProps> = ({ 
   data = {
     studentName: "________________",
@@ -31,6 +49,8 @@ const Certificate: React.FC<CertificateProps> = ({
     backgroundImage: "https://w0.peakpx.com/wallpaper/658/609/HD-wallpaper-python-glitter-logo-programming-language-grid-metal-background-python-creative-programming-language-signs-python-logo.jpg"
   }
 }) => {
+  const formattedDuration = formatDuration(data.duration);
+
   return (
     <div className="w-full max-w-4xl mx-auto bg-white relative overflow-hidden" style={{ aspectRatio: '11/8.5' }}>
       <div className="absolute inset-0" style={{ backgroundColor: '#F9F6F3', border: "solid" }}></div>
@@ -79,9 +99,9 @@ const Certificate: React.FC<CertificateProps> = ({
               <div className="flex items-center">
                 <span>con una duración de</span>
                 <span className="mx-2 font-bold border-b-2 border-black pb-1 px-2">
-                  {data.duration || "____"}
+                  {formattedDuration}
                 </span>
-                <span>horas académicas.</span>
+                <span>académicos.</span>
               </div>
             </div>
           </div>
