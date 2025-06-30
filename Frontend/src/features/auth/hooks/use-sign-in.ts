@@ -48,6 +48,7 @@ export const useSignIn = () => {
           email_user: data.email,
           password_user: data.password,
         });
+        console.log(loginResponse)
 
         const userType = loginResponse.tipo_de_usuario_loggeado.toLowerCase();
         if (
