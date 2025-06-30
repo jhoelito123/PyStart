@@ -151,7 +151,7 @@ class InscripcionCurso(models.Model):
     def recalcular_progreso(self):
         total_secciones = self.curso_inscripcion.secciones.count()
         secciones_completadas = self.estudiante_inscripcion.progreso_secciones.filter(
-            seccion__curso=self.curso_inscripcion
+            seccion__seccion_del_curso=self.curso_inscripcion
         ).count()
 
         if total_secciones > 0:
@@ -159,17 +159,22 @@ class InscripcionCurso(models.Model):
         else:
             nuevo_porcentaje = 0.0
 
-        if nuevo_porcentaje >= 100 and not self.completado:
+        original_porcentaje = self.porcentaje_progreso
+        original_completado = self.completado
+
+        self.porcentaje_progreso = round(nuevo_porcentaje, 2)
+
+        if nuevo_porcentaje >= 100:
             self.completado = True
-        elif nuevo_porcentaje < 100 and self.completado:
-            self.completado = False
+        else:
+            self.completado = False # Si el porcentaje baja de 100, no debería estar 'completado'
 
-        if (
-            self.porcentaje_progreso != nuevo_porcentaje or self.completado_changed
-        ):  # pseudocódigo
-            self.porcentaje_progreso = round(nuevo_porcentaje, 2)
+        if (self.porcentaje_progreso != original_porcentaje or
+            self.completado != original_completado):
             self.save(update_fields=["porcentaje_progreso", "completado"])
-
+            print(f"DEBUG: Inscripción {self.id_inscripcion} actualizada. Nuevo porcentaje: {self.porcentaje_progreso}%, Completado: {self.completado}")
+        else:
+            print(f"DEBUG: Inscripción {self.id_inscripcion} no necesita actualización. Porcentaje y estado completado sin cambios.")
 
 class TipoRecurso(models.Model):
     id_tipo_recurso = models.AutoField(primary_key=True)
@@ -222,6 +227,7 @@ class Seccion(models.Model):
 
 class ProgresoSeccion(models.Model):
     id_progreso_seccion = models.AutoField(primary_key=True)
+    from_inscripcion = models.ForeignKey(InscripcionCurso, on_delete=models.CASCADE, related_name="progreso_de_inscripcion")
     estudiante = models.ForeignKey(
         Estudiante, on_delete=models.CASCADE, related_name="progreso_secciones"
     )
@@ -240,6 +246,23 @@ class ProgresoSeccion(models.Model):
     def __str__(self):
         return f"Progreso de {self.estudiante.user_id.username_user} en {self.seccion.titulo_seccion}"
 
+class Certificado(models.Model):
+    id_certificado = models.AutoField(primary_key=True)
+    certificado_de_inscripcion = models.ForeignKey(InscripcionCurso, on_delete=models.CASCADE, related_name="certificado_inscripcion")
+    fecha_emision_certificado = models.DateTimeField(auto_now_add=True)
+    url_certificado = models.URLField()
+    
+    class Meta:
+        verbose_name = "Certificado"
+        verbose_name_plural = "Certificados"
+        ordering = ["-fecha_emision_certificado"]
+
+    def __str__(self):
+
+        try:
+            return f"Certificado para {self.certificado_de_inscripcion.estudiante_inscripcion.nombre_estudiante} - {self.certificado_de_inscripcion.curso_inscripcion.nombre_curso}"
+        except AttributeError:
+            return f"Certificado #{self.id_certificado} - Inscripción {self.certificado_de_inscripcion.id_inscripcion_curso}"
 
 class Quiz(models.Model):
     id_quiz = models.AutoField(primary_key=True)
@@ -323,30 +346,34 @@ def comentario_eliminado(sender, instance, **kwargs):
 
 @receiver(post_save, sender=ProgresoSeccion)
 def progreso_seccion_creado_o_actualizado(sender, instance, created, **kwargs):
-    estudiante = instance.estudiante
-    curso = instance.seccion.curso
-    try:
-        inscripcion = InscripcionCurso.objects.get(
-            estudiante_inscripcion=estudiante, curso_inscripcion=curso
-        )
-        inscripcion.recalcular_progreso()
-    except InscripcionCurso.DoesNotExist:
-        print(
-            f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al actualizar progreso."
-        )
+    inscripcion = instance.from_inscripcion
+
+    if inscripcion:
+        try:
+            inscripcion.recalcular_progreso()
+        except Exception as e:
+            print(
+                f"Error al recalcular progreso para InscripcionCurso ID {inscripcion.id_inscripcion}. "
+                f"Estudiante: {inscripcion.estudiante_inscripcion.user_id.username_user}, "
+                f"Curso: {inscripcion.curso_inscripcion.nombre_curso}. Error: {e}"
+            )
+    else:
+        print(f"Advertencia: ProgresoSeccion ID {instance.id_progreso_seccion} se creó sin una InscripcionCurso válida.")
+
 
 
 @receiver(post_delete, sender=ProgresoSeccion)
 def progreso_seccion_eliminado(sender, instance, **kwargs):
-    estudiante = instance.estudiante
-    curso = instance.seccion.curso
+    inscripcion = instance.from_inscripcion
 
-    try:
-        inscripcion = InscripcionCurso.objects.get(
-            estudiante_inscripcion=estudiante, curso_inscripcion=curso
-        )
-        inscripcion.recalcular_progreso()
-    except InscripcionCurso.DoesNotExist:
-        print(
-            f"Advertencia: No se encontró InscripcionCurso para estudiante {estudiante.user_id.username_user} y curso {curso.nombre_curso} al eliminar progreso."
-        )
+    if inscripcion:
+        try:
+            inscripcion.recalcular_progreso()
+        except Exception as e:
+            print(
+                f"Error al recalcular progreso para InscripcionCurso ID {inscripcion.id_inscripcion}. "
+                f"Estudiante: {inscripcion.estudiante_inscripcion.user_id.username_user}, "
+                f"Curso: {inscripcion.curso_inscripcion.nombre_curso}. Error: {e}"
+            )
+    else:
+        print(f"Advertencia: ProgresoSeccion ID {instance.id_progreso_seccion} se creó sin una InscripcionCurso válida.")

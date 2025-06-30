@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
+from users.models import Docente
 
 import subprocess
 import tempfile
@@ -29,6 +30,8 @@ from .models import (
     PreguntaQuiz,
     FeedbackSeccion,
     Comentario,
+    ProgresoSeccion,
+    Certificado,
 )
 from users import models
 from .serializers import (
@@ -54,6 +57,9 @@ from .serializers import (
     FeedbackSerializer,
     ComentarioCreateSerializer,
     ComentarioDetailSerializer,
+    ProgresoSeccionSerializer,
+    CertificadoSerializer,
+    CertificadoInscripcionSerializer,
 )
 
 
@@ -215,6 +221,9 @@ class ProgresoPorEstudianteView(APIView):
         serializer = ProgresoInscripcionSerializer(inscripciones, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class ProgresoSeccionCreateView(generics.CreateAPIView):
+    queryset = ProgresoSeccion.objects.all()
+    serializer_class = ProgresoSeccionSerializer
 
 class QuizCreateView(generics.CreateAPIView):
     queryset = Quiz.objects.all()
@@ -386,3 +395,12 @@ class ComentarioDetailView(generics.ListAPIView):
     def get_queryset(self):
         curso_id = self.kwargs["curso_id"]
         return Comentario.objects.filter(curso_id=curso_id)
+
+class CertificadoCreateView(generics.CreateAPIView):
+    queryset = Certificado.objects.all()
+    serializer_class = CertificadoSerializer
+
+class CertificadoInscripcionDetailView(generics.RetrieveAPIView):
+    queryset = InscripcionCurso.objects.all()
+    serializer_class = CertificadoInscripcionSerializer
+    lookup_field = 'id_inscripcion'
