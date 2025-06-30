@@ -100,6 +100,7 @@ class DocenteDetailSerializer(serializers.ModelSerializer):
         model = Docente
         fields = [
             "user",
+            "id_docente",
             "nombre_docente",
             "apellidos_docente",
             "ci_docente",
@@ -151,7 +152,7 @@ class EstudianteDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Estudiante
-        fields = ["user", "nombre_estudiante", "apellidos_estudiante", "ci_estudiante"]
+        fields = ["user", "id_estudiante", "nombre_estudiante", "apellidos_estudiante", "ci_estudiante"]
 
 
 class LoginSerializer(serializers.Serializer):

@@ -7,8 +7,23 @@ import { CourseSectionsList } from './section-course';
 import Swal from 'sweetalert2';
 import { postData } from '../../../services/api-service';
 import { useFetchData } from '../../../hooks/use-fetch-data';
+import { getCurrentUser } from '../../auth/services/auth.service';
 
-const estudianteId = 2;
+
+const user = getCurrentUser();
+
+const estudianteId = user?.profile_data?.id_estudiante;
+
+if (!estudianteId) {
+  Swal.fire({
+    icon: 'warning',
+    title: 'Acceso denegado',
+    text: 'No estás logueado como estudiante',
+    confirmButtonText: 'Aceptar'
+  });
+} else {
+  console.log('ID del estudiante:', estudianteId);
+}
 
 type Props = {
   course: number;
